@@ -3,25 +3,16 @@
 namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Domain\Common\Application\CommandBus\CommandBus;
-use App\Domain\Graber\Application\Command\ParseAllSubCategoryList;
 
 class TinkerCommand extends Command
 {
     protected static $defaultName = 'tinker';
 
-    private CommandBus $commandBus;
-
-    /**
-     * @param CommandBus $commandBus
-     */
-    public function __construct(CommandBus $commandBus)
+    public function __construct()
     {
         parent::__construct();
-        $this->commandBus = $commandBus;
     }
 
     /**
@@ -31,15 +22,6 @@ class TinkerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $progressBar = new ProgressBar($output);
-
-        $onParsedCategory = fn() => $progressBar->advance();
-
-        $command = new ParseAllSubCategoryList('/katalog/audi', $onParsedCategory);
-        $this->commandBus->execute($command);
-
-        $progressBar->finish();
-
         return self::SUCCESS;
     }
 }

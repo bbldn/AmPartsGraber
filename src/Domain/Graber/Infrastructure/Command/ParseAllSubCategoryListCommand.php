@@ -40,6 +40,8 @@ class ParseAllSubCategoryListCommand extends Command
 
         $progressBar->finish();
 
+        $output->write(PHP_EOL);
+
         return self::SUCCESS;
     }
 }
