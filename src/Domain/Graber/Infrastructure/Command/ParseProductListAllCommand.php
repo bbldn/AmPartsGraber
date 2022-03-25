@@ -3,12 +3,13 @@
 namespace App\Domain\Graber\Infrastructure\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Domain\Common\Application\CommandBus\CommandBus;
+use App\Domain\Common\Application\ProgressBar\ProgressBar;
 use App\Domain\Graber\Application\Command\ParseProductListAll;
+
+//use Symfony\Component\Console\Helper\ProgressBar;
 
 class ParseProductListAllCommand extends Command
 {
@@ -32,32 +33,17 @@ class ParseProductListAllCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var ConsoleOutput $output */
-
         $command = new ParseProductListAll();
         if (OutputInterface::VERBOSITY_NORMAL !== $output->getVerbosity()) {
-            $categoryProgressBar = new ProgressBar($output->section());
-            $categoryProgressBar->setFormat('%current%/%max% [%bar%] %percent%% %elapsed% %memory%');
-            $categoryProgressBar->start();
+            $progressBar = new ProgressBar($output);
 
-            $productProgressBar = new ProgressBar($output->section());
-            $productProgressBar->setFormat('%current%/%max% [%bar%] %percent%%');
-            $productProgressBar->start();
-
-            $command->setOnStartProduct(static fn(int $max) => $productProgressBar->start($max));
-            $command->setOnStartCategory(static fn(int $max) => $categoryProgressBar->start($max));
-            $command->setOnSetProductProgress(static fn(int $step) => $productProgressBar->setProgress($step));
-            $command->setOnSetCategoryProgress(static fn(int $step) => $categoryProgressBar->setProgress($step));
-
-            $productProgressBar->finish();
-            $categoryProgressBar->finish();
-
-            $this->commandBus->execute($command);
-
-            $output->write(PHP_EOL);
-        } else {
-            $this->commandBus->execute($command);
+            $command->setOnStartProduct(static fn(int $max) => $progressBar->setProductTotal($max));
+            $command->setOnStartCategory(static fn(int $max) => $progressBar->setCategoryTotal($max));
+            $command->setOnSetProductProgress(static fn(int $step) => $progressBar->setProductCurrent($step));
+            $command->setOnSetCategoryProgress(static fn(int $step) => $progressBar->setCategoryCurrent($step));
         }
+
+        $this->commandBus->execute($command);
 
         return self::SUCCESS;
     }

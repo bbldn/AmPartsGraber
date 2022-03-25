@@ -26,7 +26,7 @@ class TinkerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->sessionManagerFacade->setCategoryIndex(3)->setProductIndex(1241);
+        $this->sessionManagerFacade->setCategoryIndex(0)->setProductIndex(0);
 
         return self::SUCCESS;
     }
