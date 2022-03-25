@@ -9,6 +9,7 @@ use App\Domain\Graber\Application\Command\ParseProductListAllHandler as Base;
 use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\Repository\CategoryRepository;
 use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\ProductSaver\Saver as ProductSaver;
 use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\ProductParser\Parser as ProductParser;
+use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\SessionManager\SessionManagerFacade as SessionManager;
 use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\ProductUrlListFromCategoryParser\Parser as ProductUrlListFromCategoryParser;
 
 class CommandHandler implements Base
@@ -19,6 +20,8 @@ class CommandHandler implements Base
 
     private ProductParser $productParser;
 
+    private SessionManager $sessionManager;
+
     private CategoryRepository $categoryRepository;
 
     private ProductUrlListFromCategoryParser $productUrlListFromCategoryParser;
@@ -27,6 +30,7 @@ class CommandHandler implements Base
      * @param ProductSaver $productSaver
      * @param EntityManager $entityManager
      * @param ProductParser $productParser
+     * @param SessionManager $sessionManager
      * @param CategoryRepository $categoryRepository
      * @param ProductUrlListFromCategoryParser $productUrlListFromCategoryParser
      */
@@ -34,6 +38,7 @@ class CommandHandler implements Base
         ProductSaver $productSaver,
         EntityManager $entityManager,
         ProductParser $productParser,
+        SessionManager $sessionManager,
         CategoryRepository $categoryRepository,
         ProductUrlListFromCategoryParser $productUrlListFromCategoryParser
     )
@@ -41,6 +46,7 @@ class CommandHandler implements Base
         $this->productSaver = $productSaver;
         $this->entityManager = $entityManager;
         $this->productParser = $productParser;
+        $this->sessionManager = $sessionManager;
         $this->categoryRepository = $categoryRepository;
         $this->productUrlListFromCategoryParser = $productUrlListFromCategoryParser;
     }
@@ -51,21 +57,29 @@ class CommandHandler implements Base
      */
     public function __invoke(ParseProductListAll $command): void
     {
+        $onStartProduct = $command->getOnStartProduct();
+        $onStartCategory = $command->getOnStartCategory();
+        $onSetProductProgress = $command->getOnSetProductProgress();
+        $onSetCategoryProgress = $command->getOnSetCategoryProgress();
+
         $categoryList = $this->categoryRepository->findAll();
-        $onReceivedCategoryList = $command->getOnReceivedCategoryList();
-        if (null !== $onReceivedCategoryList) {
-            call_user_func($onReceivedCategoryList, count($categoryList));
+        if (null !== $onStartCategory) {
+            call_user_func($onStartCategory, count($categoryList));
         }
 
         $handledProductList = [];
+        foreach ($categoryList as $categoryIndex => $category) {
+            if ($categoryIndex < $this->sessionManager->getCategoryIndex()) {
+                continue;
+            }
 
-        $onHandledProduct = $command->getOnHandledProduct();
-        $onHandledCategory = $command->getOnHandledCategory();
-        $onReceivedProductList = $command->getOnReceivedProductList();
-        foreach ($categoryList as $category) {
             $url = $category->getUrl();
             if (null === $url) {
                 continue;
+            }
+
+            if (null !== $onSetCategoryProgress) {
+                call_user_func($onSetCategoryProgress, $categoryIndex);
             }
 
             try {
@@ -74,11 +88,19 @@ class CommandHandler implements Base
                 continue;
             }
 
-            if (null !== $onReceivedProductList) {
-                call_user_func($onReceivedProductList, count($productUrlList));
+            if (null !== $onStartProduct) {
+                call_user_func($onStartProduct, count($productUrlList));
             }
 
-            foreach ($productUrlList as $productUrl) {
+            foreach ($productUrlList as $productIndex => $productUrl) {
+                if ($productIndex < $this->sessionManager->getProductIndex()) {
+                    continue;
+                }
+
+                if (null !== $onSetProductProgress) {
+                    call_user_func($onSetProductProgress, $productIndex);
+                }
+
                 try {
                     $productDTO = $this->productParser->parser($productUrl);
                 } catch (ParseException $e) {
@@ -93,16 +115,13 @@ class CommandHandler implements Base
                     }
                 }
 
-                if (null !== $onHandledProduct) {
-                    call_user_func($onHandledProduct);
-                }
+                $this->sessionManager->setProductIndex($productIndex);
             }
 
             $this->entityManager->flush();
             $this->entityManager->clear();
-            if (null !== $onHandledCategory) {
-                call_user_func($onHandledCategory);
-            }
+
+            $this->sessionManager->setCategoryIndex($categoryIndex);
         }
     }
 }

@@ -37,17 +37,17 @@ class ParseProductListAllCommand extends Command
         $command = new ParseProductListAll();
         if (OutputInterface::VERBOSITY_NORMAL !== $output->getVerbosity()) {
             $categoryProgressBar = new ProgressBar($output->section());
-            $categoryProgressBar->setFormat('%current%/%max% [%bar%] %percent% %elapsed% %memory%');
+            $categoryProgressBar->setFormat('%current%/%max% [%bar%] %percent%% %elapsed% %memory%');
             $categoryProgressBar->start();
 
             $productProgressBar = new ProgressBar($output->section());
-            $productProgressBar->setFormat('%current%/%max% [%bar%] %percent%');
+            $productProgressBar->setFormat('%current%/%max% [%bar%] %percent%%');
             $productProgressBar->start();
 
-            $command->setOnHandledProduct(static fn() => $productProgressBar->advance());
-            $command->setOnHandledCategory(static fn() => $categoryProgressBar->advance());
-            $command->setOnReceivedProductList(static fn(int $number) => $productProgressBar->start($number));
-            $command->setOnReceivedCategoryList(static fn(int $number) => $categoryProgressBar->start($number));
+            $command->setOnStartProduct(static fn(int $max) => $productProgressBar->start($max));
+            $command->setOnStartCategory(static fn(int $max) => $categoryProgressBar->start($max));
+            $command->setOnSetProductProgress(static fn(int $step) => $productProgressBar->setProgress($step));
+            $command->setOnSetCategoryProgress(static fn(int $step) => $categoryProgressBar->setProgress($step));
 
             $productProgressBar->finish();
             $categoryProgressBar->finish();

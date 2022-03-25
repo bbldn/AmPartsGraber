@@ -5,14 +5,18 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\SessionManager\SessionManagerFacade;
 
 class TinkerCommand extends Command
 {
     protected static $defaultName = 'tinker';
 
-    public function __construct()
+    private SessionManagerFacade $sessionManagerFacade;
+
+    public function __construct(SessionManagerFacade $sessionManagerFacade)
     {
         parent::__construct();
+        $this->sessionManagerFacade = $sessionManagerFacade;
     }
 
     /**
@@ -22,6 +26,8 @@ class TinkerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->sessionManagerFacade->setCategoryIndex(3)->setProductIndex(1241);
+
         return self::SUCCESS;
     }
 }

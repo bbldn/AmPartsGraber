@@ -8,67 +8,44 @@ use App\Domain\Common\Application\CommandBus\Command;
 class ParseProductListAll implements Command
 {
     /**
-     * @psalm-var Closure():void
+     * @psalm-var Closure(int):void
      */
-    private ?Closure $onHandledProduct = null;
-
-    /**
-     * @psalm-var Closure():void
-     */
-    private ?Closure $onHandledCategory = null;
+    private ?Closure $onStartProduct = null;
 
     /**
      * @psalm-var Closure(int):void
      */
-    private ?Closure $onReceivedProductList = null;
+    private ?Closure $onStartCategory = null;
 
     /**
      * @psalm-var Closure(int):void
      */
-    private ?Closure $onReceivedCategoryList = null;
+    private ?Closure $onSetProductProgress = null;
+
+    /**
+     * @psalm-var Closure(int):void
+     */
+    private ?Closure $onSetCategoryProgress = null;
 
     /**
      * @return Closure|null
      *
-     * @psalm-return null|Closure():void
+     * @psalm-return null|Closure(int):void
      */
-    public function getOnHandledProduct(): ?Closure
+    public function getOnStartProduct(): ?Closure
     {
-        return $this->onHandledProduct;
+        return $this->onStartProduct;
     }
 
     /**
-     * @param Closure|null $onHandledProduct
+     * @param Closure|null $onStartProduct
      * @return ParseProductListAll
      *
-     * @psalm-param null|Closure():void $onHandledProduct
+     * @psalm-param null|Closure(int):void $onStartProduct
      */
-    public function setOnHandledProduct(?Closure $onHandledProduct): self
+    public function setOnStartProduct(?Closure $onStartProduct): self
     {
-        $this->onHandledProduct = $onHandledProduct;
-
-        return $this;
-    }
-
-    /**
-     * @return Closure|null
-     *
-     * @psalm-return null|Closure():void
-     */
-    public function getOnHandledCategory(): ?Closure
-    {
-        return $this->onHandledCategory;
-    }
-
-    /**
-     * @param Closure|null $onHandledCategory
-     * @return ParseProductListAll
-     *
-     * @psalm-param null|Closure():void $onHandledCategory
-     */
-    public function setOnHandledCategory(?Closure $onHandledCategory): self
-    {
-        $this->onHandledCategory = $onHandledCategory;
+        $this->onStartProduct = $onStartProduct;
 
         return $this;
     }
@@ -78,20 +55,20 @@ class ParseProductListAll implements Command
      *
      * @psalm-return null|Closure(int):void
      */
-    public function getOnReceivedProductList(): ?Closure
+    public function getOnStartCategory(): ?Closure
     {
-        return $this->onReceivedProductList;
+        return $this->onStartCategory;
     }
 
     /**
-     * @param Closure|null $onReceivedProductList
+     * @param Closure|null $onStartCategory
      * @return ParseProductListAll
      *
-     * @psalm-param null|Closure(int):void $onReceivedProductList
+     * @psalm-param null|Closure(int):void $onStartCategory
      */
-    public function setOnReceivedProductList(?Closure $onReceivedProductList): self
+    public function setOnStartCategory(?Closure $onStartCategory): self
     {
-        $this->onReceivedProductList = $onReceivedProductList;
+        $this->onStartCategory = $onStartCategory;
 
         return $this;
     }
@@ -101,20 +78,43 @@ class ParseProductListAll implements Command
      *
      * @psalm-return null|Closure(int):void
      */
-    public function getOnReceivedCategoryList(): ?Closure
+    public function getOnSetProductProgress(): ?Closure
     {
-        return $this->onReceivedCategoryList;
+        return $this->onSetProductProgress;
     }
 
     /**
-     * @param Closure|null $onReceivedCategoryList
+     * @param Closure|null $onSetProductProgress
      * @return ParseProductListAll
      *
-     * @psalm-param null|Closure(int):void $onReceivedCategoryList
+     * @psalm-param null|Closure(int):void $onSetProductProgress
      */
-    public function setOnReceivedCategoryList(?Closure $onReceivedCategoryList): self
+    public function setOnSetProductProgress(?Closure $onSetProductProgress): self
     {
-        $this->onReceivedCategoryList = $onReceivedCategoryList;
+        $this->onSetProductProgress = $onSetProductProgress;
+
+        return $this;
+    }
+
+    /**
+     * @return Closure|null
+     *
+     * @psalm-return null|Closure(int):void
+     */
+    public function getOnSetCategoryProgress(): ?Closure
+    {
+        return $this->onSetCategoryProgress;
+    }
+
+    /**
+     * @param Closure|null $onSetCategoryProgress
+     * @return ParseProductListAll
+     *
+     * @psalm-param null|Closure(int):void $onSetCategoryProgress
+     */
+    public function setOnSetCategoryProgress(?Closure $onSetCategoryProgress): self
+    {
+        $this->onSetCategoryProgress = $onSetCategoryProgress;
 
         return $this;
     }
