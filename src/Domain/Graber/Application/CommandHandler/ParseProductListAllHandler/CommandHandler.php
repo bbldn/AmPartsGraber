@@ -48,7 +48,6 @@ class CommandHandler implements Base
     /**
      * @param ParseProductListAll $command
      * @return void
-     * @throws ParseException
      */
     public function __invoke(ParseProductListAll $command): void
     {
@@ -69,13 +68,23 @@ class CommandHandler implements Base
                 continue;
             }
 
-            $productUrlList = $this->productUrlListFromCategoryParser->parse($url);
+            try {
+                $productUrlList = $this->productUrlListFromCategoryParser->parse($url);
+            } catch (ParseException $e) {
+                continue;
+            }
+
             if (null !== $onReceivedProductList) {
                 call_user_func($onReceivedProductList, count($productUrlList));
             }
 
             foreach ($productUrlList as $productUrl) {
-                $productDTO = $this->productParser->parser($productUrl);
+                try {
+                    $productDTO = $this->productParser->parser($productUrl);
+                } catch (ParseException $e) {
+                    continue;
+                }
+
                 if (null !== $productDTO) {
                     $code = (string)$productDTO->getCode();
                     if (false === key_exists($code, $handledProductList)) {

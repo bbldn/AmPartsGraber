@@ -4,23 +4,10 @@ namespace App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHa
 
 use Symfony\Component\DomCrawler\Crawler;
 use App\Domain\Graber\Domain\DTO\Category;
-use Symfony\Component\HttpFoundation\Response;
 use App\Domain\Graber\Domain\Exception\ParseException;
-use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface as HttpClient;
 
 class Parser
 {
-    private HttpClient $httpClient;
-
-    /**
-     * @param HttpClient $httpClient
-     */
-    public function __construct(HttpClient $httpClient)
-    {
-        $this->httpClient = $httpClient;
-    }
-
     /**
      * @param string $url
      * @return string
@@ -28,17 +15,9 @@ class Parser
      */
     private function getHTML(string $url): string
     {
-        try {
-            $response = $this->httpClient->request('GET', "https://am-parts.ru$url");
-
-            $code = $response->getStatusCode();
-            if (Response::HTTP_OK !== $code) {
-                throw new ParseException("Status code: $code");
-            }
-
-            $html = $response->getContent();
-        } catch (ExceptionInterface $e) {
-            throw new ParseException("HttpClientException: {$e->getMessage()}");
+        $html = @file_get_contents("https://am-parts.ru$url");
+        if (false === $html) {
+            throw new ParseException('Error');
         }
 
         return $html;
