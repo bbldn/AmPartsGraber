@@ -93,10 +93,6 @@ class CommandHandler implements Base
             }
 
             foreach ($productUrlList as $productIndex => $productUrl) {
-                if ($productIndex < $this->sessionManager->getProductIndex()) {
-                    continue;
-                }
-
                 if (null !== $onSetProductProgress) {
                     call_user_func($onSetProductProgress, $productIndex);
                 }
@@ -114,8 +110,6 @@ class CommandHandler implements Base
                         $this->productSaver->save($productDTO);
                     }
                 }
-
-                $this->sessionManager->setProductIndex($productIndex);
             }
 
             $this->entityManager->flush();
