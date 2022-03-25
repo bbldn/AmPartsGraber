@@ -31,26 +31,30 @@ class TinkerCommand extends Command
     {
         /** @var ConsoleOutput $output */
 
-        $categoryProgressBar = new ProgressBar($output->section());
-        $categoryProgressBar->setFormat('%current%/%max% [%bar%] %percent% %elapsed% %memory%');
-        $categoryProgressBar->start();
-
-        $productProgressBar = new ProgressBar($output->section());
-        $productProgressBar->setFormat('%current%/%max% [%bar%] %percent%');
-        $productProgressBar->start();
-
         $command = new ParseProductListAll();
-        $command->setOnHandledProduct(static fn() => $productProgressBar->advance());
-        $command->setOnHandledCategory(static fn() => $categoryProgressBar->advance());
-        $command->setOnReceivedProductList(static fn(int $number) => $productProgressBar->start($number));
-        $command->setOnReceivedCategoryList(static fn(int $number) => $categoryProgressBar->start($number));
+        if (OutputInterface::VERBOSITY_NORMAL !== $output->getVerbosity()) {
+            $categoryProgressBar = new ProgressBar($output->section());
+            $categoryProgressBar->setFormat('%current%/%max% [%bar%] %percent% %elapsed% %memory%');
+            $categoryProgressBar->start();
 
-        $this->commandBus->execute($command);
+            $productProgressBar = new ProgressBar($output->section());
+            $productProgressBar->setFormat('%current%/%max% [%bar%] %percent%');
+            $productProgressBar->start();
 
-        $productProgressBar->finish();
-        $categoryProgressBar->finish();
+            $command->setOnHandledProduct(static fn() => $productProgressBar->advance());
+            $command->setOnHandledCategory(static fn() => $categoryProgressBar->advance());
+            $command->setOnReceivedProductList(static fn(int $number) => $productProgressBar->start($number));
+            $command->setOnReceivedCategoryList(static fn(int $number) => $categoryProgressBar->start($number));
 
-        $output->write(PHP_EOL);
+            $productProgressBar->finish();
+            $categoryProgressBar->finish();
+
+            $this->commandBus->execute($command);
+
+            $output->write(PHP_EOL);
+        } else {
+            $this->commandBus->execute($command);
+        }
 
         return self::SUCCESS;
     }
