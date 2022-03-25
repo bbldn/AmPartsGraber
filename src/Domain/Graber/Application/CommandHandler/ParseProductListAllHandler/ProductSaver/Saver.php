@@ -44,7 +44,11 @@ class Saver
         $product->setPrice($productDTO->getPrice() ?? 0);
         $product->setImageUrl($productDTO->getImageUrl());
         $product->setCategoryUrl($productDTO->getCategoryUrl());
-        $product->setDescription($productDTO->getDescription());
+
+        $description = $productDTO->getDescription();
+        if (null !== $description) {
+            $product->setDescription(trim($description));
+        }
 
         $this->entityManager->persist($product);
 

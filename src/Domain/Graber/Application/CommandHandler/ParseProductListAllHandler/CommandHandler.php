@@ -90,6 +90,7 @@ class CommandHandler implements Base
             }
 
             $this->entityManager->flush();
+            $this->entityManager->clear();
             if (null !== $onHandledCategory) {
                 call_user_func($onHandledCategory);
             }

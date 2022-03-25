@@ -44,16 +44,23 @@ class Parser
     }
 
     /**
-     * @param string $html
+     * @param Crawler $crawler
      * @return string[]
      *
      * @psalm-return list<string>
      */
-    private function handle(string $html): array
+    private function handle(Crawler $crawler): array
     {
-        $crawler = new Crawler($html);
-
         return $crawler->filter('a.item-title')->each(static fn(Crawler $node) => $node->attr('href'));
+    }
+
+    /**
+     * @param Crawler $crawler
+     * @return bool
+     */
+    private function isEnd(Crawler $crawler): bool
+    {
+        return 0 === $crawler->filter('li.last')->count();
     }
 
     /**
@@ -68,13 +75,15 @@ class Parser
         $urlMap = [];
         for ($i = 1; true; $i++) {
             $html = $this->getHTML("$url?PAGEN_1=$i");
-            $newUrlList = $this->handle($html);
-            if (0 === count($newUrlList)) {
-                break;
-            }
+            $crawler = new Crawler($html);
 
+            $newUrlList = $this->handle($crawler);
             foreach ($newUrlList as $newUrl) {
                 $urlMap[$newUrl] = true;
+            }
+
+            if (true === $this->isEnd($crawler)) {
+                break;
             }
         }
 
