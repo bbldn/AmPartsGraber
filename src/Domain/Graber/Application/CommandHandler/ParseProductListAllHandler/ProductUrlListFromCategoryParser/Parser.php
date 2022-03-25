@@ -65,19 +65,19 @@ class Parser
      */
     public function parse(string $url): array
     {
-        $urlList = [];
-        for ($i = 1; ; $i++) {
+        $urlMap = [];
+        for ($i = 1; true; $i++) {
             $html = $this->getHTML("$url?PAGEN_1=$i");
             $newUrlList = $this->handle($html);
             if (0 === count($newUrlList)) {
                 break;
             }
 
-            foreach ($newUrlList as $url) {
-                $urlList[] = $url;
+            foreach ($newUrlList as $newUrl) {
+                $urlMap[$newUrl] = true;
             }
         }
 
-        return $urlList;
+        return array_keys($urlMap);
     }
 }

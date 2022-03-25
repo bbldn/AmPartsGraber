@@ -89,11 +89,10 @@ class CommandHandler implements Base
                 }
             }
 
+            $this->entityManager->flush();
             if (null !== $onHandledCategory) {
                 call_user_func($onHandledCategory);
             }
         }
-
-        $this->entityManager->flush();
     }
 }

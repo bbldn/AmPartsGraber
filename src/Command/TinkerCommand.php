@@ -32,11 +32,11 @@ class TinkerCommand extends Command
         /** @var ConsoleOutput $output */
 
         $categoryProgressBar = new ProgressBar($output->section());
-        $categoryProgressBar->setFormat('%current%/%max% [%bar%] %percent% %elapsed%');
+        $categoryProgressBar->setFormat('%current%/%max% [%bar%] %percent% %elapsed% %memory%');
         $categoryProgressBar->start();
 
         $productProgressBar = new ProgressBar($output->section());
-        $productProgressBar->setFormat('%current%/%max% [%bar%] %percent% %memory%');
+        $productProgressBar->setFormat('%current%/%max% [%bar%] %percent%');
         $productProgressBar->start();
 
         $command = new ParseProductListAll();
