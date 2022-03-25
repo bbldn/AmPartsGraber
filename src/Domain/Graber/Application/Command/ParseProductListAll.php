@@ -20,6 +20,11 @@ class ParseProductListAll implements Command
     /**
      * @psalm-var Closure(int):void
      */
+    private ?Closure $onReceivedProductList = null;
+
+    /**
+     * @psalm-var Closure(int):void
+     */
     private ?Closure $onReceivedCategoryList = null;
 
     /**
@@ -73,6 +78,29 @@ class ParseProductListAll implements Command
      *
      * @psalm-return null|Closure(int):void
      */
+    public function getOnReceivedProductList(): ?Closure
+    {
+        return $this->onReceivedProductList;
+    }
+
+    /**
+     * @param Closure|null $onReceivedProductList
+     * @return ParseProductListAll
+     *
+     * @psalm-param null|Closure(int):void $onReceivedProductList
+     */
+    public function setOnReceivedProductList(?Closure $onReceivedProductList): self
+    {
+        $this->onReceivedProductList = $onReceivedProductList;
+
+        return $this;
+    }
+
+    /**
+     * @return Closure|null
+     *
+     * @psalm-return null|Closure(int):void
+     */
     public function getOnReceivedCategoryList(): ?Closure
     {
         return $this->onReceivedCategoryList;
@@ -82,7 +110,7 @@ class ParseProductListAll implements Command
      * @param Closure|null $onReceivedCategoryList
      * @return ParseProductListAll
      *
-     * @psalm-return null|Closure(int):void $onReceivedCategoryList
+     * @psalm-param null|Closure(int):void $onReceivedCategoryList
      */
     public function setOnReceivedCategoryList(?Closure $onReceivedCategoryList): self
     {

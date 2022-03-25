@@ -2,8 +2,6 @@
 
 namespace App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler;
 
-use Closure;
-use App\Domain\Graber\Domain\Entity\Category;
 use App\Domain\Graber\Domain\Exception\ParseException;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Graber\Application\Command\ParseProductListAll;
@@ -48,33 +46,6 @@ class CommandHandler implements Base
     }
 
     /**
-     * @param Category $category
-     * @param Closure|null $onHandledProduct
-     * @return void
-     * @throws ParseException
-     *
-     * @psalm-param null|Closure():void $onHandledProduct
-     */
-    private function handleCategory(Category $category, ?Closure $onHandledProduct): void
-    {
-        $url = $category->getUrl();
-        if (null === $url) {
-            return;
-        }
-
-        $productUrlList = $this->productUrlListFromCategoryParser->parse($url);
-        foreach ($productUrlList as $productUrl) {
-            $productDTO = $this->productParser->parser($productUrl);
-            if (null !== $productDTO) {
-                $this->productSaver->save($productDTO);
-                if (null !== $onHandledProduct) {
-                    call_user_func($onHandledProduct);
-                }
-            }
-        }
-    }
-
-    /**
      * @param ParseProductListAll $command
      * @return void
      * @throws ParseException
@@ -87,10 +58,37 @@ class CommandHandler implements Base
             call_user_func($onReceivedCategoryList, count($categoryList));
         }
 
+        $handledProductList = [];
+
         $onHandledProduct = $command->getOnHandledProduct();
         $onHandledCategory = $command->getOnHandledCategory();
+        $onReceivedProductList = $command->getOnReceivedProductList();
         foreach ($categoryList as $category) {
-            $this->handleCategory($category, $onHandledProduct);
+            $url = $category->getUrl();
+            if (null === $url) {
+                continue;
+            }
+
+            $productUrlList = $this->productUrlListFromCategoryParser->parse($url);
+            if (null !== $onReceivedProductList) {
+                call_user_func($onReceivedProductList, count($productUrlList));
+            }
+
+            foreach ($productUrlList as $productUrl) {
+                $productDTO = $this->productParser->parser($productUrl);
+                if (null !== $productDTO) {
+                    $code = (string)$productDTO->getCode();
+                    if (false === key_exists($code, $handledProductList)) {
+                        $handledProductList[$code] = true;
+                        $this->productSaver->save($productDTO);
+                    }
+                }
+
+                if (null !== $onHandledProduct) {
+                    call_user_func($onHandledProduct);
+                }
+            }
+
             if (null !== $onHandledCategory) {
                 call_user_func($onHandledCategory);
             }
