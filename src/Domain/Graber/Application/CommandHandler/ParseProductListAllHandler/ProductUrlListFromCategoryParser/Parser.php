@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHandler\SubCategoryListParser;
+namespace App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\ProductUrlListFromCategoryParser;
 
 use Symfony\Component\DomCrawler\Crawler;
-use App\Domain\Graber\Domain\DTO\Category;
 use Symfony\Component\HttpFoundation\Response;
 use App\Domain\Graber\Domain\Exception\ParseException;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
@@ -45,33 +44,40 @@ class Parser
     }
 
     /**
+     * @param string $html
+     * @return string[]
+     *
+     * @psalm-return list<string>
+     */
+    private function handle(string $html): array
+    {
+        $crawler = new Crawler($html);
+
+        return $crawler->filter('a.item-title')->each(static fn(Crawler $node) => $node->attr('href'));
+    }
+
+    /**
      * @param string $url
-     * @return Category[]
+     * @return string[]
      * @throws ParseException
      *
-     * @psalm-return list<Category>
+     * @psalm-return list<string>
      */
     public function parse(string $url): array
     {
-        $html = $this->getHTML($url);
-
-        $selector = '#catalog-section-list .catalog-section .catalog-section-childs .catalog-section-child a';
-        $callback = static function (Crawler $node): ?Category {
-            $title = $node->attr('title');
-            if (null === $title) {
-                return null;
+        $urlList = [];
+        for ($i = 1; ; $i++) {
+            $html = $this->getHTML("$url?PAGEN_1=$i");
+            $newUrlList = $this->handle($html);
+            if (0 === count($newUrlList)) {
+                break;
             }
 
-            $category = new Category();
-            $category->setName($title);
-            $category->setUrl($node->attr('href'));
+            foreach ($newUrlList as $url) {
+                $urlList[] = $url;
+            }
+        }
 
-            return $category;
-        };
-
-        $crawler = new Crawler($html);
-        $categoryList = $crawler->filter($selector)->each($callback);
-
-        return array_filter($categoryList, static fn(?Category $category) => null !== $category);
+        return $urlList;
     }
 }
