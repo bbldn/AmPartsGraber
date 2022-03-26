@@ -27,6 +27,18 @@ class Provider
     }
 
     /**
+     * @return LanguageFront[]
+     *
+     * @psalm-return list<LanguageFront>
+     */
+    public function getLanguageListFront(): array
+    {
+        $languageFront = $this->getDefaultLanguageFront();
+
+        return [$languageFront];
+    }
+
+    /**
      * @param LanguageFront|null $languageFront
      * @return bool
      */
