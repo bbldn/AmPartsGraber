@@ -23,7 +23,7 @@ class Provider
     public function getDefaultShopFront(): ShopFront
     {
         /** @psalm-var ShopFront */
-        return $this->shopRepository->findOne(1);
+        return $this->shopRepository->findOne(0);
     }
 
     /**

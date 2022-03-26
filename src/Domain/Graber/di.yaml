@@ -1,5 +1,5 @@
 services:
-    #Services
+    #Commands
     App\Domain\Graber\Application\Command\ParseProductListAllHandler:
         public: true
         autowire: true

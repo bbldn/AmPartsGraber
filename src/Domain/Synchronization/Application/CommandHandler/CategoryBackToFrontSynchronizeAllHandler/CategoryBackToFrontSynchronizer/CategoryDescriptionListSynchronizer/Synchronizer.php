@@ -57,6 +57,7 @@ class Synchronizer
         $mainCategoryDescription->setMetaH1('');
         $mainCategoryDescription->setMetaTitle('');
         $mainCategoryDescription->setDescription('');
+        $mainCategoryDescription->setMetaKeyword('');
         $mainCategoryDescription->setMetaDescription('');
         $mainCategoryDescription->setName($categoryGraber->getName());
 

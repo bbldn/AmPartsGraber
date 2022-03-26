@@ -49,7 +49,7 @@ class CommandHandler implements Base
         foreach ($categoryGraberList as $index => $categoryGraber) {
             $this->categoryBackToFrontSynchronizer->synchronize($categoryGraber);
             if (null !== $onSetProgress) {
-                call_user_func($onSetProgress, $index);
+                call_user_func($onSetProgress, $index + 1);
             }
         }
 

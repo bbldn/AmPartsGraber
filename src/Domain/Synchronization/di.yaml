@@ -1,0 +1,6 @@
+services:
+    #Commands
+    App\Domain\Synchronization\Application\Command\CategoryBackToFrontSynchronizeAllHandler:
+        public: true
+        autowire: true
+        class: App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CommandHandler

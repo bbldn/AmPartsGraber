@@ -2,20 +2,36 @@
 
 namespace App\Domain\Common\Application\Provider\CategoryProvider;
 
-use App\Domain\Common\Domain\Entity\Base\Graber\Category as CategoryGraber;
 use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
+use App\Domain\Common\Domain\Entity\Base\Graber\Category as CategoryGraber;
+use App\Domain\Common\Application\Provider\CategoryProvider\Repository\Front\CategoryRepository as CategoryFrontRepository;
 use App\Domain\Common\Application\Provider\CategoryProvider\Repository\Front\CategoryDescriptionRepository as CategoryDescriptionFrontRepository;
 
 class Provider
 {
+    private CategoryFrontRepository $categoryFrontRepository;
+
     private CategoryDescriptionFrontRepository $categoryDescriptionFrontRepository;
 
     /**
+     * @param CategoryFrontRepository $categoryFrontRepository
      * @param CategoryDescriptionFrontRepository $categoryDescriptionFrontRepository
      */
-    public function __construct(CategoryDescriptionFrontRepository $categoryDescriptionFrontRepository)
+    public function __construct(
+        CategoryFrontRepository $categoryFrontRepository,
+        CategoryDescriptionFrontRepository $categoryDescriptionFrontRepository
+    )
     {
+        $this->categoryFrontRepository = $categoryFrontRepository;
         $this->categoryDescriptionFrontRepository = $categoryDescriptionFrontRepository;
+    }
+
+    /**
+     * @return CategoryFront
+     */
+    public function getDefaultParentCategory(): CategoryFront
+    {
+        return $this->categoryFrontRepository->findOne(0);
     }
 
     /**

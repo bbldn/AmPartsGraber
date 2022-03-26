@@ -27,20 +27,34 @@ class Synchronizer
     }
 
     /**
+     * @param CategoryGraber $categoryGraber
+     * @return CategoryFront
+     */
+    private function getParentCategoryByCategoryGraber(CategoryGraber $categoryGraber): CategoryFront
+    {
+        $parent = $this->categoryProvider->getCategoryFrontBeCategoryGraber($categoryGraber->getParent());
+        if (null !== $parent) {
+            return $parent;
+        }
+
+        return $this->categoryProvider->getDefaultParentCategory();
+    }
+
+    /**
      * @param CategoryFront $categoryFront
      * @param CategoryGraber $categoryGraber
      * @return void
      */
     public function synchronize(CategoryFront $categoryFront, CategoryGraber $categoryGraber): void
     {
-        $parent = $this->categoryProvider->getCategoryFrontBeCategoryGraber($categoryGraber->getParent());
-        $categoryFront->setParent($parent);
+        $parent = $this->getParentCategoryByCategoryGraber($categoryGraber);
 
         $categoryFront->setTop(true);
         $categoryFront->setColumn(1);
         $categoryFront->setImage('');
         $categoryFront->setSortOrder(0);
         $categoryFront->setStatus(true);
+        $categoryFront->setParent($parent);
 
         $this->multipleEntityManager->persistFront($categoryFront);
     }

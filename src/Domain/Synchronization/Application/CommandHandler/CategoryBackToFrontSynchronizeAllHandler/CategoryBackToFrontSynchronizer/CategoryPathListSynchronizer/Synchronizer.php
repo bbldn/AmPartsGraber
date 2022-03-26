@@ -95,13 +95,16 @@ class Synchronizer
      */
     public function synchronize(CategoryFront $categoryFront): void
     {
+        if (null === $categoryFront->getId()) {
+            return;
+        }
+
         [$callback] = $this->getCallbackList();
 
         $table = $this->generateTableByCategoryFront($categoryFront);
         $categoryFrontPathsByCategoryBId = Rebuilder::rebuildByCallback($categoryFront->getPaths(), $callback);
         foreach ($categoryFrontPathsByCategoryBId as $key => $item) {
             if (false === key_exists($key, $table)) {
-                $this->multipleEntityManager->removeFront($item);
                 $categoryFront->getPaths()->removeElement($item);
                 continue;
             }
@@ -114,9 +117,10 @@ class Synchronizer
 
         foreach ($table as $row) {
             $item = new CategoryFrontPath();
+            $this->fillCategoryFrontPath($item, $row['categoryA'], $row['categoryB'], $row['index']);
+
             $categoryFront->getPaths()->add($item);
             $this->multipleEntityManager->persistFront($item);
-            $this->fillCategoryFrontPath($item, $row['categoryA'], $row['categoryB'], $row['index']);
         }
     }
 }
