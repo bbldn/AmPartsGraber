@@ -4,7 +4,7 @@ namespace App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHa
 
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Graber\Domain\DTO\Category as CategoryDTO;
-use App\Domain\Graber\Domain\Entity\Category as CategoryEntity;
+use App\Domain\Common\Domain\Entity\Base\Graber\Category as CategoryEntity;
 use App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHandler\CategorySaver\Repository\CategoryRepository;
 
 class Saver

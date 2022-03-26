@@ -2,8 +2,8 @@
 
 namespace App\Domain\Graber\Application\CommandHandler\DownloadProductImageListAllHandler\ImageDownloader;
 
-use App\Domain\Graber\Domain\Entity\Product;
 use App\Domain\Graber\Domain\Exception\ParseException;
+use App\Domain\Common\Domain\Entity\Base\Graber\Product;
 use Symfony\Component\HttpKernel\KernelInterface as Kernel;
 
 class Downloader

@@ -2,7 +2,7 @@
 
 namespace App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\Repository;
 
-use App\Domain\Graber\Domain\Entity\Category;
+use App\Domain\Common\Domain\Entity\Base\Graber\Category;
 
 interface CategoryRepository
 {

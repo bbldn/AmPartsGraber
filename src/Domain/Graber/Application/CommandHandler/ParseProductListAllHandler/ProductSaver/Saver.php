@@ -4,7 +4,7 @@ namespace App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandle
 
 use App\Domain\Graber\Domain\DTO\Product as ProductDTO;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
-use App\Domain\Graber\Domain\Entity\Product as ProductEntity;
+use App\Domain\Common\Domain\Entity\Base\Graber\Product as ProductEntity;
 use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\ProductSaver\Repository\ProductRepository;
 
 class Saver

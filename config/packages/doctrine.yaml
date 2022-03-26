@@ -11,10 +11,10 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         mappings:
             Graber:
-                alias: Graber
+                alias: App
                 is_bundle: false
-                prefix: 'App\Domain\Graber\Domain\Entity'
-                dir: '%kernel.project_dir%/src/Domain/Graber/Domain/Entity'
+                prefix: 'App\Domain\Common\Domain\Entity'
+                dir: '%kernel.project_dir%/src/Domain/Common/Domain/Entity'
 
 when@test:
     doctrine:

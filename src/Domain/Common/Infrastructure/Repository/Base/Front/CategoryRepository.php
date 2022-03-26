@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Domain\Common\Infrastructure\Repository\Base\Front;
+
+use Psr\Log\LoggerInterface as Logger;
+use Doctrine\Persistence\ManagerRegistry;
+use App\Domain\Common\Domain\Entity\Base\Front\Category;
+use App\Domain\Common\Infrastructure\Repository\Base\Repository;
+
+/**
+ * @method Category[]    findAll()
+ * @method Category|null findOneByBackId(int $backId)
+ * @method Category|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Category|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Category[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @psalm-method list<Category>   findAll()
+ * @psalm-method list<Category>   findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @template-extends Repository<Category>
+ */
+class CategoryRepository extends Repository
+{
+    /**
+     * @use FindOneByBackId<Category>
+     */
+    use FindOneByBackId;
+
+    /**
+     * @param Logger $logger
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(Logger $logger, ManagerRegistry $registry)
+    {
+        parent::__construct($logger, $registry, Category::class);
+    }
+}

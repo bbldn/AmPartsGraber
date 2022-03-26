@@ -2,7 +2,7 @@
 
 namespace App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\ProductSaver\Repository;
 
-use App\Domain\Graber\Domain\Entity\Product;
+use App\Domain\Common\Domain\Entity\Base\Graber\Product;
 
 interface ProductRepository
 {
