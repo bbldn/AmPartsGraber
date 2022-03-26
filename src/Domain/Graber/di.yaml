@@ -8,3 +8,7 @@ services:
         public: true
         autowire: true
         class: App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHandler\CommandHandler
+    App\Domain\Graber\Application\Command\DownloadProductImageListAllHandler:
+        public: true
+        autowire: true
+        class: App\Domain\Graber\Application\CommandHandler\DownloadProductImageListAllHandler\CommandHandler

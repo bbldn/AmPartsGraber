@@ -8,22 +8,22 @@ use App\Domain\Common\Application\CommandBus\Command;
 class ParseProductListAll implements Command
 {
     /**
-     * @psalm-var Closure(int):void
+     * @psalm-var null|Closure(int):void
      */
     private ?Closure $onStartProduct = null;
 
     /**
-     * @psalm-var Closure(int):void
+     * @psalm-var null|Closure(int):void
      */
     private ?Closure $onStartCategory = null;
 
     /**
-     * @psalm-var Closure(int):void
+     * @psalm-var null|Closure(int):void
      */
     private ?Closure $onSetProductProgress = null;
 
     /**
-     * @psalm-var Closure(int):void
+     * @psalm-var null|Closure(int):void
      */
     private ?Closure $onSetCategoryProgress = null;
 
