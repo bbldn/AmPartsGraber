@@ -9,7 +9,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
  * @method CategoryFaq[]    findAll()
- * @method CategoryFaq|null findOneByBackId(int $backId)
  * @method CategoryFaq|null findOneBy(array $criteria, array $orderBy = null)
  * @method CategoryFaq[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
@@ -20,11 +19,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class CategoryFaqRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<CategoryFaq>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

@@ -9,7 +9,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
  * @method Zone[]    findAll()
- * @method Zone|null findOneByBackId(int $backId)
  * @method Zone|null find($id, $lockMode = null, $lockVersion = null)
  * @method Zone|null findOneBy(array $criteria, array $orderBy = null)
  * @method Zone[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -21,11 +20,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class ZoneRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<Zone>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

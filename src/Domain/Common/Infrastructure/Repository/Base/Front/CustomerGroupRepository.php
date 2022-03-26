@@ -9,7 +9,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
  * @method CustomerGroup[]    findAll()
- * @method CustomerGroup|null findOneByBackId(int $backId)
  * @method CustomerGroup|null find($id, $lockMode = null, $lockVersion = null)
  * @method CustomerGroup|null findOneBy(array $criteria, array $orderBy = null)
  * @method CustomerGroup[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -21,11 +20,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class CustomerGroupRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<CustomerGroup>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

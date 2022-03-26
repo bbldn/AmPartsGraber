@@ -333,11 +333,6 @@ class Order
     private ?DateTimeImmutable $dateModified = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @var Collection|OrderTotal[]
      * @ORM\OneToMany(
      *     mappedBy="order",
@@ -1556,25 +1551,6 @@ class Order
     public function setDateModified(?DateTimeImmutable $dateModified): self
     {
         $this->dateModified = $dateModified;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return Order
-     */
-    public function setBackId(?int $backId): self
-    {
-        $this->backId = $backId;
 
         return $this;
     }

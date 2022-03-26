@@ -51,11 +51,6 @@ class ManufacturerFaq
     private ?string $icon = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -165,25 +160,6 @@ class ManufacturerFaq
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return ManufacturerFaq
-     */
-    public function setBackId(?int $backId): self
-    {
-        $this->backId = $backId;
 
         return $this;
     }

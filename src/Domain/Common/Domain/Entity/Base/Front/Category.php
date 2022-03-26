@@ -64,11 +64,6 @@ class Category
     private ?DateTimeImmutable $dateModified = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @var Collection|CategoryPath[]
      * @ORM\OneToMany(
      *     fetch="EXTRA_LAZY",
@@ -123,21 +118,6 @@ class Category
     private Collection $filters;
 
     /**
-     * Faq
-     * @var Collection|CategoryFaq[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="category",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=CategoryFaq::class
-     * )
-     *
-     * @psalm-var Collection<int, CategoryFaq>
-     */
-    private Collection $categoryFaqs;
-
-    /**
      * @var Collection|CategoryToLayout[]
      * @ORM\OneToMany(
      *     fetch="EXTRA_LAZY",
@@ -156,7 +136,6 @@ class Category
         $this->paths = new ArrayCollection();
         $this->shops = new ArrayCollection();
         $this->filters = new ArrayCollection();
-        $this->categoryFaqs = new ArrayCollection();
         $this->descriptions = new ArrayCollection();
         $this->categoryToLayouts = new ArrayCollection();
     }
@@ -333,25 +312,6 @@ class Category
     }
 
     /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return Category
-     */
-    public function setBackId(?int $backId): self
-    {
-        $this->backId = $backId;
-
-        return $this;
-    }
-
-    /**
      * @return CategoryPath[]|Collection
      *
      * @psalm-return Collection<int, CategoryPath>
@@ -389,16 +349,6 @@ class Category
     public function getFilters(): Collection
     {
         return $this->filters;
-    }
-
-    /**
-     * @return CategoryFaq[]|Collection
-     *
-     * @psalm-return Collection<int, CategoryFaq>
-     */
-    public function getCategoryFaqs(): Collection
-    {
-        return $this->categoryFaqs;
     }
 
     /**

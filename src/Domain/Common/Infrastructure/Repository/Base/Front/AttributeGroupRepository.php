@@ -9,7 +9,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
  * @method AttributeGroup[]    findAll()
- * @method AttributeGroup|null findOneByBackId(int $backId)
  * @method AttributeGroup|null find($id, $lockMode = null, $lockVersion = null)
  * @method AttributeGroup|null findOneBy(array $criteria, array $orderBy = null)
  * @method AttributeGroup[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -21,11 +20,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class AttributeGroupRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<AttributeGroup>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

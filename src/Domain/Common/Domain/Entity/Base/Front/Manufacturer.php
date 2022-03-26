@@ -42,11 +42,6 @@ class Manufacturer
     private ?string $faqName = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @var Collection|Shop[]
      * @ORM\ManyToMany(targetEntity=Shop::class, fetch="EXTRA_LAZY")
      * @ORM\JoinTable(
@@ -160,25 +155,6 @@ class Manufacturer
     public function setFaqName(?string $faqName): self
     {
         $this->faqName = $faqName;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return Manufacturer
-     */
-    public function setBackId(?int $backId): self
-    {
-        $this->backId = $backId;
 
         return $this;
     }

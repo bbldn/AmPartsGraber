@@ -9,7 +9,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
  * @method Order[]    findAll()
- * @method Order|null findOneByBackId(int $backId)
  * @method Order|null find($id, $lockMode = null, $lockVersion = null)
  * @method Order|null findOneBy(array $criteria, array $orderBy = null)
  * @method Order[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -21,11 +20,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class OrderRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<Order>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

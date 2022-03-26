@@ -29,11 +29,6 @@ class OrderStatus
     private ?Language $language = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -86,25 +81,6 @@ class OrderStatus
     public function setLanguage(?Language $language): self
     {
         $this->language = $language;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return OrderStatus
-     */
-    public function setBackId(?int $backId): self
-    {
-        $this->backId = $backId;
 
         return $this;
     }

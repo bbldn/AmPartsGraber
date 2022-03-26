@@ -45,11 +45,6 @@ class City
     private ?int $sortOrder = 0;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -159,25 +154,6 @@ class City
     public function setSortOrder(?int $sortOrder): self
     {
         $this->sortOrder = $sortOrder;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return City
-     */
-    public function setBackId(?int $backId): self
-    {
-        $this->backId = $backId;
 
         return $this;
     }

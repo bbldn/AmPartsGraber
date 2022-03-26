@@ -9,7 +9,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
  * @method Language[]    findAll()
- * @method Language|null findOneByBackId(int $backId)
  * @method Language|null find($id, $lockMode = null, $lockVersion = null)
  * @method Language|null findOneBy(array $criteria, array $orderBy = null)
  * @method Language[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -21,11 +20,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class LanguageRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<Language>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

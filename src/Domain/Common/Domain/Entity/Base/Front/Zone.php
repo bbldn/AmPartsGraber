@@ -45,11 +45,6 @@ class Zone
     private ?string $ref = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -159,25 +154,6 @@ class Zone
     public function setRef(?string $ref): self
     {
         $this->ref = $ref;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return Zone
-     */
-    public function setBackId(?int $backId): Zone
-    {
-        $this->backId = $backId;
 
         return $this;
     }

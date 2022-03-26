@@ -9,7 +9,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
  * @method Option[]    findAll()
- * @method Option|null findOneByBackId(int $backId)
  * @method Option|null find($id, $lockMode = null, $lockVersion = null)
  * @method Option|null findOneBy(array $criteria, array $orderBy = null)
  * @method Option[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -21,11 +20,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class OptionRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<Option>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

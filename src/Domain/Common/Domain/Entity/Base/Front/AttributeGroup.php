@@ -26,11 +26,6 @@ class AttributeGroup
     private ?int $sortOrder = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @var Collection|AttributeGroupDescription[]
      * @ORM\OneToMany(
      *     fetch="EXTRA_LAZY",
@@ -83,25 +78,6 @@ class AttributeGroup
     public function setSortOrder(int $sortOrder): self
     {
         $this->sortOrder = $sortOrder;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return AttributeGroup
-     */
-    public function setBackId(?int $backId): self
-    {
-        $this->backId = $backId;
 
         return $this;
     }

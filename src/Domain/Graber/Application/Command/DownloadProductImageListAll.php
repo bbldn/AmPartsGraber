@@ -8,17 +8,19 @@ use App\Domain\Common\Application\CommandBus\Command;
 class DownloadProductImageListAll implements Command
 {
     /**
-     * @psalm-var Closure(int):void
+     * @psalm-var null|Closure(int):void
      */
     private ?Closure $onStart = null;
 
     /**
-     * @psalm-var Closure(int):void
+     * @psalm-var null|Closure(int):void
      */
     private ?Closure $onSetProgress = null;
 
     /**
      * @return Closure|null
+     *
+     * @psalm-return null|Closure(int):void
      */
     public function getOnStart(): ?Closure
     {
@@ -28,6 +30,8 @@ class DownloadProductImageListAll implements Command
     /**
      * @param Closure|null $onStart
      * @return DownloadProductImageListAll
+     *
+     * @psalm-param null|Closure(int):void $onStart
      */
     public function setOnStart(?Closure $onStart): self
     {
@@ -38,6 +42,8 @@ class DownloadProductImageListAll implements Command
 
     /**
      * @return Closure|null
+     *
+     * @psalm-return null|Closure(int):void
      */
     public function getOnSetProgress(): ?Closure
     {
@@ -47,6 +53,8 @@ class DownloadProductImageListAll implements Command
     /**
      * @param Closure|null $onSetProgress
      * @return DownloadProductImageListAll
+     *
+     * @psalm-param null|Closure(int):void $onSetProgress
      */
     public function setOnSetProgress(?Closure $onSetProgress): self
     {

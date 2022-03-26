@@ -31,11 +31,6 @@ class CustomerGroup
     private ?int $sortOrder = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @var Collection|CustomerGroupDescription[]
      * @ORM\OneToMany(
      *     fetch="EXTRA_LAZY",
@@ -107,25 +102,6 @@ class CustomerGroup
     public function setSortOrder(int $sortOrder): self
     {
         $this->sortOrder = $sortOrder;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return CustomerGroup
-     */
-    public function setBackId(?int $backId): self
-    {
-        $this->backId = $backId;
 
         return $this;
     }

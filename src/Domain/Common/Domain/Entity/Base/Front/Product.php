@@ -182,11 +182,6 @@ class Product
     private ?DateTimeImmutable $dateModified = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @ORM\OneToOne(targetEntity=ProductDiscontinued::class, mappedBy="product", cascade={"persist", "remove"})
      */
     private ?ProductDiscontinued $productDiscontinued = null;
@@ -958,25 +953,6 @@ class Product
     public function setDateModified(?DateTimeImmutable $dateModified): self
     {
         $this->dateModified = $dateModified;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return Product
-     */
-    public function setBackId(?int $backId): self
-    {
-        $this->backId = $backId;
 
         return $this;
     }

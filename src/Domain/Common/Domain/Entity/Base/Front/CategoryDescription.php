@@ -56,12 +56,6 @@ class CategoryDescription
     private ?string $metaDescription = null;
 
     /**
-     * Faq Name
-     * @ORM\Column(type="string", name="`faq_name`", length=255, nullable=true)
-     */
-    private ?string $faqName = null;
-
-    /**
      * @return Category|null
      */
     public function getCategory(): ?Category
@@ -209,25 +203,6 @@ class CategoryDescription
     public function setMetaDescription(?string $metaDescription): self
     {
         $this->metaDescription = $metaDescription;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFaqName(): ?string
-    {
-        return $this->faqName;
-    }
-
-    /**
-     * @param string|null $faqName
-     * @return CategoryDescription
-     */
-    public function setFaqName(?string $faqName): self
-    {
-        $this->faqName = $faqName;
 
         return $this;
     }

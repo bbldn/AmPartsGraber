@@ -9,7 +9,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
  * @method Currency[]    findAll()
- * @method Currency|null findOneByBackId(int $backId)
  * @method Currency|null find($id, $lockMode = null, $lockVersion = null)
  * @method Currency|null findOneBy(array $criteria, array $orderBy = null)
  * @method Currency[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -21,11 +20,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class CurrencyRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<Currency>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

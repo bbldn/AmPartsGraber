@@ -8,7 +8,6 @@ use App\Domain\Common\Domain\Entity\Base\Front\Country;
 use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
- * @method Country|null findOneByBackId(int $backId)
  * @method Country|null find($id, $lockMode = null, $lockVersion = null)
  * @method Country|null findOneBy(array $criteria, array $orderBy = null)
  * @method Country[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -20,11 +19,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class CountryRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<Country>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

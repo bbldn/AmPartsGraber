@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Common\Infrastructure\Repository;
+namespace App\Domain\Common\Infrastructure\Repository\Graber;
 
 use App\Domain\Common\Domain\Entity\Base\Graber\Category;
 use App\Domain\Common\Infrastructure\Repository\Base\Graber\CategoryRepository as Base;

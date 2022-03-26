@@ -9,7 +9,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
  * @method ManufacturerFaq[]    findAll()
- * @method ManufacturerFaq|null findOneByBackId(int $backId)
  * @method ManufacturerFaq|null find($id, $lockMode = null, $lockVersion = null)
  * @method ManufacturerFaq|null findOneBy(array $criteria, array $orderBy = null)
  * @method ManufacturerFaq[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -21,11 +20,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class ManufacturerFaqRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<ManufacturerFaq>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

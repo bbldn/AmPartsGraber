@@ -60,11 +60,6 @@ class Currency
     private ?DateTimeImmutable $dateModified = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -231,25 +226,6 @@ class Currency
     public function setDateModified(DateTimeImmutable $dateModified): self
     {
         $this->dateModified = $dateModified;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return Currency
-     */
-    public function setBackId(?int $backId): self
-    {
-        $this->backId = $backId;
 
         return $this;
     }

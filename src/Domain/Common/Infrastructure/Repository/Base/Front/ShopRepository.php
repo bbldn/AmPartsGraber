@@ -9,7 +9,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
 
 /**
  * @method Shop[]    findAll()
- * @method Shop|null findOneByBackId(int $backId)
  * @method Shop|null find($id, $lockMode = null, $lockVersion = null)
  * @method Shop|null findOneBy(array $criteria, array $orderBy = null)
  * @method Shop[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -21,11 +20,6 @@ use App\Domain\Common\Infrastructure\Repository\Base\Repository;
  */
 class ShopRepository extends Repository
 {
-    /**
-     * @use FindOneByBackId<Shop>
-     */
-    use FindOneByBackId;
-
     /**
      * @param Logger $logger
      * @param ManagerRegistry $registry

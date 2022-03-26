@@ -31,11 +31,6 @@ class Option
     private ?int $sortOrder = null;
 
     /**
-     * @ORM\Column(type="integer", name="`back_id`", nullable=true)
-     */
-    private ?int $backId = null;
-
-    /**
      * @var Collection|OptionValue[]
      * @ORM\OneToMany(
      *     mappedBy="option",
@@ -122,25 +117,6 @@ class Option
     public function setSortOrder(?int $sortOrder): self
     {
         $this->sortOrder = $sortOrder;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBackId(): ?int
-    {
-        return $this->backId;
-    }
-
-    /**
-     * @param int|null $backId
-     * @return Option
-     */
-    public function setBackId(?int $backId): Option
-    {
-        $this->backId = $backId;
 
         return $this;
     }
