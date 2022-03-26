@@ -4,6 +4,7 @@ namespace App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHa
 
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Graber\Domain\DTO\Category as CategoryDTO;
+use App\Domain\Common\Domain\Entity\Base\Graber\Category;
 use App\Domain\Common\Domain\Entity\Base\Graber\Category as CategoryEntity;
 use App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHandler\CategorySaver\Repository\CategoryRepository;
 
@@ -27,6 +28,22 @@ class Saver
     }
 
     /**
+     * @param CategoryEntity $category
+     * @return string|null
+     */
+    private function getParentCategoryUrl(Category $category): ?string
+    {
+        $url = $category->getUrl();
+        if (null === $url) {
+            return null;
+        }
+
+        $itemList = explode('/', $url);
+
+        return implode('/', array_splice($itemList, 0, count($itemList) - 1));
+    }
+
+    /**
      * @param CategoryDTO $categoryDto
      * @return CategoryEntity
      */
@@ -37,6 +54,9 @@ class Saver
         if (null === $categoryEntity) {
             $categoryEntity = new CategoryEntity();
         }
+
+        $parentCategoryEntity = $this->categoryRepository->findOneByUrl($this->getParentCategoryUrl($categoryEntity));
+        $categoryEntity->setParent($parentCategoryEntity);
 
         $categoryEntity->setUrl($url);
         $categoryEntity->setName($categoryDto->getName());

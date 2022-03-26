@@ -32,6 +32,12 @@ class Category
     private ?string $name = null;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Category::class)
+     * @ORM\JoinColumn(name="`parent_id`", referencedColumnName="`id`")
+     */
+    private ?Category $parent = null;
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -84,6 +90,25 @@ class Category
     public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Category|null
+     */
+    public function getParent(): ?Category
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param Category|null $parent
+     * @return Category
+     */
+    public function setParent(?Category $parent): self
+    {
+        $this->parent = $parent;
 
         return $this;
     }
