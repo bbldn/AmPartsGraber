@@ -7,8 +7,8 @@ use App\Domain\Common\Domain\Entity\Base\Front\Category;
 interface CategoryRepository
 {
     /**
-     * @param int $id
+     * @param string $vendorCode
      * @return Category|null
      */
-    public function findOne(int $id): ?Category;
+    public function findOneByVendorCode(string $vendorCode): ?Category;
 }

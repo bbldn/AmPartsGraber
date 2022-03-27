@@ -9,11 +9,11 @@ use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSync
 class CategoryRepository extends Base implements CategoryRepositoryCategoryProvider
 {
     /**
-     * @param int $id
+     * @param string $vendorCode
      * @return Category|null
      */
-    public function findOne(int $id): ?Category
+    public function findOneByVendorCode(string $vendorCode): ?Category
     {
-        return $this->find($id);
+        return $this->findOneBy(['vendorCode' => $vendorCode]);
     }
 }

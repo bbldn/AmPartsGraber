@@ -4,22 +4,17 @@ namespace App\Domain\Synchronization\Application\CommandHandler\ProductBackToFro
 
 use App\Domain\Common\Domain\Entity\Base\Graber\Product as ProductGraber;
 use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
-use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\ProductCategoryListSynchronizer\CategoryProvider\Repository\Front\SeoUrlRepository as SeoUrlFrontRepository;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\ProductCategoryListSynchronizer\CategoryProvider\Repository\Front\CategoryRepository as CategoryFrontRepository;
 
 class Provider
 {
-    private SeoUrlFrontRepository $seoUrlFrontRepository;
-
     private CategoryFrontRepository $categoryFrontRepository;
 
     /**
-     * @param SeoUrlFrontRepository $seoUrlFrontRepository
      * @param CategoryFrontRepository $categoryFrontRepository
      */
-    public function __construct(SeoUrlFrontRepository $seoUrlFrontRepository, CategoryFrontRepository $categoryFrontRepository)
+    public function __construct(CategoryFrontRepository $categoryFrontRepository)
     {
-        $this->seoUrlFrontRepository = $seoUrlFrontRepository;
         $this->categoryFrontRepository = $categoryFrontRepository;
     }
 
@@ -34,16 +29,6 @@ class Provider
             return null;
         }
 
-        $seoUrl = $this->seoUrlFrontRepository->findOneByKeyword(basename($categoryUrl));
-        if (null === $seoUrl) {
-            return null;
-        }
-
-        $categoryFrontId = str_replace('category_id=', '', (string)$seoUrl->getQuery());
-        if (false === is_numeric($categoryFrontId)) {
-            return null;
-        }
-
-        return $this->categoryFrontRepository->findOne($categoryFrontId);
+        return $this->categoryFrontRepository->findOneByVendorCode($categoryUrl);
     }
 }
