@@ -36,8 +36,11 @@ class Synchronizer
         $parentCategory = $categoryFront->getParent();
         if (null !== $parentCategory) {
             do {
-                $table[(int)$parentCategory->getId()] = new Item($level, $categoryFront, $parentCategory);
-                $level++;
+                $parentCategoryId = (int)$parentCategory->getId();
+                if (0 !== $parentCategoryId) {
+                    $table[$parentCategoryId] = new Item($level, $categoryFront, $parentCategory);
+                    $level++;
+                }
             } while ($parentCategory = $parentCategory->getParent());
         }
 
