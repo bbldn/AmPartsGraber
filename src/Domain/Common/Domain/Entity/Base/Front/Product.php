@@ -182,11 +182,6 @@ class Product
     private ?DateTimeImmutable $dateModified = null;
 
     /**
-     * @ORM\OneToOne(targetEntity=ProductDiscontinued::class, mappedBy="product", cascade={"persist", "remove"})
-     */
-    private ?ProductDiscontinued $productDiscontinued = null;
-
-    /**
      * @var Collection|File[]
      * @ORM\ManyToMany(targetEntity=File::class, fetch="EXTRA_LAZY")
      * @ORM\JoinTable(
@@ -252,35 +247,6 @@ class Product
      * @psalm-var Collection<int, ProductDescription>
      */
     private Collection $descriptions;
-
-    /**
-     * Faq
-     * @var Collection|ProductFaq[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="product",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=ProductFaq::class
-     * )
-     *
-     * @psalm-var Collection<int, ProductFaq>
-     */
-    private Collection $productFaqs;
-
-    /**
-     * @var Collection|ProductPrice[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="product",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=ProductPrice::class
-     * )
-     *
-     * @psalm-var Collection<int, ProductPrice>
-     */
-    private Collection $productPrices;
 
     /**
      * @var Collection|ProductImage[]
@@ -358,9 +324,7 @@ class Product
         $this->shops = new ArrayCollection();
         $this->filters = new ArrayCollection();
         $this->reviews = new ArrayCollection();
-        $this->productFaqs = new ArrayCollection();
         $this->descriptions = new ArrayCollection();
-        $this->productPrices = new ArrayCollection();
         $this->productImages = new ArrayCollection();
         $this->productOptions = new ArrayCollection();
         $this->productToLayouts = new ArrayCollection();
@@ -958,25 +922,6 @@ class Product
     }
 
     /**
-     * @return ProductDiscontinued|null
-     */
-    public function getProductDiscontinued(): ?ProductDiscontinued
-    {
-        return $this->productDiscontinued;
-    }
-
-    /**
-     * @param ProductDiscontinued|null $productDiscontinued
-     * @return Product
-     */
-    public function setProductDiscontinued(?ProductDiscontinued $productDiscontinued): self
-    {
-        $this->productDiscontinued = $productDiscontinued;
-
-        return $this;
-    }
-
-    /**
      * @return File[]|Collection
      *
      * @psalm-return Collection<int, File>
@@ -1007,16 +952,6 @@ class Product
     }
 
     /**
-     * @return ProductFaq[]|Collection
-     *
-     * @psalm-return Collection<int, ProductFaq>
-     */
-    public function getProductFaqs(): Collection
-    {
-        return $this->productFaqs;
-    }
-
-    /**
      * @return Filter[]|Collection
      *
      * @psalm-return Collection<int, Filter>
@@ -1034,16 +969,6 @@ class Product
     public function getDescriptions(): Collection
     {
         return $this->descriptions;
-    }
-
-    /**
-     * @return ProductPrice[]|Collection
-     *
-     * @psalm-return Collection<int, ProductPrice>
-     */
-    public function getProductPrices(): Collection
-    {
-        return $this->productPrices;
     }
 
     /**

@@ -38,4 +38,26 @@ class Provider
 
         return  $this->getDefaultCategoryLayoutFront()->getId() === $layoutFront->getId();
     }
+
+    /**
+     * @return LayoutFront
+     */
+    public function getDefaultProductLayoutFront(): LayoutFront
+    {
+        /** @psalm-var LayoutFront */
+        return $this->layoutFrontRepository->findOne(2);
+    }
+
+    /**
+     * @param LayoutFront|null $layoutFront
+     * @return bool
+     */
+    public function isDefaultProductLayoutFront(?LayoutFront $layoutFront): bool
+    {
+        if (null === $layoutFront) {
+            return false;
+        }
+
+        return  $this->getDefaultProductLayoutFront()->getId() === $layoutFront->getId();
+    }
 }

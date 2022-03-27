@@ -61,12 +61,6 @@ class ProductDescription
     private ?string $metaKeyword = null;
 
     /**
-     * Faq Name
-     * @ORM\Column(type="string", name="`faq_name`", length=255, nullable=true)
-     */
-    private ?string $faqName = null;
-
-    /**
      * @return Product|null
      */
     public function getProduct(): ?Product
@@ -233,25 +227,6 @@ class ProductDescription
     public function setMetaKeyword(?string $metaKeyword): self
     {
         $this->metaKeyword = $metaKeyword;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFaqName(): ?string
-    {
-        return $this->faqName;
-    }
-
-    /**
-     * @param string|null $faqName
-     * @return ProductDescription
-     */
-    public function setFaqName(?string $faqName): self
-    {
-        $this->faqName = $faqName;
 
         return $this;
     }

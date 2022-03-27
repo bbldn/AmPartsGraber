@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\SeoProSynchronizer;
+namespace App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\SeoProSynchronizer;
 
-use App\Domain\Common\Domain\Entity\Base\Front\SeoUrl;
 use App\Domain\Common\Domain\Entity\Base\Front\Shop as ShopFront;
-use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
+use App\Domain\Common\Domain\Entity\Base\Front\SeoUrl as SeoUrlFront;
+use App\Domain\Common\Domain\Entity\Base\Front\Product as ProductFront;
 use App\Domain\Common\Domain\Entity\Base\Front\Language as LanguageFront;
-use App\Domain\Common\Domain\Entity\Base\Graber\Category as CategoryGraber;
+use App\Domain\Common\Domain\Entity\Base\Graber\Product as ProductGraber;
 use App\Domain\Common\Application\Provider\ShopProvider\Provider as ShopProvider;
 use App\Domain\Common\Application\Provider\LanguageProvider\Provider as LanguageProvider;
 use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
-use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\SeoProSynchronizer\Repository\Front\SeoUrlRepository;
+use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\SeoProSynchronizer\Repository\Front\SeoUrlRepository as SeoUrlFrontRepository;
 
 /**
  * @psalm-type RowPsalm = array{query: string, shop: ShopFront, language: LanguageFront, url: string}
@@ -19,29 +19,29 @@ class Synchronizer
 {
     private ShopProvider $shopProvider;
 
-    private SeoUrlRepository $seoUrlRepository;
-
     private LanguageProvider $languageProvider;
 
     private MultipleEntityManager $multipleEntityManager;
 
+    private SeoUrlFrontRepository $seoUrlFrontRepository;
+
     /**
      * @param ShopProvider $shopProvider
-     * @param SeoUrlRepository $seoUrlRepository
      * @param LanguageProvider $languageProvider
      * @param MultipleEntityManager $multipleEntityManager
+     * @param SeoUrlFrontRepository $seoUrlFrontRepository
      */
     public function __construct(
         ShopProvider $shopProvider,
-        SeoUrlRepository $seoUrlRepository,
         LanguageProvider $languageProvider,
-        MultipleEntityManager $multipleEntityManager
+        MultipleEntityManager $multipleEntityManager,
+        SeoUrlFrontRepository $seoUrlFrontRepository
     )
     {
         $this->shopProvider = $shopProvider;
-        $this->seoUrlRepository = $seoUrlRepository;
         $this->languageProvider = $languageProvider;
         $this->multipleEntityManager = $multipleEntityManager;
+        $this->seoUrlFrontRepository = $seoUrlFrontRepository;
     }
 
     /**
@@ -69,26 +69,26 @@ class Synchronizer
             return "$shopFrontId-$languageFrontId";
         };
 
-        $callbackB = static fn(SeoUrl $seoUrl): ?string => $callbackA($seoUrl->getShop(), $seoUrl->getLanguage());
+        $callbackB = static fn(SeoUrlFront $seoUrl): ?string => $callbackA($seoUrl->getShop(), $seoUrl->getLanguage());
 
-        $callbackC = static fn(CategoryFront $categoryFront): string => "category_id={$categoryFront->getId()}";
+        $callbackC = static fn(ProductFront $productFront): string => "product_id={$productFront->getId()}";
 
         return [$callbackA, $callbackB, $callbackC];
     }
 
     /**
-     * @param CategoryGraber $categoryGraber
-     * @param CategoryFront $categoryFront
+     * @param ProductGraber $productGraber
+     * @param ProductFront $productFront
      * @return array
      *
      * @psalm-return array<string, RowPsalm>
      */
-    private function generateTable(CategoryGraber $categoryGraber, CategoryFront $categoryFront): array
+    private function generateTable(ProductGraber $productGraber, ProductFront $productFront): array
     {
         [$callbackKey, , $callbackQuery] = $this->getCallbackList();
 
         $table = [];
-        $query = $callbackQuery($categoryFront);
+        $query = $callbackQuery($productFront);
         $shopListFront = [$this->shopProvider->getDefaultShopFront()];
         $languageListFront = $this->languageProvider->getLanguageListFront();
         foreach ($languageListFront as $languageFront) {
@@ -99,7 +99,7 @@ class Synchronizer
                         'query' => $query,
                         'shop' => $shopFront,
                         'language' => $languageFront,
-                        'url' => basename($categoryGraber->getUrl()),
+                        'url' => basename($productGraber->getUrl()),
                     ];
                 }
             }
@@ -109,58 +109,58 @@ class Synchronizer
     }
 
     /**
-     * @param SeoUrl $seoUrl
+     * @param SeoUrlFront $seoUrlFront
      * @param array $row
      * @return void
      *
      * @psalm-param RowPsalm $row
      */
-    private function fillSeoUrl(SeoUrl $seoUrl, array $row): void
+    private function fillSeoUrl(SeoUrlFront $seoUrlFront, array $row): void
     {
-        $seoUrl->setShop($row['shop']);
-        $seoUrl->setQuery($row['query']);
-        $seoUrl->setLanguage($row['language']);
-        $seoUrl->setKeyword((string)$row['url']);
+        $seoUrlFront->setShop($row['shop']);
+        $seoUrlFront->setQuery($row['query']);
+        $seoUrlFront->setLanguage($row['language']);
+        $seoUrlFront->setKeyword((string)$row['url']);
     }
 
     /**
-     * @param CategoryFront $categoryFront
-     * @param CategoryGraber $categoryGraber
+     * @param ProductFront $productFront
+     * @param ProductGraber $productGraber
      * @return void
      */
-    public function synchronize(CategoryFront $categoryFront, CategoryGraber $categoryGraber): void
+    public function synchronize(ProductFront $productFront, ProductGraber $productGraber): void
     {
-        if (null === $categoryFront->getId()) {
+        if (null === $productFront->getId()) {
             return;
         }
 
         [, $callbackSeoUrl, $callbackQuery] = $this->getCallbackList();
 
-        $query = $callbackQuery($categoryFront);
-        $seoUrlList = $this->seoUrlRepository->findByQuery($query);
-        $table = $this->generateTable($categoryGraber, $categoryFront);
-        foreach ($seoUrlList as $seoUrl) {
-            $key = $callbackSeoUrl($seoUrl);
+        $query = $callbackQuery($productFront);
+        $seoUrlList = $this->seoUrlFrontRepository->findByQuery($query);
+        $table = $this->generateTable($productGraber, $productFront);
+        foreach ($seoUrlList as $seoUrlFront) {
+            $key = $callbackSeoUrl($seoUrlFront);
             if (null !== $key && false === key_exists($key, $table)) {
-                $this->multipleEntityManager->removeFront($seoUrl);
+                $this->multipleEntityManager->removeFront($seoUrlFront);
                 continue;
             }
 
             $row = $table[$key];
             unset($table[$key]);
             if (null !== $row['url']) {
-                $this->fillSeoUrl($seoUrl, $row);
-                $this->multipleEntityManager->persistFront($seoUrl);
+                $this->fillSeoUrl($seoUrlFront, $row);
+                $this->multipleEntityManager->persistFront($seoUrlFront);
             } else {
-                $this->multipleEntityManager->removeFront($seoUrl);
+                $this->multipleEntityManager->removeFront($seoUrlFront);
             }
         }
 
         foreach ($table as $row) {
             if (null !== $row['url']) {
-                $seoUrl = new SeoUrl();
-                $this->fillSeoUrl($seoUrl, $row);
-                $this->multipleEntityManager->persistFront($seoUrl);
+                $seoUrlFront = new SeoUrlFront();
+                $this->fillSeoUrl($seoUrlFront, $row);
+                $this->multipleEntityManager->persistFront($seoUrlFront);
             }
         }
     }

@@ -1,5 +1,9 @@
 services:
     #Commands
+    App\Domain\Synchronization\Application\Command\ProductBackToFrontSynchronizeAllHandler:
+        public: true
+        autowire: true
+        class: App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\CommandHandler
     App\Domain\Synchronization\Application\Command\CategoryBackToFrontSynchronizeAllHandler:
         public: true
         autowire: true
