@@ -30,11 +30,11 @@ class Synchronizer
      */
     private function generateTableByCategoryFront(CategoryFront $categoryFront): array
     {
-        $level = 0;
         $table = [
-            (int)$categoryFront->getId() => new Item($level, $categoryFront, $categoryFront),
+            (int)$categoryFront->getId() => new Item(0, $categoryFront, $categoryFront),
         ];
 
+        $level = 1;
         $parentCategory = $categoryFront->getParent();
         if (null === $parentCategory) {
             return $table;
