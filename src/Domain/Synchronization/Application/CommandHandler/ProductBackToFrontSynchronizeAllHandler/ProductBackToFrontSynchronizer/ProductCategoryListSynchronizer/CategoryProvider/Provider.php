@@ -34,7 +34,7 @@ class Provider
             return null;
         }
 
-        $seoUrl = $this->seoUrlFrontRepository->findOneByKeyword($categoryUrl);
+        $seoUrl = $this->seoUrlFrontRepository->findOneByKeyword(basename($categoryUrl));
         if (null === $seoUrl) {
             return null;
         }

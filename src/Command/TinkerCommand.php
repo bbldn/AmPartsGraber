@@ -3,25 +3,16 @@
 namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Domain\Common\Application\CommandBus\CommandBus;
-use App\Domain\Synchronization\Application\Command\ProductBackToFrontSynchronizeAll;
 
 class TinkerCommand extends Command
 {
     protected static $defaultName = 'tinker';
 
-    private CommandBus $commandBus;
-
-    /**
-     * @param CommandBus $commandBus
-     */
-    public function __construct(CommandBus $commandBus)
+    public function __construct()
     {
         parent::__construct();
-        $this->commandBus = $commandBus;
     }
 
     /**
@@ -31,18 +22,6 @@ class TinkerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $command = new ProductBackToFrontSynchronizeAll();
-        if (OutputInterface::VERBOSITY_NORMAL !== $output->getVerbosity()) {
-            $progressBar = new ProgressBar($output);
-
-            $command->setOnStart(static fn(int $max) => $progressBar->start($max));
-            $command->setOnSetProgress(static fn(int $step) => $progressBar->setProgress($step));
-        }
-
-        $this->commandBus->execute($command);
-
-        $output->write(PHP_EOL);
-
         return self::SUCCESS;
     }
 }
