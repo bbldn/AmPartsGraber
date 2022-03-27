@@ -5,25 +5,17 @@ namespace App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFr
 use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
 use App\Domain\Common\Domain\Entity\Base\Graber\Category as CategoryGraber;
 use App\Domain\Common\Application\Provider\CategoryProvider\Provider as CategoryProvider;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 
 class Synchronizer
 {
     private CategoryProvider $categoryProvider;
 
-    private MultipleEntityManager $multipleEntityManager;
-
     /**
      * @param CategoryProvider $categoryProvider
-     * @param MultipleEntityManager $multipleEntityManager
      */
-    public function __construct(
-        CategoryProvider $categoryProvider,
-        MultipleEntityManager $multipleEntityManager
-    )
+    public function __construct(CategoryProvider $categoryProvider)
     {
         $this->categoryProvider = $categoryProvider;
-        $this->multipleEntityManager = $multipleEntityManager;
     }
 
     /**
@@ -55,7 +47,5 @@ class Synchronizer
         $categoryFront->setSortOrder(0);
         $categoryFront->setStatus(true);
         $categoryFront->setParent($parent);
-
-        $this->multipleEntityManager->persistFront($categoryFront);
     }
 }

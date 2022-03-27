@@ -4,25 +4,17 @@ namespace App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFr
 
 use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
 use App\Domain\Common\Application\Provider\ShopProvider\Provider as ShopProvider;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 
 class Synchronizer
 {
     private ShopProvider $shopProvider;
 
-    private MultipleEntityManager $multipleEntityManager;
-
     /**
      * @param ShopProvider $shopProvider
-     * @param MultipleEntityManager $multipleEntityManager
      */
-    public function __construct(
-        ShopProvider $shopProvider,
-        MultipleEntityManager $multipleEntityManager
-    )
+    public function __construct(ShopProvider $shopProvider)
     {
         $this->shopProvider = $shopProvider;
-        $this->multipleEntityManager = $multipleEntityManager;
     }
 
     /**
@@ -37,6 +29,8 @@ class Synchronizer
             }
         }
 
-        $this->multipleEntityManager->persistFront($categoryFront);
+        if ($categoryFront->getShops()->count() === 0) {
+            $categoryFront->getShops()->add($this->shopProvider->getDefaultShopFront());
+        }
     }
 }

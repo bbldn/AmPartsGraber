@@ -6,25 +6,17 @@ use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
 use App\Domain\Common\Domain\Entity\Base\Graber\Category as CategoryGraber;
 use App\Domain\Common\Application\Provider\LanguageProvider\Provider as LanguageProvider;
 use App\Domain\Common\Domain\Entity\Base\Front\CategoryDescription as CategoryDescriptionFront;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 
 class Synchronizer
 {
     private LanguageProvider $languageProvider;
 
-    private MultipleEntityManager $multipleEntityManager;
-
     /**
      * @param LanguageProvider $languageProvider
-     * @param MultipleEntityManager $multipleEntityManager
      */
-    public function __construct(
-        LanguageProvider $languageProvider,
-        MultipleEntityManager $multipleEntityManager
-    )
+    public function __construct(LanguageProvider $languageProvider)
     {
         $this->languageProvider = $languageProvider;
-        $this->multipleEntityManager = $multipleEntityManager;
     }
 
     /**
@@ -43,7 +35,6 @@ class Synchronizer
             }
 
             $categoryFront->getDescriptions()->remove($index);
-            $this->multipleEntityManager->removeFront($categoryDescriptionFront);
         }
 
         if (null === $mainCategoryDescription) {
@@ -52,6 +43,8 @@ class Synchronizer
             $mainCategoryDescription = new CategoryDescriptionFront();
             $mainCategoryDescription->setCategory($categoryFront);
             $mainCategoryDescription->setLanguage($languageFront);
+
+            $categoryFront->getDescriptions()->add($mainCategoryDescription);
         }
 
         $mainCategoryDescription->setMetaH1('');
@@ -60,7 +53,5 @@ class Synchronizer
         $mainCategoryDescription->setMetaKeyword('');
         $mainCategoryDescription->setMetaDescription('');
         $mainCategoryDescription->setName($categoryGraber->getName());
-
-        $this->multipleEntityManager->persistFront($mainCategoryDescription);
     }
 }

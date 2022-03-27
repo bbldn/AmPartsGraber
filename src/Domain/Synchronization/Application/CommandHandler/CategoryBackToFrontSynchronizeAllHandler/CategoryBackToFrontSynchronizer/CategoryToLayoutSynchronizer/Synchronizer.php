@@ -6,7 +6,6 @@ use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
 use App\Domain\Common\Application\Provider\ShopProvider\Provider as ShopProvider;
 use App\Domain\Common\Application\Provider\LayoutProvider\Provider as LayoutProvider;
 use App\Domain\Common\Domain\Entity\Base\Front\CategoryToLayout as CategoryToLayoutFront;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 
 class Synchronizer
 {
@@ -14,22 +13,17 @@ class Synchronizer
 
     private LayoutProvider $layoutProvider;
 
-    private MultipleEntityManager $multipleEntityManager;
-
     /**
      * @param ShopProvider $shopProvider
      * @param LayoutProvider $layoutProvider
-     * @param MultipleEntityManager $multipleEntityManager
      */
     public function __construct(
         ShopProvider $shopProvider,
-        LayoutProvider $layoutProvider,
-        MultipleEntityManager $multipleEntityManager
+        LayoutProvider $layoutProvider
     )
     {
         $this->shopProvider = $shopProvider;
         $this->layoutProvider = $layoutProvider;
-        $this->multipleEntityManager = $multipleEntityManager;
     }
 
     /**
@@ -50,7 +44,6 @@ class Synchronizer
             }
 
             $categoryFront->getCategoryToLayouts()->remove($index);
-            $this->multipleEntityManager->removeFront($categoryToLayoutFront);
         }
 
         if (null !== $mainCategoryToLayoutFront) {
@@ -62,6 +55,6 @@ class Synchronizer
         $mainCategoryToLayoutFront->setShop($this->shopProvider->getDefaultShopFront());
         $mainCategoryToLayoutFront->setLayout($this->layoutProvider->getDefaultCategoryLayoutFront());
 
-        $this->multipleEntityManager->persistFront($mainCategoryToLayoutFront);
+        $categoryFront->getCategoryToLayouts()->add($mainCategoryToLayoutFront);
     }
 }

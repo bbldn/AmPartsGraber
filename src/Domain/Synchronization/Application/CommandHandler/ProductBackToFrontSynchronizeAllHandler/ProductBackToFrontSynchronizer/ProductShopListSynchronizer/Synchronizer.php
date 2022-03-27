@@ -28,5 +28,9 @@ class Synchronizer
                 $productFront->getShops()->remove($index);
             }
         }
+
+        if ($productFront->getShops()->count() === 0) {
+            $productFront->getShops()->add($this->shopProvider->getDefaultShopFront());
+        }
     }
 }

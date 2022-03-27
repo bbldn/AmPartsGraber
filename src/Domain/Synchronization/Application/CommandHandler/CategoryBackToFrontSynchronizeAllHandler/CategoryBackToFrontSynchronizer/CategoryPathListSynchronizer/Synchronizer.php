@@ -6,20 +6,9 @@ use Closure;
 use App\Domain\Common\Application\Helper\Rebuilder;
 use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
 use App\Domain\Common\Domain\Entity\Base\Front\CategoryPath as CategoryFrontPath;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 
 class Synchronizer
 {
-    private MultipleEntityManager $multipleEntityManager;
-
-    /**
-     * @param MultipleEntityManager $multipleEntityManager
-     */
-    public function __construct(MultipleEntityManager $multipleEntityManager)
-    {
-        $this->multipleEntityManager = $multipleEntityManager;
-    }
-
     /**
      * @param CategoryFrontPath $categoryFrontPath
      * @param CategoryFront $categoryFront
@@ -111,7 +100,6 @@ class Synchronizer
 
             $row = $table[$key];
             unset($table[$key]);
-            $this->multipleEntityManager->persistFront($item);
             $this->fillCategoryFrontPath($item, $row['categoryA'], $row['categoryB'], $row['index']);
         }
 
@@ -120,7 +108,6 @@ class Synchronizer
             $this->fillCategoryFrontPath($item, $row['categoryA'], $row['categoryB'], $row['index']);
 
             $categoryFront->getPaths()->add($item);
-            $this->multipleEntityManager->persistFront($item);
         }
     }
 }
