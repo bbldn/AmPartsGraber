@@ -6,58 +6,44 @@ use Closure;
 use App\Domain\Common\Application\Helper\Rebuilder;
 use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
 use App\Domain\Common\Domain\Entity\Base\Front\CategoryPath as CategoryFrontPath;
+use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\CategoryPathListSynchronizer\DTO\Item;
 
 class Synchronizer
 {
     /**
      * @param CategoryFrontPath $categoryFrontPath
-     * @param CategoryFront $categoryFront
-     * @param CategoryFront $pathCategoryFront
-     * @param int $level
+     * @param Item $item
      * @return void
      */
-    private function fillCategoryFrontPath(
-        CategoryFrontPath $categoryFrontPath,
-        CategoryFront $categoryFront,
-        CategoryFront $pathCategoryFront,
-        int $level
-    ): void
+    private function fillCategoryFrontPath(CategoryFrontPath $categoryFrontPath, Item $item): void
     {
-        $categoryFrontPath->setLevel($level);
-        $categoryFrontPath->setCategoryA($categoryFront);
-        $categoryFrontPath->setCategoryB($pathCategoryFront);
+        $categoryFrontPath->setLevel($item->getLevel());
+        $categoryFrontPath->setCategoryA($item->getCategoryA());
+        $categoryFrontPath->setCategoryB($item->getCategoryB());
     }
 
     /**
      * @param CategoryFront $categoryFront
      * @return array
+     *
+     * @psalm-return array<int, Item>
      */
     private function generateTableByCategoryFront(CategoryFront $categoryFront): array
     {
-        $index = 0;
-        $table = [];
+        $level = 0;
+        $table = [
+            (int)$categoryFront->getId() => new Item($level, $categoryFront, $categoryFront),
+        ];
+
         $parentCategory = $categoryFront->getParent();
-        if (null !== $parentCategory) {
-            do {
-                /** @var int $parentCategoryId */
-                $parentCategoryId = $parentCategory->getId();
-                $table[$parentCategoryId] = [
-                    'index' => $index,
-                    'categoryA' => $categoryFront,
-                    'categoryB' => $parentCategory,
-                ];
-                $index++;
-            } while ($parentCategory = $parentCategory->getParent());
+        if (null === $parentCategory) {
+            return $table;
         }
 
-        /** @var int $categoryFrontId */
-        $categoryFrontId = $categoryFront->getId();
-        $table[$categoryFrontId] = [
-            'index' => $index,
-            'key' => $categoryFrontId,
-            'categoryA' => $categoryFront,
-            'categoryB' => $categoryFront,
-        ];
+        do {
+            $table[(int)$parentCategory->getId()] = new Item($level, $categoryFront, $parentCategory);
+            $level++;
+        } while ($parentCategory = $parentCategory->getParent());
 
         return $table;
     }
@@ -70,9 +56,10 @@ class Synchronizer
     private function getCallbackList(): array
     {
         $callback = static function (CategoryFrontPath $categoryFrontPath): ?int {
+            /** @var CategoryFront $categoryB */
             $categoryB = $categoryFrontPath->getCategoryB();
 
-            return null === $categoryB ? null : $categoryB->getId();
+            return $categoryB->getId();
         };
 
         return [$callback];
@@ -90,24 +77,24 @@ class Synchronizer
 
         [$callback] = $this->getCallbackList();
 
-        $table = $this->generateTableByCategoryFront($categoryFront);
-        $categoryFrontPathsByCategoryBId = Rebuilder::rebuildByCallback($categoryFront->getPaths(), $callback);
-        foreach ($categoryFrontPathsByCategoryBId as $key => $item) {
-            if (false === key_exists($key, $table)) {
-                $categoryFront->getPaths()->removeElement($item);
+        $itemMap = $this->generateTableByCategoryFront($categoryFront);
+        $categoryFrontPathMap = Rebuilder::rebuildByCallback($categoryFront->getPaths(), $callback);
+        foreach ($categoryFrontPathMap as $key => $categoryFrontPath) {
+            if (false === key_exists($key, $itemMap)) {
+                $categoryFront->getPaths()->removeElement($categoryFrontPath);
                 continue;
             }
 
-            $row = $table[$key];
-            unset($table[$key]);
-            $this->fillCategoryFrontPath($item, $row['categoryA'], $row['categoryB'], $row['index']);
+            $item = $itemMap[$key];
+            unset($itemMap[$key]);
+            $this->fillCategoryFrontPath($categoryFrontPath, $item);
         }
 
-        foreach ($table as $row) {
-            $item = new CategoryFrontPath();
-            $this->fillCategoryFrontPath($item, $row['categoryA'], $row['categoryB'], $row['index']);
+        foreach ($itemMap as $item) {
+            $categoryFrontPath = new CategoryFrontPath();
+            $this->fillCategoryFrontPath($categoryFrontPath, $item);
 
-            $categoryFront->getPaths()->add($item);
+            $categoryFront->getPaths()->add($categoryFrontPath);
         }
     }
 }
