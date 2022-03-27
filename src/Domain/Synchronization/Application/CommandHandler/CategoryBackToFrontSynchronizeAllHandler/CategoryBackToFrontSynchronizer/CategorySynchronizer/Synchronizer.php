@@ -19,27 +19,13 @@ class Synchronizer
     }
 
     /**
-     * @param CategoryGraber $categoryGraber
-     * @return CategoryFront
-     */
-    private function getParentCategoryByCategoryGraber(CategoryGraber $categoryGraber): CategoryFront
-    {
-        $parent = $this->categoryProvider->getCategoryFrontBeCategoryGraber($categoryGraber->getParent());
-        if (null !== $parent) {
-            return $parent;
-        }
-
-        return $this->categoryProvider->getDefaultParentCategory();
-    }
-
-    /**
      * @param CategoryFront $categoryFront
      * @param CategoryGraber $categoryGraber
      * @return void
      */
     public function synchronize(CategoryFront $categoryFront, CategoryGraber $categoryGraber): void
     {
-        $parent = $this->getParentCategoryByCategoryGraber($categoryGraber);
+        $parent = $this->categoryProvider->getCategoryFrontBeCategoryGraber($categoryGraber->getParent());
 
         $categoryFront->setTop(true);
         $categoryFront->setColumn(1);
@@ -47,5 +33,6 @@ class Synchronizer
         $categoryFront->setSortOrder(0);
         $categoryFront->setStatus(true);
         $categoryFront->setParent($parent);
+        $categoryFront->setVendorCode($categoryGraber->getUrl());
     }
 }

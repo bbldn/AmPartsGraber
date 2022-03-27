@@ -23,6 +23,11 @@ class Category
     private ?int $id = null;
 
     /**
+     * @ORM\Column(type="string", name="`vendor_code`", length=255, nullable=true)
+     */
+    private ?string $vendorCode = null;
+
+    /**
      * @ORM\Column(type="string", name="`image`", nullable=true)
      */
     private ?string $image = null;
@@ -155,6 +160,25 @@ class Category
     public function setId(?int $id): self
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVendorCode(): ?string
+    {
+        return $this->vendorCode;
+    }
+
+    /**
+     * @param string|null $vendorCode
+     * @return Category
+     */
+    public function setVendorCode(?string $vendorCode): self
+    {
+        $this->vendorCode = $vendorCode;
 
         return $this;
     }

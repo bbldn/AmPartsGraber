@@ -16,4 +16,13 @@ class CategoryRepository extends Base implements CategoryRepositoryCategoryProvi
     {
         return $this->find($id);
     }
+
+    /**
+     * @param string $vendorCode
+     * @return Category|null
+     */
+    public function findOneByVendorCode(string $vendorCode): ?Category
+    {
+        return $this->findOneBy(['vendorCode' => $vendorCode]);
+    }
 }

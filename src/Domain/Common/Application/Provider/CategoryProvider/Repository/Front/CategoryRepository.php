@@ -11,4 +11,10 @@ interface CategoryRepository
      * @return Category|null
      */
     public function findOne(int $id): ?Category;
+
+    /**
+     * @param string $vendorCode
+     * @return Category|null
+     */
+    public function findOneByVendorCode(string $vendorCode): ?Category;
 }
