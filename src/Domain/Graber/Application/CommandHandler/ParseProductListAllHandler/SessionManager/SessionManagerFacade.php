@@ -51,10 +51,10 @@ class SessionManagerFacade
     }
 
     /**
-     * @param int|null $productIndex
+     * @param int $productIndex
      * @return self
      */
-    public function setProductIndex(?int $productIndex): self
+    public function setProductIndex(int $productIndex): self
     {
         $session = $this->getSession();
         $session->setProductIndex($productIndex);
@@ -74,10 +74,10 @@ class SessionManagerFacade
     }
 
     /**
-     * @param int|null $categoryIndex
+     * @param int $categoryIndex
      * @return self
      */
-    public function setCategoryIndex(?int $categoryIndex): self
+    public function setCategoryIndex(int $categoryIndex): self
     {
         $session = $this->getSession();
         $session->setCategoryIndex($categoryIndex);

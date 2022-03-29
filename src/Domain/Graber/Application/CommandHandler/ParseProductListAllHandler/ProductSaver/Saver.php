@@ -32,7 +32,7 @@ class Saver
      */
     public function save(ProductDTO $productDTO): ?ProductEntity
     {
-        $code = $productDTO->getCode();
+        $code = (string)$productDTO->getCode();
         $product = $this->productRepository->findOneByCode($code);
         if (null === $product) {
             $product = new ProductEntity();

@@ -31,30 +31,6 @@ class PaymentMethodRepository extends Repository
     }
 
     /**
-     * @param int|null $backId
-     * @return PaymentMethod|null
-     */
-    public function findOneByBackId(?int $backId): ?PaymentMethod
-    {
-        if (null === $backId) {
-            return null;
-        }
-
-        try {
-            return $this->createQueryBuilder('pm')
-                ->andWhere('pm.backId = :backId')
-                ->setParameter('backId', $backId)
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getOneOrNullResult();
-        } catch (Throwable $e) {
-            $this->logger->error($e);
-
-            return null;
-        }
-    }
-
-    /**
      * @param string|null $frontCode
      * @return PaymentMethod|null
      */
@@ -72,6 +48,7 @@ class PaymentMethodRepository extends Repository
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
 
             return null;

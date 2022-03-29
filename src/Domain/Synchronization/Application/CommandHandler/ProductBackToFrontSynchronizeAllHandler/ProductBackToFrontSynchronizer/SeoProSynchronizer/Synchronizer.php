@@ -2,6 +2,7 @@
 
 namespace App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\SeoProSynchronizer;
 
+use Closure;
 use App\Domain\Common\Domain\Entity\Base\Front\Shop as ShopFront;
 use App\Domain\Common\Domain\Entity\Base\Front\SeoUrl as SeoUrlFront;
 use App\Domain\Common\Domain\Entity\Base\Front\Product as ProductFront;
@@ -10,11 +11,9 @@ use App\Domain\Common\Domain\Entity\Base\Graber\Product as ProductGraber;
 use App\Domain\Common\Application\Provider\ShopProvider\Provider as ShopProvider;
 use App\Domain\Common\Application\Provider\LanguageProvider\Provider as LanguageProvider;
 use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
-use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\SeoProSynchronizer\Repository\Front\SeoUrlRepository as SeoUrlFrontRepository;
+use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\SeoProSynchronizer\DTO\Item;
+use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\SeoProSynchronizer\Repository\Front\SeoUrlRepository as SeoUrlFrontRepository;
 
-/**
- * @psalm-type RowPsalm = array{query: string, shop: ShopFront, language: LanguageFront, url: string}
- */
 class Synchronizer
 {
     private ShopProvider $shopProvider;
@@ -79,9 +78,9 @@ class Synchronizer
     /**
      * @param ProductGraber $productGraber
      * @param ProductFront $productFront
-     * @return array
+     * @return Item[]
      *
-     * @psalm-return array<string, RowPsalm>
+     * @psalm-return list<Item>
      */
     private function generateTable(ProductGraber $productGraber, ProductFront $productFront): array
     {
@@ -95,12 +94,8 @@ class Synchronizer
             foreach ($shopListFront as $shopFront) {
                 $key = $callbackKey($shopFront, $languageFront);
                 if (null !== $key) {
-                    $table[$key] = [
-                        'query' => $query,
-                        'shop' => $shopFront,
-                        'language' => $languageFront,
-                        'url' => basename($productGraber->getUrl()),
-                    ];
+                    $url = basename((string)$productGraber->getUrl());
+                    $table[$key] = new Item($shopFront, $url, $query, $languageFront);
                 }
             }
         }
@@ -110,17 +105,15 @@ class Synchronizer
 
     /**
      * @param SeoUrlFront $seoUrlFront
-     * @param array $row
+     * @param Item $item
      * @return void
-     *
-     * @psalm-param RowPsalm $row
      */
-    private function fillSeoUrl(SeoUrlFront $seoUrlFront, array $row): void
+    private function fillSeoUrl(SeoUrlFront $seoUrlFront, Item $item): void
     {
-        $seoUrlFront->setShop($row['shop']);
-        $seoUrlFront->setQuery($row['query']);
-        $seoUrlFront->setLanguage($row['language']);
-        $seoUrlFront->setKeyword((string)$row['url']);
+        $seoUrlFront->setShop($item->getShop());
+        $seoUrlFront->setQuery($item->getQuery());
+        $seoUrlFront->setKeyword($item->getUrl());
+        $seoUrlFront->setLanguage($item->getLanguage());
     }
 
     /**
@@ -146,20 +139,20 @@ class Synchronizer
                 continue;
             }
 
-            $row = $table[$key];
+            $item = $table[$key];
             unset($table[$key]);
-            if (null !== $row['url']) {
-                $this->fillSeoUrl($seoUrlFront, $row);
+            if (null !== $item->getUrl()) {
+                $this->fillSeoUrl($seoUrlFront, $item);
                 $this->multipleEntityManager->persistFront($seoUrlFront);
             } else {
                 $this->multipleEntityManager->removeFront($seoUrlFront);
             }
         }
 
-        foreach ($table as $row) {
-            if (null !== $row['url']) {
+        foreach ($table as $item) {
+            if (null !== $item->getUrl()) {
                 $seoUrlFront = new SeoUrlFront();
-                $this->fillSeoUrl($seoUrlFront, $row);
+                $this->fillSeoUrl($seoUrlFront, $item);
                 $this->multipleEntityManager->persistFront($seoUrlFront);
             }
         }

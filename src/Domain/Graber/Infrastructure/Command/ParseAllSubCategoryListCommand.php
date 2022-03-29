@@ -33,6 +33,7 @@ class ParseAllSubCategoryListCommand extends Command
     {
         $progressBar = new ProgressBar($output);
 
+        /** @psalm-suppress MissingClosureReturnType */
         $onParsedCategory = fn() => $progressBar->advance();
 
         $command = new ParseAllSubCategoryList('/katalog/audi', $onParsedCategory);

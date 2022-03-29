@@ -35,7 +35,10 @@ class ProductBackToFrontSynchronizeAllCommand extends Command
         if (OutputInterface::VERBOSITY_NORMAL !== $output->getVerbosity()) {
             $progressBar = new ProgressBar($output);
 
+            /** @psalm-suppress MissingClosureReturnType */
             $command->setOnStart(static fn(int $max) => $progressBar->start($max));
+
+            /** @psalm-suppress MissingClosureReturnType */
             $command->setOnSetProgress(static fn(int $step) => $progressBar->setProgress($step));
         }
 

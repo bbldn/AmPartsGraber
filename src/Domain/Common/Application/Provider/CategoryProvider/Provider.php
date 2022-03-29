@@ -23,6 +23,7 @@ class Provider
      */
     public function getDefaultParentCategory(): CategoryFront
     {
+        /** @psalm-var CategoryFront */
         return $this->categoryFrontRepository->findOne(0);
     }
 

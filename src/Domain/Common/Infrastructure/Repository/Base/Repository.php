@@ -41,6 +41,7 @@ abstract class Repository extends ServiceEntityRepository
             $this->_em->persist($instance);
             $this->_em->flush();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
         }
     }
@@ -54,6 +55,7 @@ abstract class Repository extends ServiceEntityRepository
         try {
             $identifier = $this->getClassMetadata()->getSingleIdentifierFieldName();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
 
             return;
@@ -86,6 +88,7 @@ abstract class Repository extends ServiceEntityRepository
         try {
             $this->_em->remove($instance);
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
         }
     }
@@ -98,6 +101,7 @@ abstract class Repository extends ServiceEntityRepository
         try {
             $this->_em->flush();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
         }
     }
@@ -107,8 +111,6 @@ abstract class Repository extends ServiceEntityRepository
      * @return void
      *
      * @psalm-param T $instance
-     *
-     * @noinspection PhpUnused
      */
     public function removeAndFlush($instance): void
     {
@@ -116,6 +118,7 @@ abstract class Repository extends ServiceEntityRepository
             $this->_em->remove($instance);
             $this->_em->flush();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
         }
     }
@@ -138,11 +141,9 @@ abstract class Repository extends ServiceEntityRepository
         $sql = sprintf("ALTER TABLE `%s` AUTO_INCREMENT = %d;", $this->getTableName(), $value);
 
         try {
-            /**
-             * @noinspection PhpDeprecationInspection
-             */
-            $this->getEntityManager()->getConnection()->prepare($sql)->execute();
+            $this->getEntityManager()->getConnection()->prepare($sql)->executeQuery();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
         }
     }
@@ -155,11 +156,9 @@ abstract class Repository extends ServiceEntityRepository
         $sql = sprintf('TRUNCATE TABLE `%s`;', $this->getTableName());
 
         try {
-            /**
-             * @noinspection PhpDeprecationInspection
-             */
-            $this->getEntityManager()->getConnection()->prepare($sql)->execute();
+            $this->getEntityManager()->getConnection()->prepare($sql)->executeQuery();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
         }
     }
@@ -188,6 +187,7 @@ abstract class Repository extends ServiceEntityRepository
         try {
             $identifier = $this->getClassMetadata()->getSingleIdentifierFieldName();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
 
             return [];
@@ -217,16 +217,9 @@ abstract class Repository extends ServiceEntityRepository
         $queryBuilder->andWhere("table_name = '{$this->getTableName()}'");
 
         try {
-            $query = $connection->prepare($queryBuilder->getSQL());
-
-            /**
-             * @noinspection PhpDeprecationInspection
-             */
-            $query->execute();
-
-            /** @noinspection PhpUndefinedMethodInspection */
-            return $query->rowCount() > 0;
+            return $connection->prepare($queryBuilder->getSQL())->executeStatement() > 0;
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
 
             return false;
@@ -249,6 +242,7 @@ abstract class Repository extends ServiceEntityRepository
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
 
             return null;
@@ -271,6 +265,7 @@ abstract class Repository extends ServiceEntityRepository
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
 
             return null;
@@ -295,6 +290,7 @@ abstract class Repository extends ServiceEntityRepository
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
 
             return null;

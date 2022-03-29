@@ -37,6 +37,7 @@ class CommandBusImpl implements CommandBus
         /** @var CommandHandler $commandHandler */
         $commandHandler = $this->container->get($commandHandlerClassName);
 
+        /** @psalm-suppress InvalidFunctionCall */
         return call_user_func($commandHandler, $command);
     }
 }

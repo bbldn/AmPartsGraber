@@ -31,30 +31,6 @@ class ShippingMethodRepository extends Repository
     }
 
     /**
-     * @param int|null $backId
-     * @return ShippingMethod|null
-     */
-    public function findOneByBackId(?int $backId): ?ShippingMethod
-    {
-        if (null === $backId) {
-            return null;
-        }
-
-        try {
-            return $this->createQueryBuilder('sm')
-                ->andWhere('sm.backId = :backId')
-                ->setParameter('backId', $backId)
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getOneOrNullResult();
-        } catch (Throwable $e) {
-            $this->logger->error($e);
-
-            return null;
-        }
-    }
-
-    /**
      * @param string|null $frontCode
      * @return ShippingMethod|null
      */
@@ -72,6 +48,7 @@ class ShippingMethodRepository extends Repository
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (Throwable $e) {
+            /** @var string $e */
             $this->logger->error($e);
 
             return null;

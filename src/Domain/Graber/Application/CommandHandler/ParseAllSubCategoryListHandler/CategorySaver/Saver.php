@@ -55,7 +55,13 @@ class Saver
             $categoryEntity = new CategoryEntity();
         }
 
-        $parentCategoryEntity = $this->categoryRepository->findOneByUrl($this->getParentCategoryUrl($categoryEntity));
+        $parentCategoryUrl = $this->getParentCategoryUrl($categoryEntity);
+        if (null !== $parentCategoryUrl) {
+            $parentCategoryEntity = $this->categoryRepository->findOneByUrl($parentCategoryUrl);
+        } else {
+            $parentCategoryEntity = null;
+        }
+
         $categoryEntity->setParent($parentCategoryEntity);
 
         $categoryEntity->setUrl($url);

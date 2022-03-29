@@ -31,12 +31,12 @@ class Parser
     private function parseCode(Product $product, Crawler $crawler): void
     {
         $node = $crawler->filter('.catalog-detail-article .article')->first();
-        if (null === $node) {
+        if (null === $node->getNode(0)) {
             return;
         }
 
         $tmp = explode(' ', trim($node->innerText()));
-        $product->setCode((string)$tmp[count($tmp) - 1]);
+        $product->setCode($tmp[count($tmp) - 1]);
     }
 
     /**
@@ -47,7 +47,7 @@ class Parser
     private function parseName(Product $product, Crawler $crawler): void
     {
         $node = $crawler->filter('#pagetitle')->first();
-        if (null === $node) {
+        if (null === $node->getNode(0)) {
             return;
         }
 
@@ -62,7 +62,7 @@ class Parser
     private function parsePrice(Product $product, Crawler $crawler): void
     {
         $node = $crawler->filter('.catalog-detail-price meta[itemprop=price]')->first();
-        if (null === $node) {
+        if (null === $node->getNode(0)) {
             return;
         }
 
@@ -82,11 +82,11 @@ class Parser
     private function parseImageUrl(Product $product, Crawler $crawler): void
     {
         $node = $crawler->filter('.detail_picture meta[itemprop=image]')->first();
-        if (null === $node) {
+        if (null === $node->getNode(0)) {
             return;
         }
 
-        $imageUrl = $node->attr('content');
+        $imageUrl = (string)$node->attr('content');
         if (0 === mb_strlen($imageUrl)) {
             $imageUrl = null;
         }
@@ -102,7 +102,7 @@ class Parser
     private function parseDescription(Product $product, Crawler $crawler): void
     {
         $node = $crawler->filter('.tabs__box')->first();
-        if (null === $node) {
+        if (null === $node->getNode(0)) {
             return;
         }
 
@@ -117,7 +117,7 @@ class Parser
     private function parseCategoryUrl(Product $product, Crawler $crawler): void
     {
         $node = $crawler->filter('.breadcrumb__item:last-child a')->first();
-        if (null === $node) {
+        if (null === $node->getNode(0)) {
             return;
         }
 
