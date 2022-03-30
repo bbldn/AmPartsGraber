@@ -2,11 +2,11 @@
 
 namespace App\Domain\Synchronization\Infrastructure\Command;
 
+use BBLDN\CQRS\CommandBus\CommandBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Domain\Common\Application\CommandBus\CommandBus;
 use App\Domain\Synchronization\Application\Command\CategoryBackToFrontSynchronizeAll;
 
 class CategoryBackToFrontSynchronizeAllCommand extends Command

@@ -5,14 +5,13 @@ namespace App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandle
 use App\Domain\Graber\Domain\Exception\ParseException;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Graber\Application\Command\ParseProductListAll;
-use App\Domain\Graber\Application\Command\ParseProductListAllHandler as Base;
 use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\Repository\CategoryRepository;
 use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\ProductSaver\Saver as ProductSaver;
 use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\ProductParser\Parser as ProductParser;
 use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\SessionManager\SessionManagerFacade as SessionManager;
 use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\ProductUrlListFromCategoryParser\Parser as ProductUrlListFromCategoryParser;
 
-class CommandHandler implements Base
+class CommandHandler
 {
     private ProductSaver $productSaver;
 

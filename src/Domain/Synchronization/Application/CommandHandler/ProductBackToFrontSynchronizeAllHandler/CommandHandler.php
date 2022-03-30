@@ -4,11 +4,10 @@ namespace App\Domain\Synchronization\Application\CommandHandler\ProductBackToFro
 
 use App\Domain\Synchronization\Application\Command\ProductBackToFrontSynchronizeAll;
 use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
-use App\Domain\Synchronization\Application\Command\ProductBackToFrontSynchronizeAllHandler as Base;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\Repository\Graber\ProductRepository as ProductGraberRepository;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\Synchronizer as ProductBackToFrontSynchronizer;
 
-class CommandHandler implements Base
+class CommandHandler
 {
     private MultipleEntityManager $multipleEntityManager;
 

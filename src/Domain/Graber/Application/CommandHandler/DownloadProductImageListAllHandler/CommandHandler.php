@@ -5,10 +5,9 @@ namespace App\Domain\Graber\Application\CommandHandler\DownloadProductImageListA
 use App\Domain\Graber\Domain\Exception\ParseException;
 use App\Domain\Graber\Application\Command\DownloadProductImageListAll;
 use App\Domain\Common\Infrastructure\Repository\Base\Graber\ProductRepository;
-use App\Domain\Graber\Application\Command\DownloadProductImageListAllHandler as Base;
 use App\Domain\Graber\Application\CommandHandler\DownloadProductImageListAllHandler\ImageDownloader\Downloader as ImageDownloader;
 
-class CommandHandler implements Base
+class CommandHandler
 {
     private ImageDownloader $imageDownloader;
 

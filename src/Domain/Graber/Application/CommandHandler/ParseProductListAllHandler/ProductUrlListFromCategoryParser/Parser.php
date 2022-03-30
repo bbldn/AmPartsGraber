@@ -30,7 +30,7 @@ class Parser
      */
     private function handle(Crawler $crawler): array
     {
-        return $crawler->filter('a.item-title')->each(static fn(Crawler $node) => $node->attr('href'));
+        return $crawler->filter('a.item-title')->each(static fn(Crawler $node): string => (string)$node->attr('href'));
     }
 
     /**

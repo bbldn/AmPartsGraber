@@ -3,8 +3,13 @@
 namespace App\Domain\Graber\Application\Command;
 
 use Closure;
-use App\Domain\Common\Application\CommandBus\Command;
+use BBLDN\CQRS\CommandBus\Command;
+use BBLDN\CQRS\CommandBus\Annotation as CQRS;
+use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\CommandHandler;
 
+/**
+ * @CQRS\CommandHandler(class=CommandHandler::class)
+ */
 class ParseProductListAll implements Command
 {
     /**

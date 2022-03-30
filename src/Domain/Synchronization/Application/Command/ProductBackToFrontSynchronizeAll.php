@@ -3,8 +3,13 @@
 namespace App\Domain\Synchronization\Application\Command;
 
 use Closure;
-use App\Domain\Common\Application\CommandBus\Command;
+use BBLDN\CQRS\CommandBus\Command;
+use BBLDN\CQRS\CommandBus\Annotation as CQRS;
+use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\CommandHandler;
 
+/**
+ * @CQRS\CommandHandler(class=CommandHandler::class)
+ */
 class ProductBackToFrontSynchronizeAll implements Command
 {
     /**

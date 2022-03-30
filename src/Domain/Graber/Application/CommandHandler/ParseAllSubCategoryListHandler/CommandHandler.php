@@ -5,11 +5,10 @@ namespace App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHa
 use App\Domain\Graber\Domain\Exception\ParseException;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Graber\Application\Command\ParseAllSubCategoryList;
-use App\Domain\Graber\Application\Command\ParseAllSubCategoryListHandler as Base;
 use App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHandler\CategorySaver\Saver as CategorySaver;
 use App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHandler\SubCategoryListParser\Parser as SubCategoryListParser;
 
-class CommandHandler implements Base
+class CommandHandler
 {
     private EntityManager $entityManager;
 

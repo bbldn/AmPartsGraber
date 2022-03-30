@@ -4,11 +4,10 @@ namespace App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFr
 
 use App\Domain\Synchronization\Application\Command\CategoryBackToFrontSynchronizeAll;
 use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
-use App\Domain\Synchronization\Application\Command\CategoryBackToFrontSynchronizeAllHandler as Base;
 use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\Repository\Graber\CategoryRepository as CategoryGraberRepository;
 use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\Synchronizer as CategoryBackToFrontSynchronizer;
 
-class CommandHandler implements Base
+class CommandHandler
 {
     private MultipleEntityManager $multipleEntityManager;
 
