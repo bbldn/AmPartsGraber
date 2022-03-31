@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99b0e5b586fed33b1669c65d0008453b",
+    "content-hash": "99d27ff01ebe71a5a4de7540e0478457",
     "packages": [
         {
-            "name": "bbldn/sqrs",
-            "version": "0.1.2",
+            "name": "bbldn/cqrs",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbldn/cqrs.git",
-                "reference": "fb5bd4707f2965d0b6b0c1dfce86d2d5fddcd00b"
+                "reference": "1336f0685d63ff1b5042de6a1665282a9c59a1b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbldn/cqrs/zipball/fb5bd4707f2965d0b6b0c1dfce86d2d5fddcd00b",
-                "reference": "fb5bd4707f2965d0b6b0c1dfce86d2d5fddcd00b",
+                "url": "https://api.github.com/repos/bbldn/cqrs/zipball/1336f0685d63ff1b5042de6a1665282a9c59a1b1",
+                "reference": "1336f0685d63ff1b5042de6a1665282a9c59a1b1",
                 "shasum": ""
             },
             "require": {
@@ -45,12 +45,12 @@
                     "email": "bobol.boris@gmail.com"
                 }
             ],
-            "description": "SQRS implementation",
+            "description": "CQRS implementation",
             "support": {
                 "issues": "https://github.com/bbldn/cqrs/issues",
-                "source": "https://github.com/bbldn/cqrs/tree/0.1.2"
+                "source": "https://github.com/bbldn/cqrs/tree/0.1.0"
             },
-            "time": "2022-03-30T19:52:14+00:00"
+            "time": "2022-03-31T01:04:23+00:00"
         },
         {
             "name": "doctrine/annotations",
