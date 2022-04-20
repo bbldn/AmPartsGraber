@@ -3,48 +3,35 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OrderHistoryRepository;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="`oc_order_history`")
- * @ORM\Entity(repositoryClass=OrderHistoryRepository::class)
- */
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`oc_order_history`")]
+#[ORM\Entity(repositoryClass: OrderHistoryRepository::class)]
 class OrderHistory
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`order_history_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`order_history_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class)
-     * @ORM\JoinColumn(name="`order_id`", referencedColumnName="`order_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Order::class)]
+    #[ORM\JoinColumn(name: "`order_id`", referencedColumnName: "`order_id`", nullable: true)]
     private ?Order $order = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=OrderStatus::class)
-     * @ORM\JoinColumn(name="`order_status_id`", referencedColumnName="`order_status_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: OrderStatus::class)]
+    #[ORM\JoinColumn(name: "`order_status_id`", referencedColumnName: "`order_status_id`", nullable: true)]
     private ?OrderStatus $orderStatus = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`notify`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`notify`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?int $notify = 0;
 
-    /**
-     * @ORM\Column(type="string", name="`comment`")
-     */
+    #[ORM\Column(name: "`comment`", type: Types::TEXT)]
     private ?string $comment = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
     /**
@@ -161,10 +148,8 @@ class OrderHistory
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
-     */
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
     public function updatedTimestamps(): void
     {
         if (null === $this->getDateAdded()) {

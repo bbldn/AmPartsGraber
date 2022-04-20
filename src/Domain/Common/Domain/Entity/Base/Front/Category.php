@@ -3,137 +3,103 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CategoryRepository;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
- * @ORM\Table(name="`oc_category`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`oc_category`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`category_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`category_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`vendor_code`", length=255, nullable=true)
-     */
-    private ?string $vendorCode = null;
-
-    /**
-     * @ORM\Column(type="string", name="`image`", nullable=true)
-     */
+    #[ORM\Column(name: "`image`", type: Types::STRING, nullable: true)]
     private ?string $image = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class)
-     * @ORM\JoinColumn(name="`parent_id`", referencedColumnName="`category_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\JoinColumn(name: "`parent_id`", referencedColumnName: "`category_id`", nullable: true)]
     private ?Category $parent = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`top`")
-     */
+    #[ORM\Column(name: "`top`", type: Types::BOOLEAN)]
     private ?bool $top = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`column`")
-     */
+    #[ORM\Column(name: "`column`", type: Types::INTEGER)]
     private ?int $column = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER, options: ["default" => 0])]
     private ?int $sortOrder = 0;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`")
-     */
+    #[ORM\Column(name: "`status`", type: Types::BOOLEAN)]
     private ?bool $status = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_modified`")
-     */
+    #[ORM\Column(name: "`date_modified`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateModified = null;
 
-    /**
-     * @var Collection|CategoryPath[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="categoryA",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=CategoryPath::class
-     * )
-     *
-     * @psalm-var Collection<int, CategoryPath>
-     */
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
+
+    /** @var Collection<int, CategoryPath> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "categoryA",
+        cascade: ["persist", "remove"],
+        targetEntity: CategoryPath::class
+    )]
     private Collection $paths;
 
-    /**
-     * @var Collection|CategoryDescription[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="category",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=CategoryDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, CategoryDescription>
-     */
+    /** @var Collection<int, CategoryDescription> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "category",
+        cascade: ["persist", "remove"],
+        targetEntity: CategoryDescription::class
+    )]
     private Collection $descriptions;
 
-    /**
-     * @var Collection|Shop[]
-     * @ORM\ManyToMany(targetEntity=Shop::class, fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(
-     *     name="`oc_category_to_store`",
-     *     joinColumns={@ORM\JoinColumn(name="`category_id`", referencedColumnName="`category_id`")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="`store_id`", referencedColumnName="`store_id`")}
-     * )
-     *
-     * @psalm-var Collection<int, Shop>
-     */
+    /** @var Collection<int, Shop> */
+    #[ORM\ManyToMany(targetEntity: Shop::class, fetch: "EXTRA_LAZY")]
+    #[ORM\JoinTable(name: "oc_category_to_store")]
+    #[ORM\JoinColumn(name: "category_id", referencedColumnName: "`category_id`")]
+    #[ORM\InverseJoinColumn(name: "store_id", referencedColumnName: "`store_id`")]
     private Collection $shops;
 
-    /**
-     * @var Collection|Filter[]
-     * @ORM\ManyToMany(targetEntity=Filter::class, fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(
-     *     name="`oc_category_filter`",
-     *     joinColumns={@ORM\JoinColumn(name="`category_id`", referencedColumnName="`category_id`")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="`filter_id`", referencedColumnName="`filter_id`")}
-     * )
-     *
-     * @psalm-var Collection<int, Filter>
-     */
+    /** @var Collection<int, Filter> */
+    #[ORM\ManyToMany(targetEntity: Filter::class, fetch: "EXTRA_LAZY")]
+    #[ORM\JoinTable(name: "oc_category_filter")]
+    #[ORM\JoinColumn(name: "category_id", referencedColumnName: "`category_id`")]
+    #[ORM\InverseJoinColumn(name: "filter_id", referencedColumnName: "`filter_id`")]
     private Collection $filters;
 
-    /**
-     * @var Collection|CategoryToLayout[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     cascade={"persist"},
-     *     mappedBy="category",
-     *     targetEntity=CategoryToLayout::class
-     * )
-     *
-     * @psalm-var Collection<int, CategoryToLayout>
-     */
+    /** @var Collection<int, CategoryFaq> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "category",
+        cascade: ["persist", "remove"],
+        targetEntity: CategoryFaq::class
+    )]
+    private Collection $categoryFaqs;
+
+    /** @var Collection<int, CategoryToLayout> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "category",
+        cascade: ["persist", "remove"],
+        targetEntity: CategoryToLayout::class
+    )]
     private Collection $categoryToLayouts;
 
     public function __construct()
@@ -141,6 +107,7 @@ class Category
         $this->paths = new ArrayCollection();
         $this->shops = new ArrayCollection();
         $this->filters = new ArrayCollection();
+        $this->categoryFaqs = new ArrayCollection();
         $this->descriptions = new ArrayCollection();
         $this->categoryToLayouts = new ArrayCollection();
     }
@@ -160,25 +127,6 @@ class Category
     public function setId(?int $id): self
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getVendorCode(): ?string
-    {
-        return $this->vendorCode;
-    }
-
-    /**
-     * @param string|null $vendorCode
-     * @return Category
-     */
-    public function setVendorCode(?string $vendorCode): self
-    {
-        $this->vendorCode = $vendorCode;
 
         return $this;
     }
@@ -336,9 +284,26 @@ class Category
     }
 
     /**
-     * @return CategoryPath[]|Collection
-     *
-     * @psalm-return Collection<int, CategoryPath>
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return Category
+     */
+    public function setBackId(?int $backId): self
+    {
+        $this->backId = $backId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CategoryPath>
      */
     public function getPaths(): Collection
     {
@@ -346,9 +311,7 @@ class Category
     }
 
     /**
-     * @return CategoryDescription[]|Collection
-     *
-     * @psalm-return Collection<int, CategoryDescription>
+     * @return Collection<int, CategoryDescription>
      */
     public function getDescriptions(): Collection
     {
@@ -356,9 +319,7 @@ class Category
     }
 
     /**
-     * @return Shop[]|Collection
-     *
-     * @psalm-return Collection<int, Shop>
+     * @return Collection<int, Shop>
      */
     public function getShops(): Collection
     {
@@ -366,9 +327,7 @@ class Category
     }
 
     /**
-     * @return Filter[]|Collection
-     *
-     * @psalm-return Collection<int, Filter>
+     * @return Collection<int, Filter>
      */
     public function getFilters(): Collection
     {
@@ -376,19 +335,22 @@ class Category
     }
 
     /**
-     * @return CategoryToLayout[]|Collection
-     *
-     * @psalm-return Collection<int, CategoryToLayout>
+     * @return Collection<int, CategoryFaq>
+     */
+    public function getCategoryFaqs(): Collection
+    {
+        return $this->categoryFaqs;
+    }
+
+    /**
+     * @return Collection<int, CategoryToLayout>
      */
     public function getCategoryToLayouts(): Collection
     {
         return $this->categoryToLayouts;
     }
 
-    /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
-     */
+    #[ORM\PreUpdate, ORM\PrePersist]
     public function updatedTimestamps(): void
     {
         $this->setDateModified(new DateTimeImmutable());

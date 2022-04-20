@@ -2,51 +2,40 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CountryRepository;
 
-/**
- * @ORM\Entity(repositoryClass=CountryRepository::class)
- * @ORM\Table(name="`oc_country`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\Table(name: "`oc_country`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: CountryRepository::class)]
 class Country
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`country_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`country_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=128)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 128)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", name="`iso_code_2`", length=2)
-     */
+    #[ORM\Column(name: "`iso_code_2`", type: Types::STRING, length: 2)]
     private ?string $isoCode2 = null;
 
-    /**
-     * @ORM\Column(type="string", name="`iso_code_3`", length=3)
-     */
+    #[ORM\Column(name: "`iso_code_3`", type: Types::STRING, length: 3)]
     private ?string $isoCode3 = null;
 
-    /**
-     * @ORM\Column(type="text", name="`address_format`")
-     */
+    #[ORM\Column(name: "`address_format`", type: Types::TEXT)]
     private ?string $addressFormat = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`postcode_required`")
-     */
+    #[ORM\Column(name: "`postcode_required`", type: Types::BOOLEAN)]
     private ?bool $postCodeRequired = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`", options={"default": 1})
-     */
+    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 1])]
     private ?bool $status = true;
+
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
 
     /**
      * @return int|null
@@ -177,6 +166,25 @@ class Country
     public function setStatus(?bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return Country
+     */
+    public function setBackId(?int $backId): self
+    {
+        $this->backId = $backId;
 
         return $this;
     }

@@ -2,36 +2,27 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ProductImageRepository;
 
-/**
- * @ORM\Table(name="`oc_product_image`")
- * @ORM\Entity(repositoryClass=ProductImageRepository::class)
- */
+#[ORM\Table(name: "`oc_product_image`")]
+#[ORM\Entity(repositoryClass: ProductImageRepository::class)]
 class ProductImage
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`product_image_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`product_image_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`", nullable: true)]
     private ?Product $product = null;
 
-    /**
-     * @ORM\Column(type="string", name="`image`", nullable=true, length=255)
-     */
+    #[ORM\Column(name: "`image`", type: Types::STRING, length: 255, nullable: true)]
     private ?string $image = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER, options: ["default" => 0])]
     private ?int $sortOrder = 0;
 
     /**

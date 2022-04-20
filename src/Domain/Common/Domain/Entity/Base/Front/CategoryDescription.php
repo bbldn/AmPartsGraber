@@ -2,58 +2,44 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CategoryDescriptionRepository;
 
-/**
- * @ORM\Table(name="`oc_category_description`")
- * @ORM\Entity(repositoryClass=CategoryDescriptionRepository::class)
- */
+#[ORM\Table(name: "`oc_category_description`")]
+#[ORM\Entity(repositoryClass: CategoryDescriptionRepository::class)]
 class CategoryDescription
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="descriptions")
-     * @ORM\JoinColumn(name="`category_id`", referencedColumnName="`category_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: "descriptions")]
+    #[ORM\JoinColumn(name: "`category_id`", referencedColumnName: "`category_id`")]
     private ?Category $category = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`")]
     private ?Language $language = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=255)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 255)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="text", name="`description`")
-     */
+    #[ORM\Column(name: "`description`", type: Types::TEXT)]
     private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="string", name="`meta_h1`", nullable=true, length=100)
-     */
+    #[ORM\Column(name: "`meta_h1`", type: Types::STRING, length: 100, nullable: true)]
     private ?string $metaH1 = null;
 
-    /**
-     * @ORM\Column(type="string", name="`meta_title`", length=255)
-     */
+    #[ORM\Column(name: "`meta_title`", type: Types::STRING, length: 255)]
     private ?string $metaTitle = null;
 
-    /**
-     * @ORM\Column(type="string", name="`meta_keyword`", length=255)
-     */
+    #[ORM\Column(name: "`meta_keyword`", type: Types::STRING, length: 255)]
     private ?string $metaKeyword = null;
 
-    /**
-     * @ORM\Column(type="string", name="`meta_description`", length=255)
-     */
+    #[ORM\Column(name: "`meta_description`", type: Types::STRING, length: 255)]
     private ?string $metaDescription = null;
+
+    #[ORM\Column(name: "`faq_name`", type: Types::STRING, length: 255, nullable: true)]
+    private ?string $faqName = null;
 
     /**
      * @return Category|null
@@ -203,6 +189,25 @@ class CategoryDescription
     public function setMetaDescription(?string $metaDescription): self
     {
         $this->metaDescription = $metaDescription;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFaqName(): ?string
+    {
+        return $this->faqName;
+    }
+
+    /**
+     * @param string|null $faqName
+     * @return CategoryDescription
+     */
+    public function setFaqName(?string $faqName): self
+    {
+        $this->faqName = $faqName;
 
         return $this;
     }

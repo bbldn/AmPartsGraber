@@ -2,42 +2,31 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\SeoUrlRepository;
 
-/**
- * @ORM\Table(name="`oc_seo_url`")
- * @ORM\Entity(repositoryClass=SeoUrlRepository::class)
- */
+#[ORM\Table(name: "`oc_seo_url`")]
+#[ORM\Entity(repositoryClass: SeoUrlRepository::class)]
 class SeoUrl
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`seo_url_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`seo_url_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Shop::class)
-     * @ORM\JoinColumn(name="`store_id`", referencedColumnName="`store_id`", nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: Shop::class)]
+    #[ORM\JoinColumn(name: "`store_id`", referencedColumnName: "`store_id`", nullable: true)]
     private ?Shop $shop = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`", nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`", nullable: true)]
     private ?Language $language = null;
 
-    /**
-     * @ORM\Column(type="string", name="`query`", length=255)
-     */
+    #[ORM\Column(name: "`query`", type: Types::STRING, length: 255)]
     private ?string $query = null;
 
-    /**
-     * @ORM\Column(type="string", name="`keyword`", length=255)
-     */
+    #[ORM\Column(name: "`keyword`", type: Types::STRING, length: 255)]
     private ?string $keyword = null;
 
     /**

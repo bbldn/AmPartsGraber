@@ -2,69 +2,48 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Graber;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Graber\ProductRepository;
 
-/**
- * @ORM\Entity(repositoryClass=ProductRepository::class)
- * @ORM\Table(
- *     name="`products`",
- *     indexes={
- *         @ORM\Index(name="url_idx", columns={"url"}),
- *         @ORM\Index(name="code_idx", columns={"code"})
- *     }
- * )
- */
+#[ORM\Table(name: "`products`")]
+#[ORM\Index(name: "url_idx", columns: ["url"])]
+#[ORM\Index(name: "code_idx", columns: ["code"])]
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
-    /**
-     * Идентификатор
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`id`", options={"unsigned":true})
-     */
+    /* Идентификатор */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`id`", type: Types::INTEGER, options: ["unsigned" => true])]
     private ?int $id = null;
 
-    /**
-     * Ссылка
-     * @ORM\Column(type="string", name="`url`", length=512, nullable=true)
-     */
+    /* Ссылка */
+    #[ORM\Column(name: "`url`", type: Types::STRING, length: 512)]
     private ?string $url = null;
 
-    /**
-     * Артикул
-     * @ORM\Column(type="string", name="`code`", length=512)
-     */
+    /* Артикул */
+    #[ORM\Column(name: "`code`", type: Types::STRING, length: 512)]
     private ?string $code = null;
 
-    /**
-     * Цена
-     * @ORM\Column(type="float", name="`price`", options={"default":0})
-     */
+    /* Цена */
+    #[ORM\Column(name: "`price`", type: Types::FLOAT, options: ["default" => 0])]
     private ?float $price = 0.0;
 
-    /**
-     * Название
-     * @ORM\Column(type="string", name="`name`", length=512, nullable=true)
-     */
+    /* Название */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 512, nullable: true)]
     private ?string $name = null;
 
-    /**
-     * Ссылка на картинку
-     * @ORM\Column(type="string", name="`image_url`", length=512, nullable=true)
-     */
+    /* Ссылка на картинку */
+    #[ORM\Column(name: "`image_url`", type: Types::STRING, length: 512, nullable: true)]
     private ?string $imageUrl = null;
 
-    /**
-     * Описание
-     * @ORM\Column(type="text", name="`description`", nullable=true)
-     */
+    /* Описание */
+    #[ORM\Column(name: "`description`", type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    /**
-     * Ссылка на категорию
-     * @ORM\Column(type="string", name="`category_url`", length=512, nullable=true)
-     */
+    /* Ссылка на категорию */
+    #[ORM\Column(name: "`category_url`", type: Types::STRING, length: 512)]
     private ?string $categoryUrl = null;
 
     /**

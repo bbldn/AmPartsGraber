@@ -2,59 +2,43 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ProductOptionRepository;
-use App\Domain\Common\Domain\Entity\Base\Front\ProductCategory as ProductToCategory;
 
-/**
- * @ORM\Table(name="`oc_product_option`")
- * @ORM\Entity(repositoryClass=ProductOptionRepository::class)
- */
+#[ORM\Table(name: "`oc_product_option`")]
+#[ORM\Entity(repositoryClass: ProductOptionRepository::class)]
 class ProductOption
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`product_option_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`product_option_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`", nullable: true)]
     private ?Product $product = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Option::class)
-     * @ORM\JoinColumn(name="`option_id`", referencedColumnName="`option_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Option::class)]
+    #[ORM\JoinColumn(name: "`option_id`", referencedColumnName: "`option_id`", nullable: true)]
     private ?Option $option = null;
 
-    /**
-     * @ORM\Column(type="string", name="`value`", length=255)
-     */
+    #[ORM\Column(name: "`value`", type: Types::TEXT)]
     private ?string $value = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`required`")
-     */
+    #[ORM\Column(name: "`required`", type: Types::BOOLEAN)]
     private ?bool $required = null;
 
-    /**
-     * @var Collection|ProductOptionValue[]
-     * @ORM\OneToMany(
-     *     mappedBy="product",
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=ProductOptionValue::class
-     * )
-     *
-     * @psalm-var Collection<int, ProductOptionValue>
-     */
+    /** @var Collection<int, ProductOptionValue> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "product",
+        cascade: ["persist", "remove"],
+        targetEntity: ProductOptionValue::class,
+    )]
     private Collection $values;
 
     public function __construct()
@@ -158,9 +142,7 @@ class ProductOption
     }
 
     /**
-     * @return ProductOptionValue[]|Collection
-     *
-     * @psalm-return Collection<int, ProductOptionValue>
+     * @return Collection<int, ProductOptionValue>
      */
     public function getValues(): Collection
     {

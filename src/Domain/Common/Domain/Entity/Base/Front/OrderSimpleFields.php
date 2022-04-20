@@ -2,40 +2,29 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OrderSimpleFieldsRepository;
 
-/**
- * @ORM\Table(name="`oc_order_simple_fields`")
- * @ORM\Entity(repositoryClass=OrderSimpleFieldsRepository::class)
- */
+#[ORM\Table(name: "`oc_order_simple_fields`")]
+#[ORM\Entity(repositoryClass: OrderSimpleFieldsRepository::class)]
 class OrderSimpleFields
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Order::class)
-     * @ORM\JoinColumn(name="`order_id`", referencedColumnName="`order_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Order::class)]
+    #[ORM\JoinColumn(name: "`order_id`", referencedColumnName: "`order_id`")]
     private ?Order $order = null;
 
-    /**
-     * @ORM\Column(type="text", name="`metadata`")
-     */
+    #[ORM\Column(name: "`metadata`", type: Types::TEXT, nullable: true)]
     private ?string $metadata = null;
 
-    /**
-     * @ORM\Column(type="text", name="`oblast`", nullable=true)
-     */
+    #[ORM\Column(name: "`oblast`", type: Types::TEXT, nullable: true)]
     private ?string $oblast = null;
 
-    /**
-     * @ORM\Column(type="text", name="`gorod`", nullable=true)
-     */
+    #[ORM\Column(name: "`gorod`", type: Types::TEXT, nullable: true)]
     private ?string $gorod = null;
 
-    /**
-     * @ORM\Column(type="text", name="`otdelenie`", nullable=true)
-     */
+    #[ORM\Column(name: "`otdelenie`", type: Types::TEXT, nullable: true)]
     private ?string $otdelenie = null;
 
     /**

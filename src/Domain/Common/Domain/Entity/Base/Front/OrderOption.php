@@ -2,70 +2,43 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OrderOptionRepository;
 
-/**
- * @ORM\Table(name="`oc_order_option`")
- * @ORM\Entity(repositoryClass=OrderOptionRepository::class)
- */
+#[ORM\Table(name: "`oc_order_option`")]
+#[ORM\Entity(repositoryClass: OrderOptionRepository::class)]
 class OrderOption
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`order_option_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`order_option_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class)
-     * @ORM\JoinColumn(name="`order_id`", referencedColumnName="`order_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Order::class)]
+    #[ORM\JoinColumn(name: "`order_id`", referencedColumnName: "`order_id`", nullable: true)]
     private ?Order $order = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=OrderProduct::class)
-     * @ORM\JoinColumn(name="`order_product_id`", referencedColumnName="`order_product_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: OrderProduct::class)]
+    #[ORM\JoinColumn(name: "`order_product_id`", referencedColumnName: "`order_product_id`", nullable: true)]
     private ?OrderProduct $orderProduct = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=ProductOption::class)
-     * @ORM\JoinColumn(name="`product_option_id`", referencedColumnName="`product_option_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: ProductOption::class)]
+    #[ORM\JoinColumn(name: "`product_option_id`", referencedColumnName: "`product_option_id`", nullable: true)]
     private ?ProductOption $productOption = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=ProductOptionValue::class)
-     * @ORM\JoinColumn(name="`product_option_value_id`", referencedColumnName="`product_option_value_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: ProductOptionValue::class)]
+    #[ORM\JoinColumn(name: "`product_option_value_id`", referencedColumnName: "`product_option_value_id`", nullable: true)]
     private ?ProductOptionValue $productOptionValue = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=255)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 255)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", name="`value`")
-     */
+    #[ORM\Column(name: "`value`", type: Types::TEXT)]
     private ?string $value = null;
 
-    /**
-     * @ORM\Column(type="string", name="`type`", length=32)
-     */
+    #[ORM\Column(name: "`type`", type: Types::STRING, length: 32)]
     private ?string $type = null;
-
-    /**
-     * @ORM\Column(type="string", name="`sku`")
-     */
-    private ?string $sku = null;
-
-    /**
-     * @ORM\Column(type="string", name="`model`")
-     */
-    private ?string $model = null;
 
     /**
      * @return int|null
@@ -215,44 +188,6 @@ class OrderOption
     public function setType(?string $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSku(): ?string
-    {
-        return $this->sku;
-    }
-
-    /**
-     * @param string|null $sku
-     * @return OrderOption
-     */
-    public function setSku(?string $sku): self
-    {
-        $this->sku = $sku;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getModel(): ?string
-    {
-        return $this->model;
-    }
-
-    /**
-     * @param string|null $model
-     * @return OrderOption
-     */
-    public function setModel(?string $model): self
-    {
-        $this->model = $model;
 
         return $this;
     }

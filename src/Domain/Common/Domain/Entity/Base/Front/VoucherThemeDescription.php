@@ -2,32 +2,25 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\VoucherThemeDescriptionRepository;
 
-/**
- * @ORM\Table(name="`oc_voucher_theme_description`")
- * @ORM\Entity(repositoryClass=VoucherThemeDescriptionRepository::class)
- */
+#[ORM\Table(name: "`oc_voucher_theme_description`")]
+#[ORM\Entity(repositoryClass: VoucherThemeDescriptionRepository::class)]
 class VoucherThemeDescription
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=VoucherTheme::class)
-     * @ORM\JoinColumn(name="`voucher_theme_id`", referencedColumnName="`voucher_theme_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: VoucherTheme::class)]
+    #[ORM\JoinColumn(name: "`voucher_theme_id`", referencedColumnName: "`voucher_theme_id`")]
     private ?VoucherTheme $voucherTheme = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`")]
     private ?Language $language = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=32)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 32)]
     private ?string $name = null;
 
     /**

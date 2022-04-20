@@ -2,31 +2,24 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\StockStatusRepository;
 
-/**
- * @ORM\Table(name="`oc_stock_status`")
- * @ORM\Entity(repositoryClass=StockStatusRepository::class)
- */
+#[ORM\Table(name: "`oc_stock_status`")]
+#[ORM\Entity(repositoryClass: StockStatusRepository::class)]
 class StockStatus
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="integer", name="`stock_status_id`")
-     */
+    #[ORM\Id]
+    #[ORM\Column(name: "`stock_status_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=32)
-     */
-    private ?string $name = null;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`")]
     private ?Language $language = null;
+
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 32)]
+    private ?string $name = null;
 
     /**
      * @return int|null
@@ -48,25 +41,6 @@ class StockStatus
     }
 
     /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string|null $name
-     * @return StockStatus
-     */
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * @return Language|null
      */
     public function getLanguage(): ?Language
@@ -81,6 +55,25 @@ class StockStatus
     public function setLanguage(?Language $language): self
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     * @return StockStatus
+     */
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

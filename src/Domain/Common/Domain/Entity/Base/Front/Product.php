@@ -3,319 +3,238 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ProductRepository;
 use App\Domain\Common\Domain\Entity\Base\Front\ProductCategory as ProductToCategory;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass=ProductRepository::class)
- * @ORM\Table(name="`oc_product`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`oc_product`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`product_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`product_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`model`", length=64)
-     */
+    #[ORM\Column(name: "`model`", type: Types::STRING, length: 64)]
     private ?string $model = null;
 
-    /**
-     * @ORM\Column(type="string", name="`sku`", length=64)
-     */
+    #[ORM\Column(name: "`sku`", type: Types::STRING, length: 64)]
     private ?string $sku = null;
 
-    /**
-     * @ORM\Column(type="string", name="`upc`", length=12)
-     */
+    #[ORM\Column(name: "`upc`", type: Types::STRING, length: 12)]
     private ?string $upc = null;
 
-    /**
-     * @ORM\Column(type="string", name="`ean`", length=14)
-     */
+    #[ORM\Column(name: "`ean`", type: Types::STRING, length: 14)]
     private ?string $ean = null;
 
-    /**
-     * @ORM\Column(type="string", name="`jan`", length=13)
-     */
+    #[ORM\Column(name: "`jan`", type: Types::STRING, length: 13)]
     private ?string $jan = null;
 
-    /**
-     * @ORM\Column(type="string", name="`isbn`", length=17)
-     */
+    #[ORM\Column(name: "`isbn`", type: Types::STRING, length: 17)]
     private ?string $isbn = null;
 
-    /**
-     * @ORM\Column(type="string", name="`mpn`", length=64)
-     */
+    #[ORM\Column(name: "`mpn`", type: Types::STRING, length: 64)]
     private ?string $mpn = null;
 
-    /**
-     * @ORM\Column(type="string", name="`location`", length=128)
-     */
+    #[ORM\Column(name: "`location`", type: Types::STRING, length: 128)]
     private ?string $location = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`quantity`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`quantity`", type: Types::INTEGER, options: ["default" => 0])]
     private ?int $quantity = 0;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=StockStatus::class)
-     * @ORM\JoinColumn(name="`stock_status_id`", referencedColumnName="`stock_status_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: StockStatus::class)]
+    #[ORM\JoinColumn(name: "`stock_status_id`", referencedColumnName: "`stock_status_id`", nullable: true)]
     private ?StockStatus $stockStatus = null;
 
-    /**
-     * @ORM\Column(type="string", name="`image`", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "`image`", type: Types::STRING, length: 255, nullable: true)]
     private ?string $image = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Manufacturer::class)
-     * @ORM\JoinColumn(name="`manufacturer_id`", referencedColumnName="`manufacturer_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: "`manufacturer_id`", referencedColumnName: "`manufacturer_id`", nullable: true)]
     private ?Manufacturer $manufacturer = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`shipping`", options={"default": 1})
-     */
+    #[ORM\Column(name: "`shipping`", type: Types::BOOLEAN, options: ["default" => 1])]
     private ?bool $shipping = true;
 
-    /**
-     * @ORM\Column(type="float", name="`price`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`price`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)', options: ["default" => 0])]
     private ?float $price = 0.0;
 
-    /**
-     * @ORM\Column(type="integer", name="`points`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`points`", type: Types::INTEGER, options: ["default" => 0])]
     private ?int $points = 0;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TaxClass::class)
-     * @ORM\JoinColumn(name="`tax_class_id`", referencedColumnName="`tax_class_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: TaxClass::class)]
+    #[ORM\JoinColumn(name: "`tax_class_id`", referencedColumnName: "`tax_class_id`", nullable: true)]
     private ?TaxClass $taxClass = null;
 
-    /**
-     * @ORM\Column(type="date_immutable", name="`date_available`", options={"default": "0000-00-00"})
-     */
+    #[ORM\Column(name: "`date_available`", type: Types::DATE_IMMUTABLE, options: ["default" => '1970-01-01'])]
     private ?DateTimeImmutable $dateAvailable = null;
 
-    /**
-     * @var float|null $weight
-     * @ORM\Column(type="float", name="`weight`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`weight`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,8)', options: ["default" => 0])]
     private ?float $weight = 0.0;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=WeightClass::class)
-     * @ORM\JoinColumn(name="`weight_class_id`", referencedColumnName="`weight_class_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: WeightClass::class)]
+    #[ORM\JoinColumn(name: "`weight_class_id`", referencedColumnName: "`weight_class_id`", nullable: true)]
     private ?WeightClass $weightClass = null;
 
-    /**
-     * @var float|null $length
-     * @ORM\Column(type="float", name="`length`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`length`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,8)', options: ["default" => 0])]
     private ?float $length = 0.0;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=LengthClass::class)
-     * @ORM\JoinColumn(name="`length_class_id`", referencedColumnName="`length_class_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: LengthClass::class)]
+    #[ORM\JoinColumn(name: "`length_class_id`", referencedColumnName: "`length_class_id`", nullable: true)]
     private ?LengthClass $lengthClass = null;
 
-    /**
-     * @ORM\Column(type="float", name="`width`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`width`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,8)', options: ["default" => 0])]
     private ?float $width = 0.0;
 
-    /**
-     * @ORM\Column(type="float", name="`height`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`height`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,8)', options: ["default" => 0])]
     private ?float $height = 0.0;
 
-    /**
-     * @ORM\Column(type="boolean", name="`subtract`", options={"default": 1})
-     */
+    #[ORM\Column(name: "`subtract`", type: Types::BOOLEAN, options: ["default" => 1])]
     private ?bool $subtract = true;
 
-    /**
-     * @ORM\Column(type="boolean", name="`minimum`", options={"default": 1})
-     */
+    #[ORM\Column(name: "`minimum`", type: Types::BOOLEAN, options: ["default" => 1])]
     private ?bool $minimum = true;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER, options: ["default" => 0])]
     private ?int $sortOrder = 0;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`status`", type: Types::INTEGER, options: ["default" => 0])]
     private ?bool $status = false;
 
-    /**
-     * @var int|null $viewed
-     * @ORM\Column(type="integer", name="`viewed`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`viewed`", type: Types::INTEGER, options: ["default" => 0])]
     private ?int $viewed = 0;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_modified`")
-     */
+    #[ORM\Column(name: "`date_modified`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateModified = null;
 
-    /**
-     * @var Collection|File[]
-     * @ORM\ManyToMany(targetEntity=File::class, fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(
-     *     name="`oc_product_to_download`",
-     *     joinColumns={@ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="`download_if`", referencedColumnName="`download_if`")}
-     * )
-     *
-     * @psalm-var Collection<int, File>
-     */
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
+
+    #[ORM\OneToOne(
+        mappedBy: "product",
+        cascade: ["persist", "remove"],
+        targetEntity: ProductDiscontinued::class
+    )]
+    private ?ProductDiscontinued $productDiscontinued = null;
+
+    /** @var Collection<int, File> */
+    #[ORM\ManyToMany(targetEntity: File::class, fetch: "EXTRA_LAZY")]
+    #[ORM\JoinTable(name: "oc_product_to_download")]
+    #[ORM\JoinColumn(name: "product_id", referencedColumnName: "`product_id`")]
+    #[ORM\InverseJoinColumn(name: "download_id", referencedColumnName: "`download_id`")]
     private Collection $files;
 
-    /**
-     * @var Collection|Shop[]
-     * @ORM\ManyToMany(targetEntity=Shop::class, fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(
-     *     name="`oc_product_to_store`",
-     *     joinColumns={@ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="`store_id`", referencedColumnName="`store_id`")}
-     * )
-     *
-     * @psalm-var Collection<int, Shop>
-     */
+    /** @var Collection<int, Shop> */
+    #[ORM\ManyToMany(targetEntity: Shop::class, fetch: "EXTRA_LAZY")]
+    #[ORM\JoinTable(name: "oc_product_to_store")]
+    #[ORM\JoinColumn(name: "product_id", referencedColumnName: "`product_id`")]
+    #[ORM\InverseJoinColumn(name: "store_id", referencedColumnName: "`store_id`")]
     private Collection $shops;
 
-    /**
-     * @var Collection|Review[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     mappedBy="product",
-     *     orphanRemoval=true,
-     *     targetEntity=Review::class,
-     *     cascade={"persist", "remove"}
-     * )
-     *
-     * @psalm-var Collection<int, Review>
-     */
+    /** @var Collection<int, Review> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "product",
+        targetEntity: Review::class,
+        cascade: ["persist", "remove"]
+    )]
     private Collection $reviews;
 
-    /**
-     * @var Collection|Filter[]
-     * @ORM\ManyToMany(targetEntity=Filter::class, fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(
-     *     name="`oc_product_filter`",
-     *     joinColumns={@ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="`filter_id`", referencedColumnName="`filter_id`")}
-     * )
-     *
-     * @psalm-var Collection<int, Filter>
-     */
+    /** @var Collection<int, Filter> */
+    #[ORM\ManyToMany(targetEntity: Filter::class, fetch: "EXTRA_LAZY")]
+    #[ORM\JoinTable(name: "oc_product_filter")]
+    #[ORM\JoinColumn(name: "product_id", referencedColumnName: "`product_id`")]
+    #[ORM\InverseJoinColumn(name: "filter_id", referencedColumnName: "`filter_id`")]
     private Collection $filters;
 
-    /**
-     * @var Collection|ProductDescription[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     mappedBy="product",
-     *     orphanRemoval=true,
-     *     cascade={"persist", "remove"},
-     *     targetEntity=ProductDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, ProductDescription>
-     */
+    /** @var Collection<int, ProductDescription> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "product",
+        cascade: ["persist", "remove"],
+        targetEntity: ProductDescription::class
+    )]
     private Collection $descriptions;
 
-    /**
-     * @var Collection|ProductImage[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     mappedBy="product",
-     *     orphanRemoval=true,
-     *     cascade={"persist", "remove"},
-     *     targetEntity=ProductImage::class
-     * )
-     *
-     * @psalm-var Collection<int, ProductImage>
-     */
+    /** @var Collection<int, ProductFaq> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "product",
+        cascade: ["persist", "remove"],
+        targetEntity: ProductFaq::class
+    )]
+    private Collection $productFaqs;
+
+    /** @var Collection<int, ProductPrice> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "product",
+        cascade: ["persist", "remove"],
+        targetEntity: ProductPrice::class
+    )]
+    private Collection $productPrices;
+
+    /** @var Collection<int, ProductImage> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "product",
+        cascade: ["persist", "remove"],
+        targetEntity: ProductImage::class
+    )]
     private Collection $productImages;
 
-    /**
-     * @var Collection|ProductOption[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     mappedBy="product",
-     *     orphanRemoval=true,
-     *     cascade={"persist", "remove"},
-     *     targetEntity=ProductOption::class
-     * )
-     *
-     * @psalm-var Collection<int, ProductOption>
-     */
+    /** @var Collection<int, ProductOption> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "product",
+        cascade: ["persist", "remove"],
+        targetEntity: ProductOption::class
+    )]
     private Collection $productOptions;
 
-    /**
-     * @var Collection|ProductToLayout[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="product",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=ProductToLayout::class
-     * )
-     *
-     * @psalm-var Collection<int, ProductToLayout>
-     */
+    /** @var Collection<int, ProductToLayout> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "product",
+        cascade: ["persist", "remove"],
+        targetEntity: ProductToLayout::class
+    )]
     private Collection $productToLayouts;
 
-    /**
-     * @var Collection|ProductAttribute[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     mappedBy="product",
-     *     orphanRemoval=true,
-     *     cascade={"persist", "remove"},
-     *     targetEntity=ProductAttribute::class
-     * )
-     *
-     * @psalm-var Collection<int, ProductAttribute>
-     */
+    /** @var Collection<int, ProductAttribute> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "product",
+        cascade: ["persist", "remove"],
+        targetEntity: ProductAttribute::class
+    )]
     private Collection $productAttributes;
 
-    /**
-     * @var Collection|ProductToCategory[]
-     * @ORM\OneToMany(
-     *     mappedBy="product",
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=ProductToCategory::class
-     * )
-     *
-     * @psalm-var Collection<int, ProductToCategory>
-     */
+    /** @var Collection<int, ProductToCategory> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "product",
+        cascade: ["persist", "remove"],
+        targetEntity: ProductToCategory::class
+    )]
     private Collection $productToCategories;
 
     public function __construct()
@@ -324,7 +243,9 @@ class Product
         $this->shops = new ArrayCollection();
         $this->filters = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->productFaqs = new ArrayCollection();
         $this->descriptions = new ArrayCollection();
+        $this->productPrices = new ArrayCollection();
         $this->productImages = new ArrayCollection();
         $this->productOptions = new ArrayCollection();
         $this->productToLayouts = new ArrayCollection();
@@ -922,9 +843,45 @@ class Product
     }
 
     /**
-     * @return File[]|Collection
-     *
-     * @psalm-return Collection<int, File>
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return Product
+     */
+    public function setBackId(?int $backId): self
+    {
+        $this->backId = $backId;
+
+        return $this;
+    }
+
+    /**
+     * @return ProductDiscontinued|null
+     */
+    public function getProductDiscontinued(): ?ProductDiscontinued
+    {
+        return $this->productDiscontinued;
+    }
+
+    /**
+     * @param ProductDiscontinued|null $productDiscontinued
+     * @return Product
+     */
+    public function setProductDiscontinued(?ProductDiscontinued $productDiscontinued): self
+    {
+        $this->productDiscontinued = $productDiscontinued;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, File>
      */
     public function getFiles(): Collection
     {
@@ -932,9 +889,7 @@ class Product
     }
 
     /**
-     * @return Shop[]|Collection
-     *
-     * @psalm-return Collection<int, Shop>
+     * @return Collection<int, Shop>
      */
     public function getShops(): Collection
     {
@@ -942,9 +897,7 @@ class Product
     }
 
     /**
-     * @return Review[]|Collection
-     *
-     * @psalm-return Collection<int, Review>
+     * @return Collection<int, Review>
      */
     public function getReviews(): Collection
     {
@@ -952,9 +905,15 @@ class Product
     }
 
     /**
-     * @return Filter[]|Collection
-     *
-     * @psalm-return Collection<int, Filter>
+     * @return Collection<int, ProductFaq>
+     */
+    public function getProductFaqs(): Collection
+    {
+        return $this->productFaqs;
+    }
+
+    /**
+     * @return Collection<int, Filter>
      */
     public function getFilters(): Collection
     {
@@ -962,9 +921,7 @@ class Product
     }
 
     /**
-     * @return ProductDescription[]|Collection
-     *
-     * @psalm-return Collection<int, ProductDescription>
+     * @return Collection<int, ProductDescription>
      */
     public function getDescriptions(): Collection
     {
@@ -972,9 +929,15 @@ class Product
     }
 
     /**
-     * @return ProductImage[]|Collection
-     *
-     * @psalm-return Collection<int, ProductImage>
+     * @return Collection<int, ProductPrice>
+     */
+    public function getProductPrices(): Collection
+    {
+        return $this->productPrices;
+    }
+
+    /**
+     * @return Collection<int, ProductImage>
      */
     public function getProductImages(): Collection
     {
@@ -982,9 +945,7 @@ class Product
     }
 
     /**
-     * @return ProductOption[]|Collection
-     *
-     * @psalm-return Collection<int, ProductOption>
+     * @return Collection<int, ProductOption>
      */
     public function getProductOptions(): Collection
     {
@@ -992,9 +953,7 @@ class Product
     }
 
     /**
-     * @return ProductToLayout[]|Collection
-     *
-     * @psalm-return Collection<int, ProductToLayout>
+     * @return Collection<int, ProductToLayout>
      */
     public function getProductToLayouts(): Collection
     {
@@ -1002,9 +961,7 @@ class Product
     }
 
     /**
-     * @return ProductAttribute[]|Collection
-     *
-     * @psalm-return Collection<int, ProductAttribute>
+     * @return Collection<int, ProductAttribute>
      */
     public function getProductAttributes(): Collection
     {
@@ -1012,19 +969,15 @@ class Product
     }
 
     /**
-     * @return ProductCategory[]|Collection
-     *
-     * @psalm-return Collection<int, ProductCategory>
+     * @return Collection<int, ProductCategory>
      */
     public function getProductToCategories(): Collection
     {
         return $this->productToCategories;
     }
 
-    /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
-     */
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
     public function updatedTimestamps(): void
     {
         $this->setDateModified(new DateTimeImmutable());

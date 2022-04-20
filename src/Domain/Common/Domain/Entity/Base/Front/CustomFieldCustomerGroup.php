@@ -2,33 +2,26 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CustomFieldCustomerGroupRepository;
 
-/**
- * @ORM\Table(name="`oc_custom_field_customer_group`")
- * @ORM\Entity(repositoryClass=CustomFieldCustomerGroupRepository::class)
- */
+#[ORM\Table(name: "`oc_custom_field_customer_group`")]
+#[ORM\Entity(repositoryClass: CustomFieldCustomerGroupRepository::class)]
 class CustomFieldCustomerGroup
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=CustomField::class)
-     * @ORM\JoinColumn(name="`custom_field_id`", referencedColumnName="`custom_field_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: CustomField::class)]
+    #[ORM\JoinColumn(name: "`custom_field_id`", referencedColumnName: "`custom_field_id`")]
     private ?CustomField $customField = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=CustomerGroup::class)
-     * @ORM\JoinColumn(name="`customer_group_id`", referencedColumnName="`customer_group_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: CustomerGroup::class)]
+    #[ORM\JoinColumn(name: "`customer_group_id`", referencedColumnName: "`customer_group_id`")]
     private ?CustomerGroup $group = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`")
-     */
-    private ?bool $status = null;
+    #[ORM\Column(name: "`required`", type: Types::BOOLEAN)]
+    private ?bool $required = null;
 
     /**
      * @return CustomField|null
@@ -71,18 +64,18 @@ class CustomFieldCustomerGroup
     /**
      * @return bool|null
      */
-    public function getStatus(): ?bool
+    public function getRequired(): ?bool
     {
-        return $this->status;
+        return $this->required;
     }
 
     /**
-     * @param bool|null $status
+     * @param bool|null $required
      * @return CustomFieldCustomerGroup
      */
-    public function setStatus(?bool $status): self
+    public function setRequired(?bool $required): self
     {
-        $this->status = $status;
+        $this->required = $required;
 
         return $this;
     }

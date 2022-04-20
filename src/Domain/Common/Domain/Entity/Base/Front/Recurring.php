@@ -2,99 +2,70 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\RecurringRepository;
 
-/**
- * @ORM\Table(name="`oc_recurring`")
- * @ORM\Entity(repositoryClass=RecurringRepository::class)
- */
+#[ORM\Table(name: "`oc_recurring`")]
+#[ORM\Entity(repositoryClass: RecurringRepository::class)]
 class Recurring
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`recurring_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`recurring_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="float", name="`price`")
-     */
+    #[ORM\Column(name: "`price`", type: Types::FLOAT, columnDefinition: 'DECIMAL(10,4)')]
     private ?float $price = 0.0;
 
-    /**
-     * @ORM\Column(
-     *     type="string",
-     *     name="`frequency`",
-     *     columnDefinition="ENUM('day', 'week', 'semi_month', 'month', 'year')"
-     * )
-     */
+    #[ORM\Column(
+        name: "`frequency`",
+        type: Types::STRING,
+        columnDefinition: "ENUM('day', 'week', 'semi_month', 'month', 'year')")
+    ]
     private ?string $frequency = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`duration`", options={"unsigned":true})
-     */
+    #[ORM\Column(name: "`duration`", type: Types::INTEGER, options: ["unsigned" => true])]
     private ?int $duration = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`cycle`", options={"unsigned":true})
-     */
+    #[ORM\Column(name: "`cycle`", type: Types::INTEGER, options: ["unsigned" => true])]
     private ?int $cycle = null;
 
-    /**
-     * @ORM\Column(type="smallint", name="`trial_status`")
-     */
+    #[ORM\Column(name: "`trial_status`", type: Types::SMALLINT, columnDefinition: 'TINYINT')]
     private ?int $trialStatus = null;
 
-    /**
-     * @ORM\Column(type="float", name="`trial_price`")
-     */
+    #[ORM\Column(name: "`trial_price`", type: Types::FLOAT, columnDefinition: 'DECIMAL(10,4)')]
     private ?int $trialPrice = null;
 
-    /**
-     * @ORM\Column(
-     *     type="string",
-     *     name="`trial_frequency`",
-     *     columnDefinition="ENUM('day', 'week', 'semi_month', 'month', 'year')"
-     * )
-     */
+    #[ORM\Column(
+        type: Types::STRING,
+        name: "`trial_frequency`",
+        columnDefinition: "ENUM('day', 'week', 'semi_month', 'month', 'year')")
+    ]
     private ?string $trialFrequency = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`trial_duration`", options={"unsigned":true})
-     */
+    #[ORM\Column(name: "`trial_duration`", type: Types::INTEGER, options: ["unsigned" => true])]
     private ?int $trialDuration = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`trial_cycle`", options={"unsigned":true})
-     */
+    #[ORM\Column(name: "`trial_cycle`", type: Types::INTEGER, options: ["unsigned" => true])]
     private ?int $trialCycle = null;
 
-    /**
-     * @ORM\Column(type="smallint", name="`status`")
-     */
+    #[ORM\Column(name: "`status`", type: Types::SMALLINT, columnDefinition: 'TINYINT')]
     private ?int $status = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`")
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
     private ?int $sortOrder = null;
 
-    /**
-     * @var Collection|RecurringDescription[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="recurring",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=RecurringDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, RecurringDescription>
-     */
+    /** @var Collection<int, RecurringDescription> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "recurring",
+        cascade: ["persist", "remove"],
+        targetEntity: RecurringDescription::class
+    )]
     private Collection $descriptions;
 
     public function __construct()
@@ -331,9 +302,7 @@ class Recurring
     }
 
     /**
-     * @return RecurringDescription[]|Collection
-     *
-     * @psalm-return Collection<int, RecurringDescription>
+     * @return Collection<int, RecurringDescription>
      */
     public function getDescriptions(): Collection
     {

@@ -2,32 +2,25 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CategoryPathRepository;
 
-/**
- * @ORM\Table(name="`oc_category_path`")
- * @ORM\Entity(repositoryClass=CategoryPathRepository::class)
- */
+#[ORM\Table(name: "`oc_category_path`")]
+#[ORM\Entity(repositoryClass: CategoryPathRepository::class)]
 class CategoryPath
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Category::class)
-     * @ORM\JoinColumn(name="`category_id`", referencedColumnName="`category_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\JoinColumn(name: "`category_id`", referencedColumnName: "`category_id`")]
     private ?Category $categoryA = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Category::class)
-     * @ORM\JoinColumn(name="`path_id`", referencedColumnName="`category_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\JoinColumn(name: "`path_id`", referencedColumnName: "`category_id`")]
     private ?Category $categoryB = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`level`")
-     */
+    #[ORM\Column(name: "`level`", type: Types::INTEGER)]
     private ?int $level = null;
 
     /**

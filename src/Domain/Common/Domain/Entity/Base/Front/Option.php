@@ -2,66 +2,55 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OptionRepository;
 
-/**
- * @ORM\Entity(repositoryClass=OptionRepository::class)
- * @ORM\Table(name="`oc_option`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\Table(name: "`oc_option`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: OptionRepository::class)]
 class Option
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`option_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`option_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`type`", length=32)
-     */
+    #[ORM\Column(name: "`type`", type: Types::STRING, length: 32)]
     private ?string $type = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`")
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
     private ?int $sortOrder = null;
 
-    /**
-     * @var Collection|OptionValue[]
-     * @ORM\OneToMany(
-     *     mappedBy="option",
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     cascade={"persist", "remove"},
-     *     targetEntity=OptionValue::class
-     * )
-     *
-     * @psalm-var Collection<int, OptionValue>
-     */
-    private Collection $optionValues;
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
 
-    /**
-     * @var Collection|OptionDescription[]
-     * @ORM\OneToMany(
-     *     mappedBy="option",
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     cascade={"persist", "remove"},
-     *     targetEntity=OptionDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, OptionDescription>
-     */
+    /** @var Collection<int, OptionDescription> */
+    #[ORM\OneToMany(
+        mappedBy: "option",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: OptionDescription::class
+    )]
     private Collection $descriptions;
+
+    /** @var Collection<int, OptionValue> */
+    #[ORM\OneToMany(
+        mappedBy: "option",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: OptionValue::class
+    )]
+    private Collection $optionValues;
 
     public function __construct()
     {
-        $this->optionValues = new ArrayCollection();
         $this->descriptions = new ArrayCollection();
+        $this->optionValues = new ArrayCollection();
     }
 
     /**
@@ -122,22 +111,37 @@ class Option
     }
 
     /**
-     * @return OptionValue[]|Collection
-     *
-     * @psalm-return Collection<int, OptionValue>
+     * @return int|null
      */
-    public function getOptionValues(): Collection
+    public function getBackId(): ?int
     {
-        return $this->optionValues;
+        return $this->backId;
     }
 
     /**
-     * @return OptionDescription[]|Collection
-     *
-     * @psalm-return Collection<int, OptionDescription>
+     * @param int|null $backId
+     * @return Option
+     */
+    public function setBackId(?int $backId): Option
+    {
+        $this->backId = $backId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OptionDescription>
      */
     public function getDescriptions(): Collection
     {
         return $this->descriptions;
+    }
+
+    /**
+     * @return Collection<int, OptionValue>
+     */
+    public function getOptionValues(): Collection
+    {
+        return $this->optionValues;
     }
 }

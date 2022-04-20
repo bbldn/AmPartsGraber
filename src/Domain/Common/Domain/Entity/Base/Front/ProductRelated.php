@@ -5,24 +5,18 @@ namespace App\Domain\Common\Domain\Entity\Base\Front;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ProductRelatedRepository;
 
-/**
- * @ORM\Table(name="`oc_product_related`")
- * @ORM\Entity(repositoryClass=ProductRelatedRepository::class)
- */
+#[ORM\Table(name: "`oc_product_related`")]
+#[ORM\Entity(repositoryClass: ProductRelatedRepository::class)]
 class ProductRelated
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`")]
     private ?Product $productA = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(name="`related_id`", referencedColumnName="`related_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "`related_id`", referencedColumnName: "`product_id`")]
     private ?Product $productB = null;
 
     /**

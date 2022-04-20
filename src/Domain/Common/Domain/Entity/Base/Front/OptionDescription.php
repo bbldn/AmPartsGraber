@@ -2,32 +2,25 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OptionDescriptionRepository;
 
-/**
- * @ORM\Table(name="`oc_option_description`")
- * @ORM\Entity(repositoryClass=OptionDescriptionRepository::class)
- */
+#[ORM\Table(name: "`oc_option_description`")]
+#[ORM\Entity(repositoryClass: OptionDescriptionRepository::class)]
 class OptionDescription
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Option::class)
-     * @ORM\JoinColumn(name="`option_id`", referencedColumnName="`option_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Option::class, inversedBy: "descriptions")]
+    #[ORM\JoinColumn(name: "`option_id`", referencedColumnName: "`option_id`")]
     private ?Option $option = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`")]
     private ?Language $language = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=128)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 128)]
     private ?string $name = null;
 
     /**

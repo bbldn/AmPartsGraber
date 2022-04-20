@@ -2,41 +2,36 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\AttributeGroupRepository;
 
-/**
- * @ORM\Entity(repositoryClass=AttributeGroupRepository::class)
- * @ORM\Table(name="`oc_attribute_group`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\Table(name: "`oc_attribute_group`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: AttributeGroupRepository::class)]
 class AttributeGroup
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`attribute_group_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`attribute_group_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`")
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
     private ?int $sortOrder = null;
 
-    /**
-     * @var Collection|AttributeGroupDescription[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="attributeGroup",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=AttributeGroupDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, AttributeGroupDescription>
-     */
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
+
+    /** @var Collection<int, AttributeGroupDescription> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "attributeGroup",
+        cascade: ["persist", "remove"],
+        targetEntity: AttributeGroupDescription::class
+    )]
     private Collection $descriptions;
 
     public function __construct()
@@ -72,10 +67,10 @@ class AttributeGroup
     }
 
     /**
-     * @param int $sortOrder
+     * @param int|null $sortOrder
      * @return AttributeGroup
      */
-    public function setSortOrder(int $sortOrder): self
+    public function setSortOrder(?int $sortOrder): self
     {
         $this->sortOrder = $sortOrder;
 
@@ -83,9 +78,26 @@ class AttributeGroup
     }
 
     /**
-     * @return Collection|AttributeGroupDescription[]
-     *
-     * @psalm-return Collection<int, AttributeGroupDescription>
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return AttributeGroup
+     */
+    public function setBackId(?int $backId): self
+    {
+        $this->backId = $backId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AttributeGroupDescription>
      */
     public function getDescriptions(): Collection
     {

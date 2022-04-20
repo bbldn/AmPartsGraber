@@ -3,47 +3,34 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OrderRecurringTransactionRepository;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="`oc_order_recurring_transaction`")
- * @ORM\Entity(repositoryClass=OrderRecurringTransactionRepository::class)
- */
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`oc_order_recurring_transaction`")]
+#[ORM\Entity(repositoryClass: OrderRecurringTransactionRepository::class)]
 class OrderRecurringTransaction
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`order_recurring_transaction_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`order_recurring_transaction_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=OrderRecurring::class)
-     * @ORM\JoinColumn(name="`order_recurring_id`", referencedColumnName="`order_recurring_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: OrderRecurring::class)]
+    #[ORM\JoinColumn(name: "`order_recurring_id`", referencedColumnName: "`order_recurring_id`", nullable: true)]
     private ?OrderRecurring $orderRecurring = null;
 
-    /**
-     * @ORM\Column(type="string", name="`reference`", length=255)
-     */
+    #[ORM\Column(name: "`reference`", type: Types::STRING, length: 255)]
     private ?string $reference = null;
 
-    /**
-     * @ORM\Column(type="string", name="`type`", length=255)
-     */
+    #[ORM\Column(name: "`type`", type: Types::STRING, length: 255)]
     private ?string $type = null;
 
-    /**
-     * @ORM\Column(type="float", name="`amount`")
-     */
+    #[ORM\Column(name: "`amount`", type: Types::FLOAT, columnDefinition: 'DECIMAL(10,4)')]
     private ?float $amount = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
     /**
@@ -160,10 +147,8 @@ class OrderRecurringTransaction
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
-     */
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
     public function updatedTimestamps(): void
     {
         if (null === $this->getDateAdded()) {

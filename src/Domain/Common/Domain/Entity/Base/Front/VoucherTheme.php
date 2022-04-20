@@ -2,41 +2,32 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\VoucherThemeRepository;
 
-/**
- * @ORM\Table(name="`oc_voucher_theme`")
- * @ORM\Entity(repositoryClass=VoucherThemeRepository::class)
- */
+#[ORM\Table(name: "`oc_voucher_theme`")]
+#[ORM\Entity(repositoryClass: VoucherThemeRepository::class)]
 class VoucherTheme
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`voucher_theme_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`voucher_theme_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`image`", length=255)
-     */
+    #[ORM\Column(name: "`image`", type: Types::STRING, length: 255)]
     private ?string $image = null;
 
-    /**
-     * @var Collection|VoucherThemeDescription[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="voucherTheme",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=VoucherThemeDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, VoucherThemeDescription>
-     */
+    /** @var Collection<int, VoucherThemeDescription> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "voucherTheme",
+        cascade: ["persist", "remove"],
+        targetEntity: VoucherThemeDescription::class
+    )]
     private Collection $descriptions;
 
     public function __construct()
@@ -83,9 +74,7 @@ class VoucherTheme
     }
 
     /**
-     * @return VoucherThemeDescription[]|Collection
-     *
-     * @psalm-return Collection<int, VoucherThemeDescription>
+     * @return Collection<int, VoucherThemeDescription>
      */
     public function getDescriptions(): Collection
     {

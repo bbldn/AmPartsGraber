@@ -33,6 +33,5 @@ class Synchronizer
         $categoryFront->setSortOrder(0);
         $categoryFront->setStatus(true);
         $categoryFront->setParent($parent);
-        $categoryFront->setVendorCode($categoryGraber->getUrl());
     }
 }

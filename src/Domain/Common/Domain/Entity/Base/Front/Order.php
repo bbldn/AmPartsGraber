@@ -3,389 +3,294 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OrderRepository;
 
-/**
- * @ORM\Entity(repositoryClass=OrderRepository::class)
- * @ORM\Table(name="`oc_order`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\Table(name: "`oc_order`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: OrderRepository::class)]
 class Order
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`order_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`order_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`invoice_no`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`invoice_no`", type: Types::INTEGER, options: ["default" => 0])]
     private ?int $invoiceNo = 0;
 
-    /**
-     * @ORM\Column(type="string", name="`invoice_prefix`", length=26)
-     */
+    #[ORM\Column(name: "`invoice_prefix`", type: Types::STRING, length: 26)]
     private ?string $invoicePrefix = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Shop::class)
-     * @ORM\JoinColumn(name="`store_id`", referencedColumnName="`store_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Shop::class)]
+    #[ORM\JoinColumn(name: "`store_id`", referencedColumnName: "`store_id`", nullable: true)]
     private ?Shop $shop = null;
 
-    /**
-     * @ORM\Column(type="string", name="`store_name`", length=64)
-     */
+    #[ORM\Column(name: "`store_name`", type: Types::STRING, length: 64)]
     private ?string $shopName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`store_url`", length=255)
-     */
+    #[ORM\Column(name: "`store_url`", type: Types::STRING, length: 255)]
     private ?string $shopUrl = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Customer::class)
-     * @ORM\JoinColumn(name="`customer_id`", referencedColumnName="`customer_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Customer::class)]
+    #[ORM\JoinColumn(name: "`customer_id`", referencedColumnName: "`customer_id`", nullable: true)]
     private ?Customer $customer = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=CustomerGroup::class)
-     * @ORM\JoinColumn(name="`customer_group_id`", referencedColumnName="`customer_group_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: CustomerGroup::class)]
+    #[ORM\JoinColumn(name: "`customer_group_id`", referencedColumnName: "`customer_group_id`", nullable: true)]
     private ?CustomerGroup $customerGroup = null;
 
-    /**
-     * @ORM\Column(type="string", name="`firstname`", length=32)
-     */
+    #[ORM\Column(name: "`firstname`", type: Types::STRING, length: 255)]
     private ?string $firstName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`lastname`", length=32)
-     */
+    #[ORM\Column(name: "`lastname`", type: Types::STRING, length: 255)]
     private ?string $lastName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`email`", length=96)
-     */
+    #[ORM\Column(name: "`email`", type: Types::STRING, length: 255)]
     private ?string $email = null;
 
-    /**
-     * @ORM\Column(type="string", name="`telephone`", length=32)
-     */
+    #[ORM\Column(name: "`telephone`", type: Types::STRING, length: 32)]
     private ?string $phone = null;
 
-    /**
-     * @ORM\Column(type="string", name="`fax`", length=32)
-     */
+    #[ORM\Column(name: "`fax`", type: Types::STRING, length: 32)]
     private ?string $fax = null;
 
-    /**
-     * @ORM\Column(type="string", name="`custom_field`", length=255)
-     */
+    #[ORM\Column(name: "`custom_field`", type: Types::TEXT)]
     private ?string $customField = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_firstname`", length=32)
-     */
+    #[ORM\Column(name: "`payment_firstname`", type: Types::STRING, length: 255)]
     private ?string $paymentFirstName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_lastname`", length=32)
-     */
+    #[ORM\Column(name: "`payment_lastname`", type: Types::STRING, length: 255)]
     private ?string $paymentLastName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_company`", length=60)
-     */
+    #[ORM\Column(name: "`payment_company`", type: Types::STRING, length: 60)]
     private ?string $paymentCompany = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_address_1`", length=128)
-     */
+    #[ORM\Column(name: "`payment_address_1`", type: Types::STRING, length: 255)]
     private ?string $paymentAddress1 = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_address_2`", length=128)
-     */
+    #[ORM\Column(name: "`payment_address_2`", type: Types::STRING, length: 255)]
     private ?string $paymentAddress2 = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_city`", length=128)
-     */
+    #[ORM\Column(name: "`payment_city`", type: Types::STRING, length: 255)]
     private ?string $paymentCity = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_postcode`", length=10)
-     */
+    #[ORM\Column(name: "`payment_postcode`", type: Types::STRING, length: 10)]
     private ?string $paymentPostCode = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_country`", length=128)
-     */
+    #[ORM\Column(name: "`payment_country`", type: Types::STRING, length: 128)]
     private ?string $paymentCountryName = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Country::class)
-     * @ORM\JoinColumn(name="`payment_country_id`", referencedColumnName="`country_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Country::class)]
+    #[ORM\JoinColumn(name: "`payment_country_id`", referencedColumnName: "`country_id`", nullable: true)]
     private ?Country $paymentCountry = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_zone`", length=128)
-     */
+    #[ORM\Column(name: "`payment_zone`", type: Types::STRING, length: 255)]
     private ?string $paymentZoneName = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Zone::class)
-     * @ORM\JoinColumn(name="`payment_zone_id`", referencedColumnName="`zone_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\JoinColumn(name: "`payment_zone_id`", referencedColumnName: "`zone_id`", nullable: true)]
     private ?Zone $paymentZone = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_address_format`", length=255)
-     */
+    #[ORM\Column(name: "`payment_address_format`", type: Types::TEXT)]
     private ?string $paymentAddressFormat = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_custom_field`", length=255)
-     */
+    #[ORM\Column(name: "`payment_custom_field`", type: Types::TEXT)]
     private ?string $paymentCustomField = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_method`", length=128)
-     */
+    #[ORM\Column(name: "`payment_method`", type: Types::STRING, length: 128)]
     private ?string $paymentMethodName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`payment_code`", length=128)
-     */
+    #[ORM\Column(name: "`payment_code`", type: Types::STRING, length: 128)]
     private ?string $paymentCode = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_firstname`", length=32)
-     */
+    #[ORM\Column(name: "`shipping_firstname`", type: Types::STRING, length: 255)]
     private ?string $shippingFirstName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_lastname`", length=32)
-     */
+    #[ORM\Column(name: "`shipping_lastname`", type: Types::STRING, length: 255)]
     private ?string $shippingLastName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_company`", length=40)
-     */
+    #[ORM\Column(name: "`shipping_company`", type: Types::STRING, length: 40)]
     private ?string $shippingCompany = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_address_1`", length=128)
-     */
+    #[ORM\Column(name: "`shipping_address_1`", type: Types::STRING, length: 255)]
     private ?string $shippingAddress1 = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_address_2`", length=128)
-     */
+    #[ORM\Column(name: "`shipping_address_2`", type: Types::STRING, length: 255)]
     private ?string $shippingAddress2 = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_city`", length=128)
-     */
+    #[ORM\Column(name: "`shipping_city`", type: Types::STRING, length: 255)]
     private ?string $shippingCity = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_postcode`", length=10)
-     */
+    #[ORM\Column(name: "`shipping_postcode`", type: Types::STRING, length: 10)]
     private ?string $shippingPostCode = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_country`", length=128)
-     */
+    #[ORM\Column(name: "`shipping_country`", type: Types::STRING, length: 128)]
     private ?string $shippingCountryName = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Country::class)
-     * @ORM\JoinColumn(name="`shipping_country_id`", referencedColumnName="`country_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Country::class)]
+    #[ORM\JoinColumn(name: "`shipping_country_id`", referencedColumnName: "`country_id`", nullable: true)]
     private ?Country $shippingCountry = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_zone`", length=128)
-     */
+    #[ORM\Column(name: "`shipping_zone`", type: Types::STRING, length: 255)]
     private ?string $shippingZoneName = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Zone::class)
-     * @ORM\JoinColumn(name="`shipping_zone_id`", referencedColumnName="`zone_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\JoinColumn(name: "`shipping_zone_id`", referencedColumnName: "`zone_id`", nullable: true)]
     private ?Zone $shippingZone = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_address_format`", length=255)
-     */
+    #[ORM\Column(name: "`shipping_address_format`", type: Types::STRING, length: 255)]
     private ?string $shippingAddressFormat = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_custom_field`", length=255)
-     */
+    #[ORM\Column(name: "`shipping_custom_field`", type: Types::STRING, length: 255)]
     private ?string $shippingCustomField = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_method`", length=128)
-     */
+    #[ORM\Column(name: "`shipping_method`", type: Types::STRING, length: 128)]
     private ?string $shippingMethodName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_code`", length=128)
-     */
+    #[ORM\Column(name: "`shipping_code`", type: Types::STRING, length: 128)]
     private ?string $shippingCode = null;
 
-    /**
-     * @ORM\Column(type="string", name="`comment`", length=255)
-     */
+    #[ORM\Column(name: "`comment`", type: Types::TEXT)]
     private ?string $comment = null;
 
-    /**
-     * @ORM\Column(type="float", name="`total`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`total`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)', options: ["default" => 0])]
     private ?float $total = 0.0;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=OrderStatus::class)
-     * @ORM\JoinColumn(name="`order_status_id`", referencedColumnName="`order_status_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: OrderStatus::class)]
+    #[ORM\JoinColumn(name: "`order_status_id`", referencedColumnName: "`order_status_id`", nullable: true)]
     private ?OrderStatus $orderStatus = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`affiliate_id`")
-     */
+    #[ORM\Column(name: "`affiliate_id`", type: Types::INTEGER, nullable: true)]
     private ?int $affiliateId = null;
 
-    /**
-     * @ORM\Column(type="float", name="`commission`")
-     */
+    #[ORM\Column(name: "`commission`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)')]
     private ?float $commission = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Marketing::class)
-     * @ORM\JoinColumn(name="`marketing_id`", referencedColumnName="`marketing_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Marketing::class)]
+    #[ORM\JoinColumn(name: "`marketing_id`", referencedColumnName: "`marketing_id`", nullable: true)]
     private ?Marketing $marketing = null;
 
-    /**
-     * @ORM\Column(type="string", name="`tracking`", length=64)
-     */
+    #[ORM\Column(name: "`tracking`", type: Types::STRING, length: 64)]
     private ?string $tracking = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`", nullable: true)]
     private ?Language $language = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Currency::class)
-     * @ORM\JoinColumn(name="`currency_id`", referencedColumnName="`currency_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Currency::class)]
+    #[ORM\JoinColumn(name: "`currency_id`", referencedColumnName: "`currency_id`", nullable: true)]
     private ?Currency $currency = null;
 
-    /**
-     * @ORM\Column(type="string", name="`currency_code`", length=3)
-     */
+    #[ORM\Column(name: "`currency_code`", type: Types::STRING, length: 3)]
     private ?string $currencyCode = null;
 
-    /**
-     * @ORM\Column(type="float", name="`currency_value`", options={"default": 1})
-     */
+    #[ORM\Column(name: "`currency_value`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,8)', options: ["default" => 1])]
     private ?float $currencyValue = 1.0;
 
-    /**
-     * @ORM\Column(type="string", name="`ip`", length=40)
-     */
+    #[ORM\Column(name: "`ip`", type: Types::STRING, length: 40)]
     private ?string $ip = null;
 
-    /**
-     * @ORM\Column(type="string", name="`forwarded_ip`", length=255)
-     */
+    #[ORM\Column(name: "`forwarded_ip`", type: Types::STRING, length: 255)]
     private ?string $forwardedIp = null;
 
-    /**
-     * @ORM\Column(type="string", name="`user_agent`", length=255)
-     */
+    #[ORM\Column(name: "`user_agent`", type: Types::STRING, length: 255)]
     private ?string $userAgent = null;
 
-    /**
-     * @ORM\Column(type="string", name="`accept_language`", length=255)
-     */
+    #[ORM\Column(name: "`accept_language`", type: Types::STRING, length: 255)]
     private ?string $acceptLanguage = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_modified`")
-     */
+    #[ORM\Column(name: "`date_modified`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateModified = null;
 
-    /**
-     * @var Collection|OrderTotal[]
-     * @ORM\OneToMany(
-     *     mappedBy="order",
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=OrderTotal::class
-     * )
-     *
-     * @psalm-var Collection<int, OrderTotal>
-     */
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
+
+    /** @var Collection<int, OrderTotal> */
+    #[ORM\OneToMany(
+        mappedBy: "order",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: OrderTotal::class
+    )]
     private Collection $orderTotals;
 
-    /**
-     * @var Collection|OrderHistory[]
-     * @ORM\OneToMany(
-     *     mappedBy="order",
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     cascade={"persist", "remove"},
-     *     targetEntity=OrderHistory::class
-     * )
-     *
-     * @psalm-var Collection<int, OrderHistory>
-     */
+    /** @var Collection<int, OrderHistory> */
+    #[ORM\OneToMany(
+        mappedBy: "order",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: OrderHistory::class
+    )]
     private Collection $orderHistory;
 
-    /**
-     * @var Collection|OrderProduct[]
-     * @ORM\OneToMany(
-     *     mappedBy="order",
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     cascade={"persist", "remove"},
-     *     targetEntity=OrderProduct::class
-     * )
-     *
-     * @psalm-var Collection<int, OrderProduct>
-     */
+    /** @var Collection<int, OrderProduct> */
+    #[ORM\OneToMany(
+        mappedBy: "order",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: OrderProduct::class
+    )]
     private Collection $orderProducts;
 
-    /**
-     * @var Collection|OrderSimpleFields[]
-     * @ORM\OneToMany(
-     *     mappedBy="order",
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=OrderSimpleFields::class
-     * )
-     *
-     * @psalm-var Collection<int, OrderSimpleFields>
-     */
+    /** @var Collection<int, OrderVoucher> */
+    #[ORM\OneToMany(
+        mappedBy: "order",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: OrderVoucher::class
+    )]
+    private Collection $orderVouchers;
+
+    /** @var Collection<int, OrderShipment> */
+    #[ORM\OneToMany(
+        mappedBy: "order",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: OrderShipment::class
+    )]
+    private Collection $orderShipments;
+
+    /** @var Collection<int, OrderRecurring> */
+    #[ORM\OneToMany(
+        mappedBy: "order",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: OrderRecurring::class
+    )]
+    private Collection $orderRecurrings;
+
+    /** @var Collection<int, OrderCustomField> */
+    #[ORM\OneToMany(
+        mappedBy: "order",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: OrderCustomField::class
+    )]
+    private Collection $orderCustomFields;
+
+    /** @var Collection<int, OrderSimpleFields> */
+    #[ORM\OneToMany(
+        mappedBy: "order",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: OrderSimpleFields::class
+    )]
     private Collection $orderSimpleFields;
 
     public function __construct()
@@ -393,6 +298,10 @@ class Order
         $this->orderTotals = new ArrayCollection();
         $this->orderHistory = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
+        $this->orderVouchers = new ArrayCollection();
+        $this->orderShipments = new ArrayCollection();
+        $this->orderRecurrings = new ArrayCollection();
+        $this->orderCustomFields = new ArrayCollection();
         $this->orderSimpleFields = new ArrayCollection();
     }
 
@@ -1556,9 +1465,26 @@ class Order
     }
 
     /**
-     * @return OrderTotal[]|Collection
-     *
-     * @psalm-return Collection<int, OrderTotal>
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return Order
+     */
+    public function setBackId(?int $backId): self
+    {
+        $this->backId = $backId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderTotal>
      */
     public function getOrderTotals(): Collection
     {
@@ -1566,9 +1492,7 @@ class Order
     }
 
     /**
-     * @return OrderHistory[]|Collection
-     *
-     * @psalm-return Collection<int, OrderHistory>
+     * @return Collection<int, OrderHistory>
      */
     public function getOrderHistory(): Collection
     {
@@ -1576,9 +1500,7 @@ class Order
     }
 
     /**
-     * @return OrderProduct[]|Collection
-     *
-     * @psalm-return Collection<int, OrderProduct>
+     * @return Collection<int, OrderProduct>
      */
     public function getOrderProducts(): Collection
     {
@@ -1586,9 +1508,39 @@ class Order
     }
 
     /**
-     * @return OrderSimpleFields[]|Collection
-     *
-     * @psalm-return Collection<int, OrderSimpleFields>
+     * @return Collection<int, OrderVoucher>
+     */
+    public function getOrderVouchers(): Collection
+    {
+        return $this->orderVouchers;
+    }
+
+    /**
+     * @return Collection<int, OrderShipment>
+     */
+    public function getOrderShipments(): Collection
+    {
+        return $this->orderShipments;
+    }
+
+    /**
+     * @return Collection<int, OrderRecurring>
+     */
+    public function getOrderRecurrings(): Collection
+    {
+        return $this->orderRecurrings;
+    }
+
+    /**
+     * @return Collection<int, OrderCustomField>
+     */
+    public function getOrderCustomFields(): Collection
+    {
+        return $this->orderCustomFields;
+    }
+
+    /**
+     * @return Collection<int, OrderSimpleFields>
      */
     public function getOrderSimpleFields(): Collection
     {

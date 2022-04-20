@@ -2,32 +2,42 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CustomFieldValueRepository;
 
-/**
- * @ORM\Table(name="`oc_custom_field_value`")
- * @ORM\Entity(repositoryClass=CustomFieldValueRepository::class)
- */
+#[ORM\Table(name: "`oc_custom_field_value`")]
+#[ORM\Entity(repositoryClass: CustomFieldValueRepository::class)]
 class CustomFieldValue
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`custom_field_value_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`custom_field_value_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=CustomField::class)
-     * @ORM\JoinColumn(name="`custom_field_id`", referencedColumnName="`custom_field_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: CustomField::class)]
+    #[ORM\JoinColumn(name: "`custom_field_id`", referencedColumnName: "`custom_field_id`", nullable: true)]
     private ?CustomField $customField = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`")
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
     private ?int $sortOrder = null;
+
+    /** @var Collection<int, CustomFieldValueDescription> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "customFieldValue",
+        cascade: ["persist", "remove"],
+        targetEntity: CustomFieldValueDescription::class
+    )]
+    private Collection $descriptions;
+
+    public function __construct()
+    {
+        $this->descriptions = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -84,5 +94,13 @@ class CustomFieldValue
         $this->sortOrder = $sortOrder;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, CustomFieldValueDescription>
+     */
+    public function getDescriptions(): Collection
+    {
+        return $this->descriptions;
     }
 }

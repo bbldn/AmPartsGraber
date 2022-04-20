@@ -2,79 +2,53 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\AddressRepository;
 
-/**
- * @ORM\Table(name="`oc_address`")
- * @ORM\Entity(repositoryClass=AddressRepository::class)
- */
+#[ORM\Table(name: "`oc_address`")]
+#[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`address_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`address_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="address")
-     * @ORM\JoinColumn(name="`customer_id`", referencedColumnName="`customer_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: "address")]
+    #[ORM\JoinColumn(name: "`customer_id`", referencedColumnName: "`customer_id`", nullable: true)]
     private ?Customer $customer = null;
 
-    /**
-     * @ORM\Column(type="string", name="`firstname`", length=32)
-     */
+    #[ORM\Column(name: "`firstname`", type: Types::STRING, length: 32)]
     private ?string $firstName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`lastname`", length=32)
-     */
+    #[ORM\Column(name: "`lastname`", type: Types::STRING, length: 32)]
     private ?string $lastName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`company`", length=40)
-     */
+    #[ORM\Column(name: "`company`", type: Types::STRING, length: 40)]
     private ?string $company = null;
 
-    /**
-     * @ORM\Column(type="string", name="`address_1`", length=128)
-     */
+    #[ORM\Column(name: "`address_1`", type: Types::STRING, length: 128)]
     private ?string $address1 = null;
 
-    /**
-     * @ORM\Column(type="string", name="`address_2`", length=128)
-     */
+    #[ORM\Column(name: "`address_2`", type: Types::STRING, length: 128)]
     private ?string $address2 = null;
 
-    /**
-     * @ORM\Column(type="string", name="`city`", length=128)
-     */
+    #[ORM\Column(name: "`city`", type: Types::STRING, length: 128)]
     private ?string $city = null;
 
-    /**
-     * @ORM\Column(type="string", name="`postcode`", length=10)
-     */
+    #[ORM\Column(name: "`postcode`", type: Types::STRING, length: 10)]
     private ?string $postCode = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Country::class)
-     * @ORM\JoinColumn(name="`country_id`", referencedColumnName="`country_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Country::class)]
+    #[ORM\JoinColumn(name: "`country_id`", referencedColumnName: "`country_id`", nullable: true)]
     private ?Country $country = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Zone::class)
-     * @ORM\JoinColumn(name="`zone_id`", referencedColumnName="`zone_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\JoinColumn(name: "`zone_id`", referencedColumnName: "`zone_id`", nullable: true)]
     private ?Zone $zone = null;
 
-    /**
-     * @var string|null $customField
-     * @ORM\Column(type="text", name="`custom_field`")
-     */
+    #[ORM\Column(name: "`custom_field`", type: Types::TEXT)]
     private ?string $customField = null;
 
     /**

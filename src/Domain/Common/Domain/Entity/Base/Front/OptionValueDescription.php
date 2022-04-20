@@ -2,38 +2,29 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OptionValueDescriptionRepository;
 
-/**
- * @ORM\Table(name="`oc_option_value_description`")
- * @ORM\Entity(repositoryClass=OptionValueDescriptionRepository::class)
- */
+#[ORM\Table(name: "`oc_option_value_description`")]
+#[ORM\Entity(repositoryClass: OptionValueDescriptionRepository::class)]
 class OptionValueDescription
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=OptionValue::class)
-     * @ORM\JoinColumn(name="`option_value_id`", referencedColumnName="`option_value_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: OptionValue::class)]
+    #[ORM\JoinColumn(name: "`option_value_id`", referencedColumnName: "`option_value_id`")]
     private ?OptionValue $optionValue = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`")]
     private ?Language $language = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Option::class)
-     * @ORM\JoinColumn(name="`option_id`", referencedColumnName="`option_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Option::class)]
+    #[ORM\JoinColumn(name: "`option_id`", referencedColumnName: "`option_id`", nullable: true)]
     private ?Option $option = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=128)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 128)]
     private ?string $name = null;
 
     /**

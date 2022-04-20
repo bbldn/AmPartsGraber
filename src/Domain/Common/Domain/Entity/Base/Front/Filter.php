@@ -2,47 +2,36 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\FilterRepository;
 
-/**
- * @ORM\Table(name="`oc_filter`")
- * @ORM\Entity(repositoryClass=FilterRepository::class)
- */
+#[ORM\Table(name: "`oc_filter`")]
+#[ORM\Entity(repositoryClass: FilterRepository::class)]
 class Filter
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`filter_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`filter_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=FilterGroup::class)
-     * @ORM\JoinColumn(name="`filter_group_id`", referencedColumnName="`filter_group_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: FilterGroup::class)]
+    #[ORM\JoinColumn(name: "`filter_group_id`", referencedColumnName: "`filter_group_id`", nullable: true)]
     private ?FilterGroup $filterGroup = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`")
-     */
-    private ?int $sortOrder = 0;
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
+    private ?int $sortOrder = null;
 
-    /**
-     * @var Collection|FilterDescription[]
-     * @ORM\OneToMany(
-     *     mappedBy="filter",
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=FilterDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, FilterDescription>
-     */
+    /** @var Collection<int, FilterDescription> */
+    #[ORM\OneToMany(
+        mappedBy: "filter",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: FilterDescription::class
+    )]
     private Collection $descriptions;
 
     public function __construct()
@@ -108,9 +97,7 @@ class Filter
     }
 
     /**
-     * @return FilterDescription[]|Collection
-     *
-     * @psalm-return Collection<int, FilterDescription>
+     * @return Collection<int, FilterDescription>
      */
     public function getDescriptions(): Collection
     {

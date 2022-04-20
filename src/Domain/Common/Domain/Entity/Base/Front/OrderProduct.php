@@ -2,67 +2,46 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OrderProductRepository;
 
-/**
- * @ORM\Table(name="`oc_order_product`")
- * @ORM\Entity(repositoryClass=OrderProductRepository::class)
- */
+#[ORM\Table(name: "`oc_order_product`")]
+#[ORM\Entity(repositoryClass: OrderProductRepository::class)]
 class OrderProduct
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`order_product_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`order_product_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class)
-     * @ORM\JoinColumn(name="`order_id`", referencedColumnName="`order_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Order::class)]
+    #[ORM\JoinColumn(name: "`order_id`", referencedColumnName: "`order_id`", nullable: true)]
     private ?Order $order = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`", nullable: true)]
     private ?Product $product = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=255)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 255)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", name="`model`", length=64)
-     */
+    #[ORM\Column(name: "`model`", type: Types::STRING, length: 64)]
     private ?string $model = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`quantity`")
-     */
+    #[ORM\Column(name: "`quantity`", type: Types::INTEGER)]
     private ?int $quantity = null;
 
-    /**
-     * @ORM\Column(type="float", name="`price`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`price`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)', options: ["default" => 0])]
     private ?float $price = 0.0;
 
-    /**
-     * @ORM\Column(type="float", name="`total`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`total`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)', options: ["default" => 0])]
     private ?float $total = 0.0;
 
-    /**
-     * @ORM\Column(type="float", name="`tax`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`tax`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)', options: ["default" => 0])]
     private ?float $tax = 0.0;
 
-    /**
-     * @ORM\Column(type="integer", name="`reward`")
-     */
+    #[ORM\Column(name: "`reward`", type: Types::INTEGER)]
     private ?int $reward = null;
 
     /**

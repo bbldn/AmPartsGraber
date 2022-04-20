@@ -2,37 +2,28 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\LengthClassDescriptionRepository;
 
-/**
- * @ORM\Table(name="`oc_length_class_description`")
- * @ORM\Entity(repositoryClass=LengthClassDescriptionRepository::class)
- */
+#[ORM\Table(name: "`oc_length_class_description`")]
+#[ORM\Entity(repositoryClass: LengthClassDescriptionRepository::class)]
 class LengthClassDescription
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=LengthClass::class, inversedBy="descriptions")
-     * @ORM\JoinColumn(name="`length_class_id`", referencedColumnName="`length_class_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: LengthClass::class, inversedBy: "descriptions")]
+    #[ORM\JoinColumn(name: "`length_class_id`", referencedColumnName: "`length_class_id`")]
     private ?LengthClass $lengthClass = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`")]
     private ?Language $language = null;
 
-    /**
-     * @ORM\Column(type="string", name="`title`", length=32)
-     */
+    #[ORM\Column(name: "`title`", type: Types::STRING, length: 32)]
     private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="string", name="`unit`", length=4)
-     */
+    #[ORM\Column(name: "`unit`", type: Types::STRING, length: 4)]
     private ?string $unit = null;
 
     /**

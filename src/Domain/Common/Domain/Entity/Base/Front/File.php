@@ -3,51 +3,38 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\FileRepository;
 
-/**
- * @ORM\Table(name="`oc_download`")
- * @ORM\Entity(repositoryClass=FileRepository::class)
- */
+#[ORM\Table(name: "`oc_download`")]
+#[ORM\Entity(repositoryClass: FileRepository::class)]
 class File
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`download_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`download_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`filename`", length=160)
-     */
+    #[ORM\Column(name: "`filename`", type: Types::STRING, length: 160)]
     private ?string $filename = null;
 
-    /**
-     * @ORM\Column(type="string", name="`mask`", length=128)
-     */
+    #[ORM\Column(name: "`mask`", type: Types::STRING, length: 128)]
     private ?string $mask = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
-    /**
-     * @var Collection|FileDescription[]
-     * @ORM\OneToMany(
-     *     mappedBy="file",
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=FileDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, FileDescription>
-     */
+    /** @var Collection<int, FileDescription> */
+    #[ORM\OneToMany(
+        mappedBy: "file",
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"],
+        targetEntity: FileDescription::class
+    )]
     private Collection $descriptions;
 
     public function __construct()
@@ -132,9 +119,7 @@ class File
     }
 
     /**
-     * @return FileDescription[]|Collection
-     *
-     * @psalm-return Collection<int, FileDescription>
+     * @return Collection<int, FileDescription>
      */
     public function getDescriptions(): Collection
     {

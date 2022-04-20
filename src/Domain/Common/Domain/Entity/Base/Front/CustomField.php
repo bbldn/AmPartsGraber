@@ -2,51 +2,75 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CustomFieldRepository;
 
-/**
- * @ORM\Table(name="`oc_custom_field`")
- * @ORM\Entity(repositoryClass=CustomFieldRepository::class)
- */
+#[ORM\Table(name: "`oc_custom_field`")]
+#[ORM\Entity(repositoryClass: CustomFieldRepository::class)]
 class CustomField
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`custom_field_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`custom_field_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`type`", length=32)
-     */
+    #[ORM\Column(name: "`type`", type: Types::STRING, length: 32)]
     private ?string $type = null;
 
-    /**
-     * @ORM\Column(type="text", name="`value`")
-     */
+    #[ORM\Column(name: "`value`", type: Types::TEXT)]
     private ?string $value = null;
 
-    /**
-     * @ORM\Column(type="string", name="`validation`", length=255)
-     */
+    #[ORM\Column(name: "`validation`", type: Types::STRING, length: 255)]
     private ?string $validation = null;
 
-    /**
-     * @ORM\Column(type="string", name="`location`", length=10)
-     */
+    #[ORM\Column(name: "`location`", type: Types::STRING, length: 10)]
     private ?string $location = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`")
-     */
+    #[ORM\Column(name: "`status`", type: Types::BOOLEAN)]
     private ?bool $status = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`")
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
     private ?int $sortOrder = null;
+
+    /** @var Collection<int, CustomFieldValue> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "customField",
+        cascade: ["persist", "remove"],
+        targetEntity: CustomFieldValue::class
+    )]
+    private Collection $values;
+
+    /** @var Collection<int, CustomFieldDescription> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "customField",
+        cascade: ["persist", "remove"],
+        targetEntity: CustomFieldDescription::class
+    )]
+    private Collection $descriptions;
+
+    /**  @var Collection<int, CustomFieldCustomerGroup> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "customField",
+        cascade: ["persist", "remove"],
+        targetEntity: CustomFieldCustomerGroup::class
+    )]
+    private Collection $customerGroups;
+
+    public function __construct()
+    {
+        $this->values = new ArrayCollection();
+        $this->descriptions = new ArrayCollection();
+        $this->customerGroups = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -179,5 +203,29 @@ class CustomField
         $this->sortOrder = $sortOrder;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, CustomFieldValue>
+     */
+    public function getValues(): Collection
+    {
+        return $this->values;
+    }
+
+    /**
+     * @return Collection<int, CustomFieldDescription>
+     */
+    public function getDescriptions(): Collection
+    {
+        return $this->descriptions;
+    }
+
+    /**
+     * @return Collection<int, CustomFieldCustomerGroup>
+     */
+    public function getCustomerGroups(): Collection
+    {
+        return $this->customerGroups;
     }
 }

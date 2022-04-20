@@ -3,41 +3,30 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\TaxClassRepository;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="`oc_tax_class`")
- * @ORM\Entity(repositoryClass=TaxClassRepository::class)
- */
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`oc_tax_class`")]
+#[ORM\Entity(repositoryClass: TaxClassRepository::class)]
 class TaxClass
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`tax_class_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`tax_class_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`title`", length=32)
-     */
+    #[ORM\Column(name: "`title`", type: Types::STRING, length: 32)]
     private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="string", name="`description`", length=255)
-     */
+    #[ORM\Column(name: "`description`", type: Types::STRING, length: 255)]
     private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_modified`")
-     */
+    #[ORM\Column(name: "`datetime_immutable`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateModified = null;
 
     /**
@@ -135,10 +124,8 @@ class TaxClass
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
-     */
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
     public function updatedTimestamps(): void
     {
         $this->setDateModified(new DateTimeImmutable());

@@ -2,36 +2,31 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ShopRepository;
 
-/**
- * @ORM\Entity(repositoryClass=ShopRepository::class)
- * @ORM\Table(name="`oc_store`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\Table(name: "`oc_store`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: ShopRepository::class)]
 class Shop
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`store_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`store_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=64)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 64)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", name="`url`", length=255)
-     */
+    #[ORM\Column(name: "`url`", type: Types::STRING, length: 255)]
     private ?string $url = null;
 
-    /**
-     * @ORM\Column(type="string", name="`ssl`", length=255)
-     */
+    #[ORM\Column(name: "`ssl`", type: Types::STRING, length: 255)]
     private ?string $ssl = null;
+
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
 
     /**
      * @return int|null
@@ -105,6 +100,25 @@ class Shop
     public function setSsl(?string $ssl): self
     {
         $this->ssl = $ssl;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return Shop
+     */
+    public function setBackId(?int $backId): self
+    {
+        $this->backId = $backId;
 
         return $this;
     }

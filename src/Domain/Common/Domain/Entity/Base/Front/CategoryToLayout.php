@@ -5,30 +5,22 @@ namespace App\Domain\Common\Domain\Entity\Base\Front;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CategoryToLayoutRepository;
 
-/**
- * @ORM\Table(name="`oc_category_to_layout`")
- * @ORM\Entity(repositoryClass=CategoryToLayoutRepository::class)
- */
+#[ORM\Table(name: "`oc_category_to_layout`")]
+#[ORM\Entity(repositoryClass: CategoryToLayoutRepository::class)]
 class CategoryToLayout
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Category::class)
-     * @ORM\JoinColumn(name="`category_id`", referencedColumnName="`category_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\JoinColumn(name: "`category_id`", referencedColumnName: "`category_id`")]
     private ?Category $category = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Shop::class)
-     * @ORM\JoinColumn(name="`store_id`", referencedColumnName="`store_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Shop::class)]
+    #[ORM\JoinColumn(name: "`store_id`", referencedColumnName: "`store_id`")]
     private ?Shop $shop = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Layout::class)
-     * @ORM\JoinColumn(name="`layout_id`", referencedColumnName="`layout_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Layout::class)]
+    #[ORM\JoinColumn(name: "`layout_id`", referencedColumnName: "`layout_id`")]
     private ?Layout $layout = null;
 
     /**

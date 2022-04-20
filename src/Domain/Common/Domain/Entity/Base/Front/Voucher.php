@@ -3,78 +3,53 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\VoucherRepository;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="`oc_voucher`")
- * @ORM\Entity(repositoryClass=VoucherRepository::class)
- */
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`oc_voucher`")]
+#[ORM\Entity(repositoryClass: VoucherRepository::class)]
 class Voucher
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`voucher_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`voucher_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class)
-     * @ORM\JoinColumn(name="`order_id`", referencedColumnName="`order_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Order::class)]
+    #[ORM\JoinColumn(name: "`order_id`", referencedColumnName: "`order_id`")]
     private ?Order $order = null;
 
-    /**
-     * @ORM\Column(type="string", name="`code`", length=10)
-     */
+    #[ORM\Column(name: "`code`", type: Types::STRING, length: 10)]
     private ?string $code = null;
 
-    /**
-     * @ORM\Column(type="string", name="`from_name`", length=64)
-     */
+    #[ORM\Column(name: "`from_name`", type: Types::STRING, length: 64)]
     private ?string $fromName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`from_email`", length=96)
-     */
+    #[ORM\Column(name: "`from_email`", type: Types::STRING, length: 96)]
     private ?string $fromEmail = null;
 
-    /**
-     * @ORM\Column(type="string", name="`to_name`", length=64)
-     */
+    #[ORM\Column(name: "`to_name`", type: Types::STRING, length: 64)]
     private ?string $toName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`to_email`", length=96)
-     */
+    #[ORM\Column(name: "`to_email`", type: Types::STRING, length: 96)]
     private ?string $toEmail = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=VoucherTheme::class)
-     * @ORM\JoinColumn(name="`voucher_theme_id`", referencedColumnName="`voucher_theme_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: VoucherTheme::class)]
+    #[ORM\JoinColumn(name: "`voucher_theme_id`", referencedColumnName: "`voucher_theme_id`")]
     private ?VoucherTheme $voucherTheme = null;
 
-    /**
-     * @ORM\Column(type="string", name="`message`", length=255)
-     */
+    #[ORM\Column(name: "`message`", type: Types::STRING, length: 255)]
     private ?string $message = null;
 
-    /**
-     * @ORM\Column(type="float", name="`amount`")
-     */
+    #[ORM\Column(name: "`amount`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)')]
     private ?float $amount = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $status = false;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
     /**
@@ -305,10 +280,8 @@ class Voucher
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
-     */
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
     public function updatedTimestamps(): void
     {
         if (null === $this->getDateAdded()) {

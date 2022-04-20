@@ -4,29 +4,29 @@ namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Common\Infrastructure\Repository\Base\Front\ProductFaqRepository;
+use App\Domain\Common\Infrastructure\Repository\Base\Front\CategoryFaqRepository;
 
-#[ORM\Table(name: "`oc_product_faq`")]
+#[ORM\Table(name: "`oc_category_faq`")]
 #[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
-#[ORM\Entity(repositoryClass: ProductFaqRepository::class)]
-class ProductFaq
+#[ORM\Entity(repositoryClass: CategoryFaqRepository::class)]
+class CategoryFaq
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: "`product_faq_id`", type: Types::INTEGER)]
+    #[ORM\Column(name: "`category_faq_id`", type: Types::INTEGER, options: ["unsigned" => true])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Product::class)]
-    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`", nullable: true)]
-    private ?Product $product = null;
+    #[ORM\ManyToOne(targetEntity: Category::class, cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "`category_id`", referencedColumnName: "`category_id`", nullable: true)]
+    private ?Category $category = null;
 
-    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER, nullable: true)]
     private ?int $sortOrder = null;
 
-    #[ORM\Column(name: "`question`", type: Types::TEXT, nullable: true)]
+    #[ORM\Column(name: "`question`", type: Types::TEXT)]
     private ?string $question = null;
 
-    #[ORM\Column(name: "`faq`", type: Types::TEXT, columnDefinition: 'LONGTEXT')]
+    #[ORM\Column(name: "`faq`", type: Types::TEXT, nullable: true, columnDefinition: 'LONGTEXT')]
     private ?string $faq = null;
 
     #[ORM\Column(name: "`icon`", type: Types::STRING, length: 32, nullable: true)]
@@ -45,7 +45,7 @@ class ProductFaq
 
     /**
      * @param int|null $id
-     * @return ProductFaq
+     * @return CategoryFaq
      */
     public function setId(?int $id): self
     {
@@ -55,20 +55,20 @@ class ProductFaq
     }
 
     /**
-     * @return Product|null
+     * @return Category|null
      */
-    public function getProduct(): ?Product
+    public function getCategory(): ?Category
     {
-        return $this->product;
+        return $this->category;
     }
 
     /**
-     * @param Product|null $product
-     * @return ProductFaq
+     * @param Category|null $category
+     * @return CategoryFaq
      */
-    public function setProduct(?Product $product): self
+    public function setCategory(?Category $category): self
     {
-        $this->product = $product;
+        $this->category = $category;
 
         return $this;
     }
@@ -83,7 +83,7 @@ class ProductFaq
 
     /**
      * @param int|null $sortOrder
-     * @return ProductFaq
+     * @return CategoryFaq
      */
     public function setSortOrder(?int $sortOrder): self
     {
@@ -102,7 +102,7 @@ class ProductFaq
 
     /**
      * @param string|null $question
-     * @return ProductFaq
+     * @return CategoryFaq
      */
     public function setQuestion(?string $question): self
     {
@@ -121,7 +121,7 @@ class ProductFaq
 
     /**
      * @param string|null $faq
-     * @return ProductFaq
+     * @return CategoryFaq
      */
     public function setFaq(?string $faq): self
     {
@@ -140,7 +140,7 @@ class ProductFaq
 
     /**
      * @param string|null $icon
-     * @return ProductFaq
+     * @return CategoryFaq
      */
     public function setIcon(?string $icon): self
     {
@@ -159,7 +159,7 @@ class ProductFaq
 
     /**
      * @param int|null $backId
-     * @return ProductFaq
+     * @return CategoryFaq
      */
     public function setBackId(?int $backId): self
     {

@@ -3,45 +3,32 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Common\Infrastructure\Repository\Base\Front\OrderCustomFieldRepository;
+use App\Domain\Common\Infrastructure\Repository\Base\Front\MarketingRepository;
 
-/**
- * @ORM\Table(name="`oc_marketing`")
- * @ORM\Entity(repositoryClass=OrderCustomFieldRepository::class)
- */
+#[ORM\Table(name: "`oc_marketing`")]
+#[ORM\Entity(repositoryClass: MarketingRepository::class)]
 class Marketing
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`marketing_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`marketing_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=32)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 32)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="text", name="`description`")
-     */
+    #[ORM\Column(name: "`description`", type: Types::TEXT)]
     private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="string", name="`code`", length=64)
-     */
+    #[ORM\Column(name: "`code`", type: Types::STRING, length: 64)]
     private ?string $code = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`clicks`")
-     */
+    #[ORM\Column(name: "`clicks`", type: Types::INTEGER)]
     private ?int $clicks = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
     /**

@@ -2,47 +2,39 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ZoneRepository;
 
-/**
- * @ORM\Entity(repositoryClass=ZoneRepository::class)
- * @ORM\Table(name="`oc_zone`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`oc_zone`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: ZoneRepository::class)]
 class Zone
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`zone_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`zone_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Country")
-     * @ORM\JoinColumn(name="`country_id`", referencedColumnName="`country_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Country::class)]
+    #[ORM\JoinColumn(name: "`country_id`", referencedColumnName: "`country_id`", nullable: true)]
     private ?Country $country = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=128)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 128)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", name="`code`", length=32)
-     */
+    #[ORM\Column(name: "`code`", type: Types::STRING, length: 32)]
     private ?string $code = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`")
-     */
-    private ?bool $status = null;
+    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 1])]
+    private ?bool $status = true;
 
-    /**
-     * @ORM\Column(type="string", name="`ref`", length=36)
-     */
+    #[ORM\Column(name: "`ref`", type: Types::STRING, length: 36)]
     private ?string $ref = null;
+
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
 
     /**
      * @return int|null
@@ -154,6 +146,25 @@ class Zone
     public function setRef(?string $ref): self
     {
         $this->ref = $ref;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return Zone
+     */
+    public function setBackId(?int $backId): Zone
+    {
+        $this->backId = $backId;
 
         return $this;
     }

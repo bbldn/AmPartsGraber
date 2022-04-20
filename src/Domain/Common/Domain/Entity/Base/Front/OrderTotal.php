@@ -2,47 +2,33 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OrderTotalRepository;
 
-/**
- * @ORM\Table(name="`oc_order_total`")
- * @ORM\Entity(repositoryClass=OrderTotalRepository::class)
- */
+#[ORM\Table(name: "`oc_order_total`")]
+#[ORM\Entity(repositoryClass: OrderTotalRepository::class)]
 class OrderTotal
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`order_total_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`order_total_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class)
-     * @ORM\JoinColumn(name="`order_id`", referencedColumnName="`order_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Order::class)]
+    #[ORM\JoinColumn(name: "`order_id`", referencedColumnName: "`order_id`", nullable: true)]
     private ?Order $order = null;
 
-    /**
-     * @ORM\Column(type="string", name="`code`", length=32)
-     */
+    #[ORM\Column(name: "`code`", type: Types::STRING, length: 32)]
     private ?string $code = null;
 
-    /**
-     * @var string|null $title
-     * @ORM\Column(type="string", name="`title`", length=255)
-     */
+    #[ORM\Column(name: "`title`", type: Types::STRING, length: 255)]
     private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="float", name="`value`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`value`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)', options: ["default" => 0])]
     private ?float $value = 0.0;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`")
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
     private ?int $sortOrder = null;
 
     /**

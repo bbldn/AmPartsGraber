@@ -2,38 +2,29 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ProductPriceRepository;
 
-/**
- * @ORM\Table(name="`oc_product_price`")
- * @ORM\Entity(repositoryClass=ProductPriceRepository::class)
- */
+#[ORM\Table(name: "`oc_product_price`")]
+#[ORM\Entity(repositoryClass: ProductPriceRepository::class)]
 class ProductPrice
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`")]
     private ?Product $product = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=CustomerGroup::class)
-     * @ORM\JoinColumn(name="`customer_group_id`", referencedColumnName="`customer_group_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: CustomerGroup::class)]
+    #[ORM\JoinColumn(name: "`customer_group_id`", referencedColumnName: "`customer_group_id`")]
     private ?CustomerGroup $customerGroup = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Currency::class)
-     * @ORM\JoinColumn(name="`currency_id`", referencedColumnName="`currency_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Currency::class)]
+    #[ORM\JoinColumn(name: "`currency_id`", referencedColumnName: "`currency_id`", nullable: true)]
     private ?Currency $currency = null;
 
-    /**
-     * @ORM\Column(type="float", name="`price`")
-     */
+    #[ORM\Column(name: "`price`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)')]
     private ?float $price = 0.0;
 
     /**

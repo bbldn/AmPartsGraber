@@ -2,46 +2,39 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CustomerGroupRepository;
 
-/**
- * @ORM\Entity(repositoryClass=CustomerGroupRepository::class)
- * @ORM\Table(name="`oc_customer_group`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\Table(name: "`oc_customer_group`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: CustomerGroupRepository::class)]
 class CustomerGroup
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`customer_group_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`customer_group_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`approval`")
-     */
+    #[ORM\Column(name: "`approval`", type: Types::BOOLEAN)]
     private ?bool $approval = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`")
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
     private ?int $sortOrder = null;
 
-    /**
-     * @var Collection|CustomerGroupDescription[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="customerGroup",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=CustomerGroupDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, CustomerGroupDescription>
-     */
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
+
+    /** @var Collection<int, CustomerGroupDescription> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "customerGroup",
+        cascade: ["persist", "remove"],
+        targetEntity: CustomerGroupDescription::class
+    )]
     private Collection $descriptions;
 
     public function __construct()
@@ -77,10 +70,10 @@ class CustomerGroup
     }
 
     /**
-     * @param bool $approval
+     * @param bool|null $approval
      * @return CustomerGroup
      */
-    public function setApproval(bool $approval): self
+    public function setApproval(?bool $approval): self
     {
         $this->approval = $approval;
 
@@ -96,10 +89,10 @@ class CustomerGroup
     }
 
     /**
-     * @param int $sortOrder
+     * @param int|null $sortOrder
      * @return CustomerGroup
      */
-    public function setSortOrder(int $sortOrder): self
+    public function setSortOrder(?int $sortOrder): self
     {
         $this->sortOrder = $sortOrder;
 
@@ -107,9 +100,26 @@ class CustomerGroup
     }
 
     /**
-     * @return CustomerGroupDescription[]|Collection
-     *
-     * @psalm-return Collection<int, CustomerGroupDescription>
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return CustomerGroup
+     */
+    public function setBackId(?int $backId): self
+    {
+        $this->backId = $backId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CustomerGroupDescription>
      */
     public function getDescriptions(): Collection
     {

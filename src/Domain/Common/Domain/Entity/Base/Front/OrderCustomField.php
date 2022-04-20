@@ -2,58 +2,41 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OrderCustomFieldRepository;
 
-/**
- * @ORM\Table(name="`oc_order_custom_field`")
- * @ORM\Entity(repositoryClass=OrderCustomFieldRepository::class)
- */
+#[ORM\Table(name: "`oc_order_custom_field`")]
+#[ORM\Entity(repositoryClass: OrderCustomFieldRepository::class)]
 class OrderCustomField
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`order_custom_field_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`order_custom_field_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class)
-     * @ORM\JoinColumn(name="`order_id`", referencedColumnName="`order_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Order::class)]
+    #[ORM\JoinColumn(name: "`order_id`", referencedColumnName: "`order_id`")]
     private ?Order $order = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=CustomField::class)
-     * @ORM\JoinColumn(name="`custom_field_id`", referencedColumnName="`custom_field_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: CustomField::class)]
+    #[ORM\JoinColumn(name: "`custom_field_id`", referencedColumnName: "`custom_field_id`")]
     private ?CustomField $customField = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=CustomFieldValue::class)
-     * @ORM\JoinColumn(name="`custom_field_value_id`", referencedColumnName="`custom_field_value_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: CustomFieldValue::class)]
+    #[ORM\JoinColumn(name: "`custom_field_value_id`", referencedColumnName: "`custom_field_value_id`")]
     private ?CustomFieldValue $customFieldValue = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=255)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 255)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", name="`value`")
-     */
+    #[ORM\Column(name: "`value`", type: Types::TEXT)]
     private ?string $value = null;
 
-    /**
-     * @ORM\Column(type="string", name="`type`", length=32)
-     */
+    #[ORM\Column(name: "`type`", type: Types::STRING, length: 32)]
     private ?string $type = null;
 
-    /**
-     * @ORM\Column(type="string", name="`location`", length=16)
-     */
+    #[ORM\Column(name: "`location`", type: Types::STRING, length: 16)]
     private ?string $location = null;
 
     /**

@@ -2,32 +2,25 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\FileDescriptionRepository;
 
-/**
- * @ORM\Table(name="`oc_download_description`")
- * @ORM\Entity(repositoryClass=FileDescriptionRepository::class)
- */
+#[ORM\Table(name: "`oc_download_description`")]
+#[ORM\Entity(repositoryClass: FileDescriptionRepository::class)]
 class FileDescription
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=File::class, inversedBy="descriptions")
-     * @ORM\JoinColumn(name="`download_id`", referencedColumnName="`download_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: File::class, inversedBy: "descriptions")]
+    #[ORM\JoinColumn(name: "`download_id`", referencedColumnName: "`download_id`")]
     private ?File $file = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`")]
     private ?Language $language = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=64)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 64)]
     private ?string $name = null;
 
     /**

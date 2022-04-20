@@ -2,39 +2,30 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ProductAttributeRepository;
 
-/**
- * @ORM\Table(name="`oc_product_attribute`")
- * @ORM\Entity(repositoryClass=ProductAttributeRepository::class)
- */
+#[ORM\Table(name: "`oc_product_attribute`")]
+#[ORM\Entity(repositoryClass: ProductAttributeRepository::class)]
 class ProductAttribute
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="productAttributes")
-     * @ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\Id]
+    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`")]
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: "productAttributes")]
     private ?Product $product = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Attribute::class)
-     * @ORM\JoinColumn(name="`attribute_id`", referencedColumnName="`attribute_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Attribute::class)]
+    #[ORM\JoinColumn(name: "`attribute_id`", referencedColumnName: "`attribute_id`")]
     private ?Attribute $attribute = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`")]
     private ?Language $language = null;
 
-    /**
-     * @ORM\Column(type="string", name="`text`")
-     */
+    #[ORM\Column(name: "`text`", type: Types::TEXT)]
     private ?string $text = null;
 
     /**

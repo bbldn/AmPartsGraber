@@ -2,25 +2,20 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\LayoutRepository;
 
-/**
- * @ORM\Table(name="`oc_layout`")
- * @ORM\Entity(repositoryClass=LayoutRepository::class)
- */
+#[ORM\Table(name: "`oc_layout`")]
+#[ORM\Entity(repositoryClass: LayoutRepository::class)]
 class Layout
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`layout_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`layout_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=64)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 64)]
     private ?string $name = null;
 
     /**

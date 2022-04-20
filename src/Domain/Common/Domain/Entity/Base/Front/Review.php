@@ -3,68 +3,47 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ReviewRepository;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="`oc_review`")
- * @ORM\Entity(repositoryClass=ReviewRepository::class)
- */
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`oc_review`")]
+#[ORM\Entity(repositoryClass: ReviewRepository::class)]
 class Review
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`review_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`review_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`", nullable: true)]
     private ?Product $product = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Customer::class)
-     * @ORM\JoinColumn(name="`customer_id`", referencedColumnName="`customer_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Customer::class)]
+    #[ORM\JoinColumn(name: "`customer_id`", referencedColumnName: "`customer_id`", nullable: true)]
     private ?Customer $customer = null;
 
-    /**
-     * @ORM\Column(type="string", name="`author`", length=64)
-     */
+    #[ORM\Column(name: "`author`", type: Types::STRING, length: 64)]
     private ?string $author = null;
 
-    /**
-     * @ORM\Column(type="string", name="`text`")
-     */
+    #[ORM\Column(name: "`text`", type: Types::TEXT)]
     private ?string $text = null;
 
-    /**
-     * @ORM\Column(type="string", name="`reply`")
-     */
+    #[ORM\Column(name: "`reply`", type: Types::TEXT)]
     private ?string $reply = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`rating`")
-     */
+    #[ORM\Column(name: "`rating`", type: Types::INTEGER)]
     private ?int $rating = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`")
-     */
+    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["options" => true])]
     private ?bool $status = false;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_modified`")
-     */
+    #[ORM\Column(name: "`date_modified`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateModified = null;
 
     /**
@@ -257,10 +236,8 @@ class Review
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
-     */
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
     public function updatedTimestamps(): void
     {
         $this->setDateModified(new DateTimeImmutable());

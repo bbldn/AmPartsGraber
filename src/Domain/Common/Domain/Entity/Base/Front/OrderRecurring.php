@@ -3,120 +3,96 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\OrderRecurringRepository;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="`oc_order_recurring`")
- * @ORM\Entity(repositoryClass=OrderRecurringRepository::class)
- */
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`oc_order_recurring`")]
+#[ORM\Entity(repositoryClass: OrderRecurringRepository::class)]
 class OrderRecurring
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`order_recurring_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`order_recurring_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class)
-     * @ORM\JoinColumn(name="`order_id`", referencedColumnName="`order_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Order::class)]
+    #[ORM\JoinColumn(name: "`order_id`", referencedColumnName: "`order_id`", nullable: true)]
     private ?Order $order = null;
 
-    /**
-     * @ORM\Column(type="string", name="`reference`", length=255)
-     */
+    #[ORM\Column(name: "`reference`", type: Types::STRING, length: 255)]
     private ?string $reference = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`", nullable: true)]
     private ?Product $product = null;
 
-    /**
-     * @ORM\Column(type="string", name="`product_name`", length=255)
-     */
+    #[ORM\Column(name: "`product_name`", type: Types::STRING, length: 255)]
     private ?string $productName = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`product_quantity`")
-     */
+    #[ORM\Column(name: "`product_quantity`", type: Types::INTEGER)]
     private ?int $productQuantity = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Recurring::class)
-     * @ORM\JoinColumn(name="`recurring_id`", referencedColumnName="`recurring_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Recurring::class)]
+    #[ORM\JoinColumn(name: "`recurring_id`", referencedColumnName: "`recurring_id`", nullable: true)]
     private ?Recurring $recurring = null;
 
-    /**
-     * @ORM\Column(type="string", name="`recurring_name`", length=255)
-     */
+    #[ORM\Column(name: "`recurring_name`", type: Types::STRING, length: 255)]
     private ?string $recurringName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`recurring_description`", length=255)
-     */
+    #[ORM\Column(name: "`recurring_description`", type: Types::STRING, length: 255)]
     private ?string $recurringDescription = null;
 
-    /**
-     * @ORM\Column(type="string", name="`recurring_frequency`", length=25)
-     */
+    #[ORM\Column(name: "`recurring_frequency`", type: Types::STRING, length: 25)]
     private ?string $recurringFrequency = null;
 
-    /**
-     * @ORM\Column(type="smallint", name="`recurring_cycle`")
-     */
+    #[ORM\Column(name: "`recurring_cycle`", type: Types::SMALLINT)]
     private ?int $recurringCycle = null;
 
-    /**
-     * @ORM\Column(type="smallint", name="`recurring_duration`")
-     */
+    #[ORM\Column(name: "`recurring_duration`", type: Types::SMALLINT)]
     private ?int $recurringDuration = null;
 
-    /**
-     * @ORM\Column(type="float", name="`recurring_price`")
-     */
+    #[ORM\Column(name: "`recurring_price`", type: Types::FLOAT, columnDefinition: 'DECIMAL(10,4)')]
     private ?float $recurringPrice = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`trial`")
-     */
+    #[ORM\Column(name: "`trial`", type: Types::BOOLEAN)]
     private ?bool $trial = null;
 
-    /**
-     * @ORM\Column(type="string", name="`trial_frequency`", length=25)
-     */
+    #[ORM\Column(name: "`trial_frequency`", type: Types::STRING, length: 25)]
     private ?string $trialFrequency = null;
 
-    /**
-     * @ORM\Column(type="smallint", name="`trial_cycle`")
-     */
+    #[ORM\Column(name: "`trial_cycle`", type: Types::SMALLINT)]
     private ?int $trialCycle = null;
 
-    /**
-     * @ORM\Column(type="smallint", name="`trial_duration`")
-     */
+    #[ORM\Column(name: "`trial_duration`", type: Types::SMALLINT)]
     private ?int $trialDuration = null;
 
-    /**
-     * @ORM\Column(type="float", name="`trial_price`")
-     */
+    #[ORM\Column(name: "`trial_price`", type: Types::FLOAT, columnDefinition: 'DECIMAL(10,4)')]
     private ?float $trialPrice = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`")
-     */
+    #[ORM\Column(name: "`status`", type: Types::BOOLEAN)]
     private ?bool $status = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
+
+    /** @var Collection<int, OrderRecurringTransaction> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "orderRecurring",
+        cascade: ["persist", "remove"],
+        targetEntity: OrderRecurringTransaction::class
+    )]
+    private Collection $transactions;
+
+    public function __construct()
+    {
+        $this->transactions = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -499,9 +475,15 @@ class OrderRecurring
     }
 
     /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
+     * @return Collection<int, OrderRecurringTransaction>
      */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
     public function updatedTimestamps(): void
     {
         if (null === $this->getDateAdded()) {

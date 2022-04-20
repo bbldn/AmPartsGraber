@@ -2,42 +2,32 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\LengthClassRepository;
 
-/**
- * @ORM\Table(name="`oc_length_class`")
- * @ORM\Entity(repositoryClass=LengthClassRepository::class)
- */
+#[ORM\Table(name: "`oc_length_class`")]
+#[ORM\Entity(repositoryClass: LengthClassRepository::class)]
 class LengthClass
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`length_class_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`length_class_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @var float|null $weight
-     * @ORM\Column(type="float", name="`value`")
-     */
+    #[ORM\Column(name: "`value`", type: Types::DECIMAL, columnDefinition: 'DECIMAL(15,8)')]
     private ?float $value = 0.0;
 
-    /**
-     * @var Collection|LengthClassDescription[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="lengthClass",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=LengthClassDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, LengthClassDescription>
-     */
+    /** @var Collection<int, LengthClassDescription> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "lengthClass",
+        cascade: ["persist", "remove"],
+        targetEntity: LengthClassDescription::class
+    )]
     private Collection $descriptions;
 
     public function __construct()
@@ -84,9 +74,7 @@ class LengthClass
     }
 
     /**
-     * @return LengthClassDescription[]|Collection
-     *
-     * @psalm-return Collection<int, LengthClassDescription>
+     * @return Collection<int, LengthClassDescription>
      */
     public function getDescriptions(): Collection
     {

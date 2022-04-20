@@ -2,41 +2,32 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\FilterGroupRepository;
 
-/**
- * @ORM\Table(name="`oc_filter_group`")
- * @ORM\Entity(repositoryClass=FilterGroupRepository::class)
- */
+#[ORM\Table(name: "`oc_filter_group`")]
+#[ORM\Entity(repositoryClass: FilterGroupRepository::class)]
 class FilterGroup
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`filter_group_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`filter_group_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`")
-     */
-    private ?int $sortOrder = 0;
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
+    private ?int $sortOrder = null;
 
-    /**
-     * @var Collection|FilterGroupDescription[]
-     * @ORM\OneToMany(
-     *     fetch="EXTRA_LAZY",
-     *     orphanRemoval=true,
-     *     mappedBy="filterGroup",
-     *     cascade={"persist", "remove"},
-     *     targetEntity=FilterGroupDescription::class
-     * )
-     *
-     * @psalm-var Collection<int, FilterGroupDescription>
-     */
+    /** @var Collection<int, FilterGroupDescription> */
+    #[ORM\OneToMany(
+        fetch: "EXTRA_LAZY",
+        orphanRemoval: true,
+        mappedBy: "filterGroup",
+        cascade: ["persist", "remove"],
+        targetEntity: FilterGroupDescription::class
+    )]
     private Collection $descriptions;
 
     public function __construct()
@@ -83,9 +74,7 @@ class FilterGroup
     }
 
     /**
-     * @return FilterGroupDescription[]|Collection
-     *
-     * @psalm-return Collection<int, FilterGroupDescription>
+     * @return Collection<int, FilterGroupDescription>
      */
     public function getDescriptions(): Collection
     {

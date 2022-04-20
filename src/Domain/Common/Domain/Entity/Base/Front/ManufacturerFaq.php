@@ -2,53 +2,38 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ManufacturerFaqRepository;
 
-/**
- * @ORM\Entity(repositoryClass=ManufacturerFaqRepository::class)
- * @ORM\Table(name="`oc_manufacturer_faq`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\Table(name: "`oc_manufacturer_faq`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: ManufacturerFaqRepository::class)]
 class ManufacturerFaq
 {
-    /**
-     * Идентификатор
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`manufacturer_faq_id`", options={"unsigned":true})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`manufacturer_faq_id`", type: Types::INTEGER, options: ["unsigned" => true])]
     private ?int $id = null;
 
-    /**
-     * Производитель
-     * @ORM\ManyToOne(targetEntity=Manufacturer::class, cascade={"persist"})
-     * @ORM\JoinColumn(name="`manufacturer_id`", referencedColumnName="`manufacturer_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: "`manufacturer_id`", referencedColumnName: "`manufacturer_id`", nullable: true)]
     private ?Manufacturer $manufacturer = null;
 
-    /**
-     * Порядок сортировки
-     * @ORM\Column(type="integer", name="`sort_order`", options={"default":0})
-     */
-    private ?int $sortOrder = 0;
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER)]
+    private ?int $sortOrder = null;
 
-    /**
-     * Вопрос
-     * @ORM\Column(type="text", name="`question`", nullable=true)
-     */
+    #[ORM\Column(name: "`question`", type: Types::TEXT)]
     private ?string $question = null;
 
-    /**
-     * Вопрос
-     * @ORM\Column(type="text", name="`faq`", nullable=true)
-     */
+    #[ORM\Column(name: "`faq`", type: Types::TEXT, columnDefinition: 'LONGTEXT')]
     private ?string $faq = null;
 
-    /**
-     * Название
-     * @ORM\Column(type="string", name="`icon`", length=32, nullable=true)
-     */
+    #[ORM\Column(name: "`icon`", type: Types::STRING, length: 32)]
     private ?string $icon = null;
+
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
 
     /**
      * @return int|null
@@ -160,6 +145,25 @@ class ManufacturerFaq
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return ManufacturerFaq
+     */
+    public function setBackId(?int $backId): self
+    {
+        $this->backId = $backId;
 
         return $this;
     }

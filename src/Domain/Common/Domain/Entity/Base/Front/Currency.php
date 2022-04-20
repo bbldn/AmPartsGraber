@@ -3,61 +3,46 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CurrencyRepository;
 
-/**
- * @ORM\Entity(repositoryClass=CurrencyRepository::class)
- * @ORM\Table(name="`oc_currency`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\Table(name: "`oc_currency`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: CurrencyRepository::class)]
 class Currency
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`currency_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`currency_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`title`", length=32)
-     */
+    #[ORM\Column(name: "`title`", type: Types::STRING, length: 32)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", name="`code`", length=3)
-     */
+    #[ORM\Column(name: "`code`", type: Types::STRING, length: 3)]
     private ?string $code = null;
 
-    /**
-     * @ORM\Column(type="string", name="`symbol_left`", length=12)
-     */
+    #[ORM\Column(name: "`symbol_left`", type: Types::STRING, length: 12)]
     private ?string $symbolLeft = null;
 
-    /**
-     * @ORM\Column(type="string", name="`symbol_right`", length=12)
-     */
+    #[ORM\Column(name: "`symbol_right`", type: Types::STRING, length: 12)]
     private ?string $symbolRight = null;
 
-    /**
-     * @ORM\Column(type="string", name="`decimal_place`", length=1)
-     */
+    #[ORM\Column(name: "`decimal_place`", type: Types::STRING, length: 1)]
     private ?string $decimalPlace = null;
 
-    /**
-     * @ORM\Column(type="float", name="`value`")
-     */
+    #[ORM\Column(name: "`value`", type: Types::FLOAT, columnDefinition: 'DOUBLE(15,8)')]
     private ?float $value = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`")
-     */
+    #[ORM\Column(name: "`status`", type: Types::BOOLEAN)]
     private ?bool $status = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_modified`")
-     */
+    #[ORM\Column(name: "`date_modified`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateModified = null;
+
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
 
     /**
      * @return int|null
@@ -87,10 +72,10 @@ class Currency
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return Currency
      */
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -106,10 +91,10 @@ class Currency
     }
 
     /**
-     * @param string $code
+     * @param string|null $code
      * @return Currency
      */
-    public function setCode(string $code): self
+    public function setCode(?string $code): self
     {
         $this->code = $code;
 
@@ -125,10 +110,10 @@ class Currency
     }
 
     /**
-     * @param string $symbolLeft
+     * @param string|null $symbolLeft
      * @return Currency
      */
-    public function setSymbolLeft(string $symbolLeft): self
+    public function setSymbolLeft(?string $symbolLeft): self
     {
         $this->symbolLeft = $symbolLeft;
 
@@ -144,10 +129,10 @@ class Currency
     }
 
     /**
-     * @param string $symbolRight
+     * @param string|null $symbolRight
      * @return Currency
      */
-    public function setSymbolRight(string $symbolRight): self
+    public function setSymbolRight(?string $symbolRight): self
     {
         $this->symbolRight = $symbolRight;
 
@@ -163,10 +148,10 @@ class Currency
     }
 
     /**
-     * @param string $decimalPlace
+     * @param string|null $decimalPlace
      * @return Currency
      */
-    public function setDecimalPlace(string $decimalPlace): self
+    public function setDecimalPlace(?string $decimalPlace): self
     {
         $this->decimalPlace = $decimalPlace;
 
@@ -182,10 +167,10 @@ class Currency
     }
 
     /**
-     * @param float $value
+     * @param float|null $value
      * @return Currency
      */
-    public function setValue(float $value): self
+    public function setValue(?float $value): self
     {
         $this->value = $value;
 
@@ -201,10 +186,10 @@ class Currency
     }
 
     /**
-     * @param bool $status
+     * @param bool|null $status
      * @return Currency
      */
-    public function setStatus(bool $status): self
+    public function setStatus(?bool $status): self
     {
         $this->status = $status;
 
@@ -220,12 +205,31 @@ class Currency
     }
 
     /**
-     * @param DateTimeImmutable $dateModified
+     * @param DateTimeImmutable|null $dateModified
      * @return Currency
      */
-    public function setDateModified(DateTimeImmutable $dateModified): self
+    public function setDateModified(?DateTimeImmutable $dateModified): self
     {
         $this->dateModified = $dateModified;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return Currency
+     */
+    public function setBackId(?int $backId): self
+    {
+        $this->backId = $backId;
 
         return $this;
     }

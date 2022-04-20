@@ -2,30 +2,23 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ShippingCourierRepository;
 
-/**
- * @ORM\Table(name="`oc_order_shipment`")
- * @ORM\Entity(repositoryClass=ShippingCourierRepository::class)
- */
+#[ORM\Table(name: "`oc_shipping_courier`")]
+#[ORM\Entity(repositoryClass: ShippingCourierRepository::class)]
 class ShippingCourier
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`shipping_courier_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`shipping_courier_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_courier_code`", length=255)
-     */
+    #[ORM\Column(name: "`shipping_courier_code`", type: Types::STRING, length: 255)]
     private ?string $shippingCourierCode = null;
 
-    /**
-     * @ORM\Column(type="string", name="`shipping_courier_name`", length=255)
-     */
+    #[ORM\Column(name: "`shipping_courier_name`", type: Types::STRING, length: 255)]
     private ?string $shippingCourierName = null;
 
     /**

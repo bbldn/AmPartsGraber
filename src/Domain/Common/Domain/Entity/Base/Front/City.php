@@ -2,47 +2,38 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CityRepository;
 
-/**
- * @ORM\Entity(repositoryClass=CityRepository::class)
- * @ORM\Table(name="`oc_city`", indexes={@ORM\Index(name="back_id_idx", columns={"back_id"})})
- */
+#[ORM\Table(name: "`oc_city`")]
+#[ORM\Index(name: "back_id_idx", columns: ["back_id"])]
+#[ORM\Entity(repositoryClass: CityRepository::class)]
 class City
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`city_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`city_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Zone::class)
-     * @ORM\JoinColumn(name="`zone_id`", referencedColumnName="`zone_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\JoinColumn(name: "`zone_id`", referencedColumnName: "`zone_id`", nullable: true)]
     private ?Zone $zone = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=128)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 128)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`", options={"default": 1})
-     */
+    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 1])]
     private ?bool $status = true;
 
-    /**
-     * @ORM\Column(type="string", name="`code`", length=32)
-     */
+    #[ORM\Column(name: "`code`", type: Types::STRING, length: 32)]
     private ?string $code = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`sort_order`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`sort_order`", type: Types::INTEGER, options: ["default" => 0])]
     private ?int $sortOrder = 0;
+
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER, nullable: true)]
+    private ?int $backId = null;
 
     /**
      * @return int|null
@@ -154,6 +145,25 @@ class City
     public function setSortOrder(?int $sortOrder): self
     {
         $this->sortOrder = $sortOrder;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getBackId(): ?int
+    {
+        return $this->backId;
+    }
+
+    /**
+     * @param int|null $backId
+     * @return City
+     */
+    public function setBackId(?int $backId): self
+    {
+        $this->backId = $backId;
 
         return $this;
     }

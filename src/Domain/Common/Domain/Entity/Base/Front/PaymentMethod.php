@@ -2,25 +2,20 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\PaymentMethodRepository;
 
-/**
- * @ORM\Table(name="`synchronizer_payment_methods`")
- * @ORM\Entity(repositoryClass=PaymentMethodRepository::class)
- */
+#[ORM\Table(name: "`synchronizer_payment_methods`")]
+#[ORM\Entity(repositoryClass: PaymentMethodRepository::class)]
 class PaymentMethod
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="integer", name="`back_id`")
-     */
+    #[ORM\Id]
+    #[ORM\Column(name: "`back_id`", type: Types::INTEGER)]
     private ?int $backId = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", name="`front_code`", length=255)
-     */
+    #[ORM\Id]
+    #[ORM\Column(name: "`front_code`", type: Types::STRING, length: 255)]
     private ?string $frontCode = null;
 
     /**

@@ -3,130 +3,85 @@
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CustomerRepository;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="`oc_customer`")
- * @ORM\Entity(repositoryClass=CustomerRepository::class)
- */
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`oc_customer`")]
+#[ORM\Entity(repositoryClass: CustomerRepository::class)]
 class Customer
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`customer_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`customer_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=CustomerGroup::class)
-     * @ORM\JoinColumn(name="`customer_group_id`", referencedColumnName="`customer_group_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: CustomerGroup::class)]
+    #[ORM\JoinColumn(name: "`customer_group_id`", referencedColumnName: "`customer_group_id`", nullable: true)]
     private ?CustomerGroup $group = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Shop::class)
-     * @ORM\JoinColumn(name="`store_id`", referencedColumnName="`store_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Shop::class)]
+    #[ORM\JoinColumn(name: "`store_id`", referencedColumnName: "`store_id`", nullable: true)]
     private ?Shop $shop = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`", nullable: true)]
     private ?Language $language = null;
 
-    /**
-     * @ORM\Column(type="string", name="`firstname`", length=32)
-     */
+    #[ORM\Column(name: "`firstname`", type: Types::STRING, length: 32)]
     private ?string $firstName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`lastname`", length=32)
-     */
+    #[ORM\Column(name: "`lastname`", type: Types::STRING, length: 32)]
     private ?string $lastName = null;
 
-    /**
-     * @ORM\Column(type="string", name="`email`", length=96)
-     */
+    #[ORM\Column(name: "`email`", type: Types::STRING, length: 96)]
     private ?string $email = null;
 
-    /**
-     * @ORM\Column(type="string", name="`telephone`", length=32)
-     */
+    #[ORM\Column(name: "`telephone`", type: Types::STRING, length: 32)]
     private ?string $phone = null;
 
-    /**
-     * @ORM\Column(type="string", name="`fax`", length=32)
-     */
+    #[ORM\Column(name: "`fax`", type: Types::STRING, length: 32)]
     private ?string $fax = null;
 
-    /**
-     * @ORM\Column(type="string", name="`password`", length=40)
-     */
+    #[ORM\Column(name: "`password`", type: Types::STRING, length: 40)]
     private ?string $password = null;
 
-    /**
-     * @ORM\Column(type="string", name="`salt`", length=9)
-     */
+    #[ORM\Column(name: "`salt`", type: Types::STRING, length: 9)]
     private ?string $salt = null;
 
-    /**
-     * @ORM\Column(type="text", name="`cart`", nullable=true)
-     */
+    #[ORM\Column(name: "`cart`", type: Types::TEXT, nullable: true)]
     private ?string $cart = null;
 
-    /**
-     * @ORM\Column(type="text", name="`wishlist`", nullable=true)
-     */
+    #[ORM\Column(name: "`wishlist`", type: Types::TEXT, nullable: true)]
     private ?string $wishList = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`newsletter`")
-     */
+    #[ORM\Column(name: "`newsletter`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $newsletter = false;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="customer")
-     * @ORM\JoinColumn(name="`address_id`", referencedColumnName="`address_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Address::class, inversedBy: "customer")]
+    #[ORM\JoinColumn(name: "`address_id`", referencedColumnName: "`address_id`", nullable: true)]
     private ?Address $address = null;
 
-    /**
-     * @ORM\Column(type="text", name="`custom_field`")
-     */
+    #[ORM\Column(name: "`custom_field`", type: Types::TEXT)]
     private ?string $customField = null;
 
-    /**
-     * @ORM\Column(type="string", name="`ip`", length=40)
-     */
+    #[ORM\Column(name: "`ip`", type: Types::STRING, length: 40)]
     private ?string $ip = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`status`")
-     */
+    #[ORM\Column(name: "`status`", type: Types::BOOLEAN)]
     private ?bool $status = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`safe`")
-     */
+    #[ORM\Column(name: "`safe`", type: Types::BOOLEAN)]
     private ?bool $safe = null;
 
-    /**
-     * @ORM\Column(type="string", name="`token`")
-     */
+    #[ORM\Column(name: "`token`", type: Types::TEXT)]
     private ?string $token = null;
 
-    /**
-     * @ORM\Column(type="string", name="`code`", length=40)
-     */
+    #[ORM\Column(name: "`code`", type: Types::STRING, length: 40)]
     private ?string $code = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", name="`date_added`")
-     */
+    #[ORM\Column(name: "`date_added`", type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $dateAdded = null;
 
     /**

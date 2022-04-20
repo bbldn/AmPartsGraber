@@ -2,84 +2,57 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ProductOptionValueRepository;
 
-/**
- * @ORM\Table(name="`oc_product_option_value`")
- * @ORM\Entity(repositoryClass=ProductOptionValueRepository::class)
- */
+#[ORM\Table(name: "`oc_product_option_value`")]
+#[ORM\Entity(repositoryClass: ProductOptionValueRepository::class)]
 class ProductOptionValue
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`product_option_value_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`product_option_value_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=ProductOption::class)
-     * @ORM\JoinColumn(name="`product_option_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: ProductOption::class)]
+    #[ORM\JoinColumn(name: "`product_option_id`", referencedColumnName: "`product_option_id`", nullable: true)]
     private ?ProductOption $productOption = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`", nullable: true)]
     private ?Product $product = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Option::class)
-     * @ORM\JoinColumn(name="`option_id`", referencedColumnName="`option_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Option::class)]
+    #[ORM\JoinColumn(name: "`option_id`", referencedColumnName: "`option_id`", nullable: true)]
     private ?Option $option = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=OptionValue::class)
-     * @ORM\JoinColumn(name="`option_value_id`", referencedColumnName="`option_value_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: OptionValue::class)]
+    #[ORM\JoinColumn(name: "`option_value_id`", referencedColumnName: "`option_value_id`", nullable: true)]
     private ?OptionValue $optionValue = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`quantity`")
-     */
+    #[ORM\Column(name: "`quantity`", type: Types::INTEGER)]
     private ?int $quantity = null;
 
-    /**
-     * @ORM\Column(type="boolean", name="`subtract`")
-     */
+    #[ORM\Column(name: "`subtract`", type: Types::BOOLEAN)]
     private ?bool $subtract = null;
 
-    /**
-     * @ORM\Column(type="float", name="`price`")
-     */
+    #[ORM\Column(name: "`price`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)')]
     private ?float $price = null;
 
-    /**
-     * @ORM\Column(type="string", name="`price_prefix`", length=1)
-     */
+    #[ORM\Column(name: "`price_prefix`", type: Types::STRING, length: 1)]
     private ?string $pricePrefix = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`points`")
-     */
+    #[ORM\Column(name: "`points`", type: Types::INTEGER)]
     private ?int $points = null;
 
-    /**
-     * @ORM\Column(type="string", name="`points_prefix`", length=1)
-     */
+    #[ORM\Column(name: "`points_prefix`", type: Types::STRING, length: 1)]
     private ?string $pointsPrefix = null;
 
-    /**
-     * @ORM\Column(type="float", name="`weight`")
-     */
+    #[ORM\Column(name: "`weight`", type: Types::FLOAT, columnDefinition: 'DECIMAL(15,4)')]
     private ?float $weight = null;
 
-    /**
-     * @ORM\Column(type="string", name="`weight_prefix`", length=1)
-     */
+    #[ORM\Column(name: "`weight_prefix`", type: Types::STRING, length: 1)]
     private ?string $weightPrefix = null;
 
     /**

@@ -2,39 +2,31 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Graber;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Graber\CategoryRepository;
 
-/**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
- * @ORM\Table(name="`categories`", indexes={@ORM\Index(name="url_idx", columns={"url"})})
- */
+#[ORM\Table(name: "`categories`")]
+#[ORM\Index(name: "url_idx", columns: ["url"])]
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
-    /**
-     * Идентификатор
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`id`", options={"unsigned":true})
-     */
+    /* Идентификатор */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`id`", type: Types::INTEGER, options: ["unsigned" => true])]
     private ?int $id = null;
 
-    /**
-     * Ссылка
-     * @ORM\Column(type="string", name="`url`", length=512)
-     */
+    /* Ссылка */
+    #[ORM\Column(name: "`url`", type: Types::STRING, length: 512)]
     private ?string $url = null;
 
-    /**
-     * Ссылка
-     * @ORM\Column(type="string", name="`name`", length=512)
-     */
+    /* Ссылка */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 512)]
     private ?string $name = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class)
-     * @ORM\JoinColumn(name="`parent_id`", referencedColumnName="`id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\JoinColumn(name: "`parent_id`", referencedColumnName: "`id`", nullable: true)]
     private ?Category $parent = null;
 
     /**

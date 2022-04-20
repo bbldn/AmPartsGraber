@@ -2,37 +2,28 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\ProductRewardRepository;
 
-/**
- * @ORM\Table(name="`oc_product_reward`")
- * @ORM\Entity(repositoryClass=ProductRewardRepository::class)
- */
+#[ORM\Table(name: "`oc_product_reward`")]
+#[ORM\Entity(repositoryClass: ProductRewardRepository::class)]
 class ProductReward
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="`product_reward_id`")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "`product_reward_id`", type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(name="`product_id`", referencedColumnName="`product_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "`product_id`", referencedColumnName: "`product_id`", nullable: true)]
     private ?Product $product = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=CustomerGroup::class)
-     * @ORM\JoinColumn(name="`customer_group_id`", referencedColumnName="`customer_group_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: CustomerGroup::class)]
+    #[ORM\JoinColumn(name: "`customer_group_id`", referencedColumnName: "`customer_group_id`", nullable: true)]
     private ?CustomerGroup $customerGroup = null;
 
-    /**
-     * @ORM\Column(type="integer", name="`points`", options={"default": 0})
-     */
+    #[ORM\Column(name: "`points`", type: Types::INTEGER, options: ["default" => 0])]
     private ?int $points = 0;
 
     /**

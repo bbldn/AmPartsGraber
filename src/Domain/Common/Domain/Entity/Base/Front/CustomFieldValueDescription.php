@@ -2,38 +2,29 @@
 
 namespace App\Domain\Common\Domain\Entity\Base\Front;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Common\Infrastructure\Repository\Base\Front\CustomFieldValueDescriptionRepository;
 
-/**
- * @ORM\Table(name="`oc_custom_field_value_description`")
- * @ORM\Entity(repositoryClass=CustomFieldValueDescriptionRepository::class)
- */
+#[ORM\Table(name: "`oc_custom_field_value_description`")]
+#[ORM\Entity(repositoryClass: CustomFieldValueDescriptionRepository::class)]
 class CustomFieldValueDescription
 {
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=CustomFieldValue::class)
-     * @ORM\JoinColumn(name="`custom_field_value_id`", referencedColumnName="`custom_field_value_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: CustomFieldValue::class, inversedBy: "descriptions")]
+    #[ORM\JoinColumn(name: "`custom_field_value_id`", referencedColumnName: "`custom_field_value_id`")]
     private ?CustomFieldValue $customFieldValue = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Language::class)
-     * @ORM\JoinColumn(name="`language_id`", referencedColumnName="`language_id`")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[ORM\JoinColumn(name: "`language_id`", referencedColumnName: "`language_id`")]
     private ?Language $language = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=CustomField::class)
-     * @ORM\JoinColumn(name="`custom_field_id`", referencedColumnName="`custom_field_id`")
-     */
+    #[ORM\ManyToOne(targetEntity: CustomField::class)]
+    #[ORM\JoinColumn(name: "`custom_field_id`", referencedColumnName: "`custom_field_id`", nullable: true)]
     private ?CustomField $customField = null;
 
-    /**
-     * @ORM\Column(type="string", name="`name`", length=128)
-     */
+    #[ORM\Column(name: "`name`", type: Types::STRING, length: 128)]
     private ?string $name = null;
 
     /**
