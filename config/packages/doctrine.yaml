@@ -2,10 +2,11 @@ doctrine:
     dbal:
         default_connection: graber
         connections:
-            graber:
-                url: '%env(resolve:GRABER_DATABASE_URL)%'
             front:
                 url: '%env(resolve:FRONT_DATABASE_URL)%'
+            graber:
+                url: '%env(resolve:GRABER_DATABASE_URL)%'
+
     orm:
         default_entity_manager: graber
         auto_generate_proxy_classes: true
