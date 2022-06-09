@@ -2,31 +2,31 @@
 
 namespace App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler;
 
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Synchronization\Application\Command\CategoryBackToFrontSynchronizeAll;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\Repository\Graber\CategoryRepository as CategoryGraberRepository;
 use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\Synchronizer as CategoryBackToFrontSynchronizer;
 
 class CommandHandler
 {
-    private MultipleEntityManager $multipleEntityManager;
+    private EntityManager $entityManagerFront;
 
     private CategoryGraberRepository $categoryGraberRepository;
 
     private CategoryBackToFrontSynchronizer $categoryBackToFrontSynchronizer;
 
     /**
-     * @param MultipleEntityManager $multipleEntityManager
+     * @param EntityManager $entityManagerFront
      * @param CategoryGraberRepository $categoryGraberRepository
      * @param CategoryBackToFrontSynchronizer $categoryBackToFrontSynchronizer
      */
     public function __construct(
-        MultipleEntityManager $multipleEntityManager,
+        EntityManager $entityManagerFront,
         CategoryGraberRepository $categoryGraberRepository,
         CategoryBackToFrontSynchronizer $categoryBackToFrontSynchronizer
     )
     {
-        $this->multipleEntityManager = $multipleEntityManager;
+        $this->entityManagerFront = $entityManagerFront;
         $this->categoryGraberRepository = $categoryGraberRepository;
         $this->categoryBackToFrontSynchronizer = $categoryBackToFrontSynchronizer;
     }
@@ -52,6 +52,6 @@ class CommandHandler
             }
         }
 
-        $this->multipleEntityManager->flushFront();
+        $this->entityManagerFront->flush();
     }
 }

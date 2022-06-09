@@ -10,25 +10,25 @@ use App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHandler\
 
 class CommandHandler
 {
-    private EntityManager $entityManager;
-
     private CategorySaver $categorySaver;
+
+    private EntityManager $entityManagerGraber;
 
     private SubCategoryListParser $subCategoryListParser;
 
     /**
-     * @param EntityManager $entityManager
      * @param CategorySaver $categorySaver
+     * @param EntityManager $entityManagerGraber
      * @param SubCategoryListParser $subCategoryListParser
      */
     public function __construct(
-        EntityManager $entityManager,
         CategorySaver $categorySaver,
+        EntityManager $entityManagerGraber,
         SubCategoryListParser $subCategoryListParser
     )
     {
-        $this->entityManager = $entityManager;
         $this->categorySaver = $categorySaver;
+        $this->entityManagerGraber = $entityManagerGraber;
         $this->subCategoryListParser = $subCategoryListParser;
     }
 
@@ -64,6 +64,6 @@ class CommandHandler
             }
         }
 
-        $this->entityManager->flush();
+        $this->entityManagerGraber->flush();
     }
 }

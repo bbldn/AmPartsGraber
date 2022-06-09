@@ -2,9 +2,9 @@
 
 namespace App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer;
 
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Common\Domain\Entity\Base\Front\Product as ProductFront;
 use App\Domain\Common\Domain\Entity\Base\Graber\Product as ProductGraber;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\ProductProvider\Provider as ProductProvider;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\SeoProSynchronizer\Synchronizer as SeoProSynchronizer;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\ProductSynchronizer\Synchronizer as ProductSynchronizer;
@@ -17,11 +17,11 @@ class Synchronizer
 {
     private ProductProvider $productProvider;
 
+    private EntityManager $entityManagerFront;
+
     private SeoProSynchronizer $seoProSynchronizer;
 
     private ProductSynchronizer $productSynchronizer;
-
-    private MultipleEntityManager $multipleEntityManager;
 
     private ProductToLayoutSynchronizer $productToLayoutSynchronizer;
 
@@ -33,9 +33,9 @@ class Synchronizer
 
     /**
      * @param ProductProvider $productProvider
+     * @param EntityManager $entityManagerFront
      * @param SeoProSynchronizer $seoProSynchronizer
      * @param ProductSynchronizer $productSynchronizer
-     * @param MultipleEntityManager $multipleEntityManager
      * @param ProductToLayoutSynchronizer $productToLayoutSynchronizer
      * @param ProductShopListSynchronizer $productShopListSynchronizer
      * @param ProductCategoryListSynchronizer $productCategoryListSynchronizer
@@ -43,9 +43,9 @@ class Synchronizer
      */
     public function __construct(
         ProductProvider $productProvider,
+        EntityManager $entityManagerFront,
         SeoProSynchronizer $seoProSynchronizer,
         ProductSynchronizer $productSynchronizer,
-        MultipleEntityManager $multipleEntityManager,
         ProductToLayoutSynchronizer $productToLayoutSynchronizer,
         ProductShopListSynchronizer $productShopListSynchronizer,
         ProductCategoryListSynchronizer $productCategoryListSynchronizer,
@@ -53,9 +53,9 @@ class Synchronizer
     )
     {
         $this->productProvider = $productProvider;
+        $this->entityManagerFront = $entityManagerFront;
         $this->seoProSynchronizer = $seoProSynchronizer;
         $this->productSynchronizer = $productSynchronizer;
-        $this->multipleEntityManager = $multipleEntityManager;
         $this->productToLayoutSynchronizer = $productToLayoutSynchronizer;
         $this->productShopListSynchronizer = $productShopListSynchronizer;
         $this->productCategoryListSynchronizer = $productCategoryListSynchronizer;
@@ -80,6 +80,6 @@ class Synchronizer
         $this->productCategoryListSynchronizer->synchronize($productFront, $productGraber);
         $this->productDescriptionListSynchronizer->synchronize($productFront, $productGraber);
 
-        $this->multipleEntityManager->persistFront($productFront);
+        $this->entityManagerFront->persist($productFront);
     }
 }

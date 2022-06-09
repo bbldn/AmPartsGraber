@@ -10,20 +10,20 @@ use App\Domain\Graber\Application\CommandHandler\ParseAllSubCategoryListHandler\
 
 class Saver
 {
-    private EntityManager $entityManager;
+    private EntityManager $entityManagerGraber;
 
     private CategoryRepository $categoryRepository;
 
     /**
-     * @param EntityManager $entityManager
+     * @param EntityManager $entityManagerGraber
      * @param CategoryRepository $categoryRepository
      */
     public function __construct(
-        EntityManager $entityManager,
+        EntityManager $entityManagerGraber,
         CategoryRepository $categoryRepository
     )
     {
-        $this->entityManager = $entityManager;
+        $this->entityManagerGraber = $entityManagerGraber;
         $this->categoryRepository = $categoryRepository;
     }
 
@@ -67,7 +67,7 @@ class Saver
         $categoryEntity->setUrl($url);
         $categoryEntity->setName($categoryDto->getName());
 
-        $this->entityManager->persist($categoryEntity);
+        $this->entityManagerGraber->persist($categoryEntity);
 
         return $categoryEntity;
     }

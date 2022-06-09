@@ -27,7 +27,8 @@ class Synchronizer
     public function synchronize(ProductFront $productFront, ProductGraber $productGraber): void
     {
         $mainCategoryFront = $this->categoryProvider->getCategoryFrontByProductGraber($productGraber);
-        $mainCategoryFrontId = null === $mainCategoryFront ? null : $mainCategoryFront->getId();
+
+        $mainCategoryFrontId = $mainCategoryFront?->getId();
         foreach ($productFront->getProductToCategories() as $index => $productToCategoryFront) {
             $categoryFront = $productToCategoryFront->getCategory();
             if (

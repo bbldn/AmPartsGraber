@@ -2,10 +2,10 @@
 
 namespace App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer;
 
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
 use App\Domain\Common\Domain\Entity\Base\Graber\Category as CategoryGraber;
 use App\Domain\Common\Application\Provider\CategoryProvider\Provider as CategoryProvider;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\SeoProSynchronizer\Synchronizer as SeoProSynchronizer;
 use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\CategorySynchronizer\Synchronizer as CategorySynchronizer;
 use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\CategoryToLayoutSynchronizer\Synchronizer as CategoryToLayoutSynchronizer;
@@ -15,13 +15,13 @@ use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSyn
 
 class Synchronizer
 {
+    private EntityManager $entityManagerFront;
+
     private CategoryProvider $categoryProvider;
 
     private SeoProSynchronizer $seoProSynchronizer;
 
     private CategorySynchronizer $categorySynchronizer;
-
-    private MultipleEntityManager $multipleEntityManager;
 
     private CategoryPathListSynchronizer $categoryPathListSynchronizer;
 
@@ -32,30 +32,30 @@ class Synchronizer
     private CategoryDescriptionListSynchronizer $categoryDescriptionListSynchronizer;
 
     /**
+     * @param EntityManager $entityManagerFront
      * @param CategoryProvider $categoryProvider
      * @param SeoProSynchronizer $seoProSynchronizer
      * @param CategorySynchronizer $categorySynchronizer
-     * @param MultipleEntityManager $multipleEntityManager
      * @param CategoryPathListSynchronizer $categoryPathListSynchronizer
      * @param CategoryToLayoutSynchronizer $categoryToLayoutSynchronizer
      * @param CategoryShopListSynchronizer $categoryShopListSynchronizer
      * @param CategoryDescriptionListSynchronizer $categoryDescriptionListSynchronizer
      */
     public function __construct(
+        EntityManager $entityManagerFront,
         CategoryProvider $categoryProvider,
         SeoProSynchronizer $seoProSynchronizer,
         CategorySynchronizer $categorySynchronizer,
-        MultipleEntityManager $multipleEntityManager,
         CategoryPathListSynchronizer $categoryPathListSynchronizer,
         CategoryToLayoutSynchronizer $categoryToLayoutSynchronizer,
         CategoryShopListSynchronizer $categoryShopListSynchronizer,
         CategoryDescriptionListSynchronizer $categoryDescriptionListSynchronizer
     )
     {
+        $this->entityManagerFront = $entityManagerFront;
         $this->categoryProvider = $categoryProvider;
         $this->seoProSynchronizer = $seoProSynchronizer;
         $this->categorySynchronizer = $categorySynchronizer;
-        $this->multipleEntityManager = $multipleEntityManager;
         $this->categoryPathListSynchronizer = $categoryPathListSynchronizer;
         $this->categoryToLayoutSynchronizer = $categoryToLayoutSynchronizer;
         $this->categoryShopListSynchronizer = $categoryShopListSynchronizer;
@@ -91,6 +91,6 @@ class Synchronizer
         $this->categorySynchronizer->synchronize($categoryFront, $categoryGraber);
         $this->categoryDescriptionListSynchronizer->synchronize($categoryFront, $categoryGraber);
 
-        $this->multipleEntityManager->persistFront($categoryFront);
+        $this->entityManagerFront->persist($categoryFront);
     }
 }

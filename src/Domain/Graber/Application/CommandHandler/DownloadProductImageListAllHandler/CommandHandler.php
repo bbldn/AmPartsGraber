@@ -47,7 +47,7 @@ class CommandHandler
 
             try {
                 $this->imageDownloader->downloadAndSave($product);
-            } catch (ParseException $e) {
+            } catch (ParseException) {
                 continue;
             }
         }

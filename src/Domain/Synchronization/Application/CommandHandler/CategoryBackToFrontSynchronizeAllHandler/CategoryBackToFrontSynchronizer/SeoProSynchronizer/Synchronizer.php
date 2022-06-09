@@ -4,6 +4,7 @@ namespace App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFr
 
 use Closure;
 use App\Domain\Common\Domain\Entity\Base\Front\SeoUrl;
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Common\Domain\Entity\Base\Front\Shop as ShopFront;
 use App\Domain\Common\Domain\Entity\Base\Front\SeoUrl as SeoUrlFront;
 use App\Domain\Common\Domain\Entity\Base\Front\Category as CategoryFront;
@@ -11,7 +12,6 @@ use App\Domain\Common\Domain\Entity\Base\Front\Language as LanguageFront;
 use App\Domain\Common\Domain\Entity\Base\Graber\Category as CategoryGraber;
 use App\Domain\Common\Application\Provider\ShopProvider\Provider as ShopProvider;
 use App\Domain\Common\Application\Provider\LanguageProvider\Provider as LanguageProvider;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\SeoProSynchronizer\DTO\Item;
 use App\Domain\Synchronization\Application\CommandHandler\CategoryBackToFrontSynchronizeAllHandler\CategoryBackToFrontSynchronizer\SeoProSynchronizer\Repository\Front\SeoUrlRepository;
 
@@ -19,29 +19,29 @@ class Synchronizer
 {
     private ShopProvider $shopProvider;
 
+    private EntityManager $entityManagerFront;
+
     private SeoUrlRepository $seoUrlRepository;
 
     private LanguageProvider $languageProvider;
 
-    private MultipleEntityManager $multipleEntityManager;
-
     /**
      * @param ShopProvider $shopProvider
+     * @param EntityManager $entityManagerFront
      * @param SeoUrlRepository $seoUrlRepository
      * @param LanguageProvider $languageProvider
-     * @param MultipleEntityManager $multipleEntityManager
      */
     public function __construct(
         ShopProvider $shopProvider,
+        EntityManager $entityManagerFront,
         SeoUrlRepository $seoUrlRepository,
-        LanguageProvider $languageProvider,
-        MultipleEntityManager $multipleEntityManager
+        LanguageProvider $languageProvider
     )
     {
         $this->shopProvider = $shopProvider;
+        $this->entityManagerFront = $entityManagerFront;
         $this->seoUrlRepository = $seoUrlRepository;
         $this->languageProvider = $languageProvider;
-        $this->multipleEntityManager = $multipleEntityManager;
     }
 
     /**
@@ -136,7 +136,7 @@ class Synchronizer
         foreach ($seoUrlList as $seoUrl) {
             $key = $callbackSeoUrl($seoUrl);
             if (null !== $key && false === key_exists($key, $table)) {
-                $this->multipleEntityManager->removeFront($seoUrl);
+                $this->entityManagerFront->remove($seoUrl);
                 continue;
             }
 
@@ -144,9 +144,9 @@ class Synchronizer
             unset($table[$key]);
             if (null !== $item->getUrl()) {
                 $this->fillSeoUrl($seoUrl, $item);
-                $this->multipleEntityManager->persistFront($seoUrl);
+                $this->entityManagerFront->persist($seoUrl);
             } else {
-                $this->multipleEntityManager->removeFront($seoUrl);
+                $this->entityManagerFront->remove($seoUrl);
             }
         }
 
@@ -154,7 +154,7 @@ class Synchronizer
             if (null !== $item->getUrl()) {
                 $seoUrl = new SeoUrl();
                 $this->fillSeoUrl($seoUrl, $item);
-                $this->multipleEntityManager->persistFront($seoUrl);
+                $this->entityManagerFront->persist($seoUrl);
             }
         }
     }

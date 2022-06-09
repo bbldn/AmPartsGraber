@@ -2,31 +2,31 @@
 
 namespace App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler;
 
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Synchronization\Application\Command\ProductBackToFrontSynchronizeAll;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\Repository\Graber\ProductRepository as ProductGraberRepository;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\Synchronizer as ProductBackToFrontSynchronizer;
 
 class CommandHandler
 {
-    private MultipleEntityManager $multipleEntityManager;
+    private EntityManager $entityManagerFront;
 
     private ProductGraberRepository $productGraberRepository;
 
     private ProductBackToFrontSynchronizer $productBackToFrontSynchronizer;
 
     /**
-     * @param MultipleEntityManager $multipleEntityManager
+     * @param EntityManager $entityManagerFront
      * @param ProductGraberRepository $productGraberRepository
      * @param ProductBackToFrontSynchronizer $productBackToFrontSynchronizer
      */
     public function __construct(
-        MultipleEntityManager $multipleEntityManager,
+        EntityManager $entityManagerFront,
         ProductGraberRepository $productGraberRepository,
         ProductBackToFrontSynchronizer $productBackToFrontSynchronizer
     )
     {
-        $this->multipleEntityManager = $multipleEntityManager;
+        $this->entityManagerFront = $entityManagerFront;
         $this->productGraberRepository = $productGraberRepository;
         $this->productBackToFrontSynchronizer = $productBackToFrontSynchronizer;
     }
@@ -52,6 +52,6 @@ class CommandHandler
             }
         }
 
-        $this->multipleEntityManager->flushFront();
+        $this->entityManagerFront->flush();
     }
 }

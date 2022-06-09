@@ -15,11 +15,11 @@ class CommandHandler
 {
     private ProductSaver $productSaver;
 
-    private EntityManager $entityManager;
-
     private ProductParser $productParser;
 
     private SessionManager $sessionManager;
+
+    private EntityManager $entityManagerGraber;
 
     private CategoryRepository $categoryRepository;
 
@@ -27,25 +27,25 @@ class CommandHandler
 
     /**
      * @param ProductSaver $productSaver
-     * @param EntityManager $entityManager
      * @param ProductParser $productParser
      * @param SessionManager $sessionManager
+     * @param EntityManager $entityManagerGraber
      * @param CategoryRepository $categoryRepository
      * @param ProductUrlListFromCategoryParser $productUrlListFromCategoryParser
      */
     public function __construct(
         ProductSaver $productSaver,
-        EntityManager $entityManager,
         ProductParser $productParser,
         SessionManager $sessionManager,
+        EntityManager $entityManagerGraber,
         CategoryRepository $categoryRepository,
         ProductUrlListFromCategoryParser $productUrlListFromCategoryParser
     )
     {
         $this->productSaver = $productSaver;
-        $this->entityManager = $entityManager;
         $this->productParser = $productParser;
         $this->sessionManager = $sessionManager;
+        $this->entityManagerGraber = $entityManagerGraber;
         $this->categoryRepository = $categoryRepository;
         $this->productUrlListFromCategoryParser = $productUrlListFromCategoryParser;
     }
@@ -83,7 +83,7 @@ class CommandHandler
 
             try {
                 $productUrlList = $this->productUrlListFromCategoryParser->parse($url);
-            } catch (ParseException $e) {
+            } catch (ParseException) {
                 continue;
             }
 
@@ -98,7 +98,7 @@ class CommandHandler
 
                 try {
                     $productDTO = $this->productParser->parser($productUrl);
-                } catch (ParseException $e) {
+                } catch (ParseException) {
                     continue;
                 }
 
@@ -111,8 +111,8 @@ class CommandHandler
                 }
             }
 
-            $this->entityManager->flush();
-            $this->entityManager->clear();
+            $this->entityManagerGraber->flush();
+            $this->entityManagerGraber->clear();
 
             $this->sessionManager->setCategoryIndex($categoryIndex);
         }

@@ -9,20 +9,20 @@ use App\Domain\Graber\Application\CommandHandler\ParseProductListAllHandler\Prod
 
 class Saver
 {
-    private EntityManager $entityManager;
+    private EntityManager $entityManagerGraber;
 
     private ProductRepository $productRepository;
 
     /**
-     * @param EntityManager $entityManager
+     * @param EntityManager $entityManagerGraber
      * @param ProductRepository $productRepository
      */
     public function __construct(
-        EntityManager $entityManager,
+        EntityManager $entityManagerGraber,
         ProductRepository $productRepository
     )
     {
-        $this->entityManager = $entityManager;
+        $this->entityManagerGraber = $entityManagerGraber;
         $this->productRepository = $productRepository;
     }
 
@@ -50,7 +50,7 @@ class Saver
             $product->setDescription(trim($description));
         }
 
-        $this->entityManager->persist($product);
+        $this->entityManagerGraber->persist($product);
 
         return $product;
     }

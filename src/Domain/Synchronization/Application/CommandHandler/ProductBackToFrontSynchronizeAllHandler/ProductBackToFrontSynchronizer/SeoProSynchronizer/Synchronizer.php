@@ -3,6 +3,7 @@
 namespace App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\SeoProSynchronizer;
 
 use Closure;
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Domain\Common\Domain\Entity\Base\Front\Shop as ShopFront;
 use App\Domain\Common\Domain\Entity\Base\Front\SeoUrl as SeoUrlFront;
 use App\Domain\Common\Domain\Entity\Base\Front\Product as ProductFront;
@@ -10,7 +11,6 @@ use App\Domain\Common\Domain\Entity\Base\Front\Language as LanguageFront;
 use App\Domain\Common\Domain\Entity\Base\Graber\Product as ProductGraber;
 use App\Domain\Common\Application\Provider\ShopProvider\Provider as ShopProvider;
 use App\Domain\Common\Application\Provider\LanguageProvider\Provider as LanguageProvider;
-use App\Domain\Common\Application\MultipleEntityManager\EntityManager as MultipleEntityManager;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\SeoProSynchronizer\DTO\Item;
 use App\Domain\Synchronization\Application\CommandHandler\ProductBackToFrontSynchronizeAllHandler\ProductBackToFrontSynchronizer\SeoProSynchronizer\Repository\Front\SeoUrlRepository as SeoUrlFrontRepository;
 
@@ -18,28 +18,28 @@ class Synchronizer
 {
     private ShopProvider $shopProvider;
 
-    private LanguageProvider $languageProvider;
+    private EntityManager $entityManagerFront;
 
-    private MultipleEntityManager $multipleEntityManager;
+    private LanguageProvider $languageProvider;
 
     private SeoUrlFrontRepository $seoUrlFrontRepository;
 
     /**
      * @param ShopProvider $shopProvider
+     * @param EntityManager $entityManagerFront
      * @param LanguageProvider $languageProvider
-     * @param MultipleEntityManager $multipleEntityManager
      * @param SeoUrlFrontRepository $seoUrlFrontRepository
      */
     public function __construct(
         ShopProvider $shopProvider,
+        EntityManager $entityManagerFront,
         LanguageProvider $languageProvider,
-        MultipleEntityManager $multipleEntityManager,
         SeoUrlFrontRepository $seoUrlFrontRepository
     )
     {
         $this->shopProvider = $shopProvider;
+        $this->entityManagerFront = $entityManagerFront;
         $this->languageProvider = $languageProvider;
-        $this->multipleEntityManager = $multipleEntityManager;
         $this->seoUrlFrontRepository = $seoUrlFrontRepository;
     }
 
@@ -135,7 +135,7 @@ class Synchronizer
         foreach ($seoUrlList as $seoUrlFront) {
             $key = $callbackSeoUrl($seoUrlFront);
             if (null !== $key && false === key_exists($key, $table)) {
-                $this->multipleEntityManager->removeFront($seoUrlFront);
+                $this->entityManagerFront->remove($seoUrlFront);
                 continue;
             }
 
@@ -143,9 +143,9 @@ class Synchronizer
             unset($table[$key]);
             if (null !== $item->getUrl()) {
                 $this->fillSeoUrl($seoUrlFront, $item);
-                $this->multipleEntityManager->persistFront($seoUrlFront);
+                $this->entityManagerFront->persist($seoUrlFront);
             } else {
-                $this->multipleEntityManager->removeFront($seoUrlFront);
+                $this->entityManagerFront->remove($seoUrlFront);
             }
         }
 
@@ -153,7 +153,7 @@ class Synchronizer
             if (null !== $item->getUrl()) {
                 $seoUrlFront = new SeoUrlFront();
                 $this->fillSeoUrl($seoUrlFront, $item);
-                $this->multipleEntityManager->persistFront($seoUrlFront);
+                $this->entityManagerFront->persist($seoUrlFront);
             }
         }
     }
