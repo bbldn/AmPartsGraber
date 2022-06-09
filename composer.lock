@@ -4,28 +4,67 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b933425582915a39deb9082d5003784",
+    "content-hash": "d1fd852d238055e19132ad6be3b6d585",
     "packages": [
         {
-            "name": "bbldn/cqrs-bundle",
+            "name": "bbldn/cqrs",
             "version": "0.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/bbldn/cqrs-bundle.git",
-                "reference": "0094116b2bc5058baf61e0424196107b427120e3"
+                "url": "https://github.com/bbldn/cqrs.git",
+                "reference": "811fe2adc2afa82f9421d23d47668101068ed807"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbldn/cqrs-bundle/zipball/0094116b2bc5058baf61e0424196107b427120e3",
-                "reference": "0094116b2bc5058baf61e0424196107b427120e3",
+                "url": "https://api.github.com/repos/bbldn/cqrs/zipball/811fe2adc2afa82f9421d23d47668101068ed807",
+                "reference": "811fe2adc2afa82f9421d23d47668101068ed807",
                 "shasum": ""
             },
             "require": {
-                "doctrine/annotations": "^1.13",
-                "php": ">=7.4",
-                "symfony/dependency-injection": "^5.0|^6.0",
-                "symfony/http-kernel": "^5.0|^6.0",
-                "symfony/polyfill-php80": "^1.25"
+                "php": "~8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BBLDN\\CQRS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "bbldn05",
+                    "email": "bobol.boris@gmail.com"
+                }
+            ],
+            "description": "CQRS implementation",
+            "support": {
+                "issues": "https://github.com/bbldn/cqrs/issues",
+                "source": "https://github.com/bbldn/cqrs/tree/0.1.0"
+            },
+            "time": "2022-05-26T17:24:28+00:00"
+        },
+        {
+            "name": "bbldn/cqrs-bundle",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bbldn/cqrs-bundle.git",
+                "reference": "20ab13187e47f9db657a92b9872c46b64cf64db4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bbldn/cqrs-bundle/zipball/20ab13187e47f9db657a92b9872c46b64cf64db4",
+                "reference": "20ab13187e47f9db657a92b9872c46b64cf64db4",
+                "shasum": ""
+            },
+            "require": {
+                "bbldn/cqrs": "^0.1.0",
+                "php": "~8.1",
+                "symfony/dependency-injection": "^6.0",
+                "symfony/http-kernel": "^6.0"
             },
             "require-dev": {
                 "vimeo/psalm": "^4.22"
@@ -42,16 +81,16 @@
             ],
             "authors": [
                 {
-                    "name": "Boris Bobol",
+                    "name": "bbldn05",
                     "email": "bobol.boris@gmail.com"
                 }
             ],
             "description": "CQRS implementation",
             "support": {
                 "issues": "https://github.com/bbldn/cqrs-bundle/issues",
-                "source": "https://github.com/bbldn/cqrs-bundle/tree/0.1.0"
+                "source": "https://github.com/bbldn/cqrs-bundle/tree/1.0.0"
             },
-            "time": "2022-04-19T13:24:16+00:00"
+            "time": "2022-05-26T17:41:10+00:00"
         },
         {
             "name": "doctrine/annotations",

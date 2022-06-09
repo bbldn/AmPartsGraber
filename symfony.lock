@@ -5,8 +5,11 @@
     "amphp/byte-stream": {
         "version": "v1.8.1"
     },
-    "bbldn/cqrs-bundle": {
+    "bbldn/cqrs": {
         "version": "0.1.0"
+    },
+    "bbldn/cqrs-bundle": {
+        "version": "1.0.0"
     },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.5"

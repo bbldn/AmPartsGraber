@@ -3,13 +3,11 @@
 namespace App\Domain\Graber\Application\Command;
 
 use Closure;
-use BBLDN\CQRSBundle\CommandBus\Command;
+use BBLDN\CQRS\CommandBus\Command;
 use BBLDN\CQRSBundle\CommandBus\Annotation as CQRS;
 use App\Domain\Graber\Application\CommandHandler\DownloadProductImageListAllHandler\CommandHandler;
 
-/**
- * @CQRS\CommandHandler(class=CommandHandler::class)
- */
+#[CQRS\CommandHandler(class: CommandHandler::class)]
 class DownloadProductImageListAll implements Command
 {
     /**
