@@ -4,9 +4,10 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-    bind:
-        $entityManagerFront: '@doctrine.orm.front_entity_manager'
-        $entityManagerGraber: '@doctrine.orm.graber_entity_manager'
+        bind:
+            $entityManagerFilm: '@doctrine.orm.film_entity_manager'
+            $entityManagerFront: '@doctrine.orm.front_entity_manager'
+            $entityManagerGraber: '@doctrine.orm.graber_entity_manager'
 
     App\:
         resource: '../src/'

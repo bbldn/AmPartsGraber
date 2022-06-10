@@ -1,25 +1,27 @@
 doctrine:
     dbal:
-        default_connection: graber
+        default_connection: film
         connections:
+            film:
+                url: '%env(resolve:FILM_DATABASE_URL)%'
             front:
                 url: '%env(resolve:FRONT_DATABASE_URL)%'
             graber:
                 url: '%env(resolve:GRABER_DATABASE_URL)%'
 
     orm:
-        default_entity_manager: graber
+        default_entity_manager: film
         auto_generate_proxy_classes: true
         entity_managers:
-            graber:
-                connection: graber
+            film:
+                connection: film
                 mappings:
                     Graber:
-                        alias: Graber
+                        alias: Film
                         is_bundle: false
                         type: annotation
-                        prefix: 'App\Domain\Common\Domain\Entity\Base\Graber'
-                        dir: '%kernel.project_dir%/src/Domain/Common/Domain/Entity/Base/Graber'
+                        prefix: 'App\Domain\Common\Domain\Entity\Base\Film'
+                        dir: '%kernel.project_dir%/src/Domain/Common/Domain/Entity/Base/Film'
             front:
                 connection: front
                 mappings:
@@ -29,6 +31,15 @@ doctrine:
                         type: annotation
                         prefix: 'App\Domain\Common\Domain\Entity\Base\Front'
                         dir: '%kernel.project_dir%/src/Domain/Common/Domain/Entity/Base/Front'
+            graber:
+                connection: graber
+                mappings:
+                    Graber:
+                        alias: Graber
+                        is_bundle: false
+                        type: annotation
+                        prefix: 'App\Domain\Common\Domain\Entity\Base\Graber'
+                        dir: '%kernel.project_dir%/src/Domain/Common/Domain/Entity/Base/Graber'
 
 when@test:
     doctrine:
