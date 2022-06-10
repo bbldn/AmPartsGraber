@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Domain\Graber\Infrastructure\Command;
+namespace App\Domain\Film\Infrastructure\Command;
 
 use BBLDN\CQRS\CommandBus\CommandBus;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Domain\Common\Application\ProgressBar\ProgressBar;
-use App\Domain\Graber\Application\Command\DownloadProductImageListAll;
+use App\Domain\Film\Application\Command\ParseByCategoryUrl;
 
-class DownloadProductImageListAllCommand extends Command
+class ParseByCategoryCommand extends Command
 {
-    protected static $defaultName = 'project:graber:download:image:list:all';
+    protected static $defaultName = 'project:films:parse:by-category:all';
 
     private CommandBus $commandBus;
 
@@ -25,20 +25,21 @@ class DownloadProductImageListAllCommand extends Command
     }
 
     /**
+     * @return void
+     */
+    protected function configure(): void
+    {
+        $this->addArgument('url', InputArgument::REQUIRED);
+    }
+
+    /**
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $command = new DownloadProductImageListAll();
-        if (OutputInterface::VERBOSITY_NORMAL !== $output->getVerbosity()) {
-            $progressBar = new ProgressBar($output);
-
-            $command->setOnStart(static fn(int $max) => $progressBar->setCategoryTotal($max));
-            $command->setOnSetProgress(static fn(int $step) => $progressBar->setCategoryCurrent($step));
-        }
-
+        $command = new ParseByCategoryUrl($input->getArgument('url'));
         $this->commandBus->execute($command);
 
         return self::SUCCESS;

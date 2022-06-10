@@ -11,7 +11,7 @@ use App\Domain\Synchronization\Application\Command\CategoryBackToFrontSynchroniz
 
 class CategoryBackToFrontSynchronizeAllCommand extends Command
 {
-    protected static $defaultName = 'project:synchronize:category:back-to-front:list:all';
+    protected static $defaultName = 'project:synchronization:synchronize:category:back-to-front:list:all';
 
     private CommandBus $commandBus;
 

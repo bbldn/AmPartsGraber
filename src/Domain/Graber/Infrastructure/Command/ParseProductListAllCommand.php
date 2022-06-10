@@ -11,7 +11,7 @@ use App\Domain\Graber\Application\Command\ParseProductListAll;
 
 class ParseProductListAllCommand extends Command
 {
-    protected static $defaultName = 'project:parse:product:list:all';
+    protected static $defaultName = 'project:graber:parse:product:list:all';
 
     private CommandBus $commandBus;
 

@@ -11,7 +11,7 @@ use App\Domain\Graber\Application\Command\ParseAllSubCategoryList;
 
 class ParseAllSubCategoryListCommand extends Command
 {
-    protected static $defaultName = 'project:parse:subcategory:list:all';
+    protected static $defaultName = 'project:graber:parse:subcategory:list:all';
 
     private CommandBus $commandBus;
 

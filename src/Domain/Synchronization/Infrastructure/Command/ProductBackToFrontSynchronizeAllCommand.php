@@ -11,7 +11,7 @@ use App\Domain\Synchronization\Application\Command\ProductBackToFrontSynchronize
 
 class ProductBackToFrontSynchronizeAllCommand extends Command
 {
-    protected static $defaultName = 'project:synchronize:product:back-to-front:list:all';
+    protected static $defaultName = 'project:synchronization:synchronize:product:back-to-front:list:all';
 
     private CommandBus $commandBus;
 
