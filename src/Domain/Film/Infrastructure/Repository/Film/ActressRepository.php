@@ -19,8 +19,10 @@ class ActressRepository extends Base implements ActressRepositoryActressSaver
     {
         try {
             return $this->createQueryBuilder('a')
-                ->andWhere('fullName', $fullName)
-                ->andWhere('dob', $dob->format('Y-m-d'))
+                ->andWhere('a.fullName = :fullName')
+                ->setParameter('fullName', $fullName)
+                ->andWhere('a.dob = :dob')
+                ->setParameter('dob', $dob->format('Y-m-d'))
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getOneOrNullResult();
