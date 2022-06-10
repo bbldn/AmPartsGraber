@@ -1,5 +1,4 @@
 doctrine_migrations:
-    em: 'film'
     enable_profiler: '%kernel.debug%'
     migrations_paths:
         'DoctrineMigrations': '%kernel.project_dir%/migrations'

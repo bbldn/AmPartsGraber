@@ -16,10 +16,9 @@ doctrine:
             film:
                 connection: film
                 mappings:
-                    Graber:
+                    Film:
                         alias: Film
                         is_bundle: false
-                        type: annotation
                         prefix: 'App\Domain\Common\Domain\Entity\Base\Film'
                         dir: '%kernel.project_dir%/src/Domain/Common/Domain/Entity/Base/Film'
             front:
@@ -28,7 +27,6 @@ doctrine:
                     Front:
                         alias: Front
                         is_bundle: false
-                        type: annotation
                         prefix: 'App\Domain\Common\Domain\Entity\Base\Front'
                         dir: '%kernel.project_dir%/src/Domain/Common/Domain/Entity/Base/Front'
             graber:
@@ -37,7 +35,6 @@ doctrine:
                     Graber:
                         alias: Graber
                         is_bundle: false
-                        type: annotation
                         prefix: 'App\Domain\Common\Domain\Entity\Base\Graber'
                         dir: '%kernel.project_dir%/src/Domain/Common/Domain/Entity/Base/Graber'
 
