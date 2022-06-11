@@ -33,6 +33,24 @@
             </select>
         </label>
 
+        <label>
+            Тату:
+            <select v-model="selectedTattoo">
+                <option value="-">Не выбрано</option>
+                <option value="back">Спина</option>
+                <option value="ears">Уши</option>
+                <option value="lips">Губы</option>
+                <option value="neck">Шея</option>
+                <option value="nose">Нос</option>
+                <option value="brows">Брови</option>
+                <option value="groin">Пах</option>
+                <option value="navel">Пупок</option>
+                <option value="breast">Грудь</option>
+                <option value="tongue">Язык</option>
+                <option value="abdomen">Живот</option>
+            </select>
+        </label>
+
         <button @click="show">Перестроить</button>
     </div>
 
@@ -59,6 +77,7 @@
                     typeChart: 1,
                     years: years,
                     chart: undefined,
+                    selectedTattoo: '-',
                     selectedStatus: '-',
                     actresses: actresses,
                     selectedZodiacSign: '-',
@@ -68,14 +87,21 @@
             },
             methods: {
                 buildYearZodiac() {
-                    const {selectedZodiacSign, selectedStatus} = this;
+                    const {selectedZodiacSign, selectedTattoo, selectedStatus} = this;
 
                     const result = {};
                     this.actresses.map((item) => {
-                        const {dob, status, zodiacSign} = item;
+                        const {dob, status, zodiacSign, actressPiercing} = item;
 
                         if ('-' !== selectedStatus) {
                             if (status !== selectedStatus) {
+                                return;
+                            }
+                        }
+
+                        if ('-' !== selectedTattoo) {
+                            console.log(actressPiercing[selectedTattoo]);
+                            if (true !== actressPiercing[selectedTattoo]) {
                                 return;
                             }
                         }
