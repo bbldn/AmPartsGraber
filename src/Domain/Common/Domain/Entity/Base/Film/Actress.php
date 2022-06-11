@@ -59,6 +59,15 @@ class Actress
     #[ORM\Column(name: "`piercing`", type: Types::STRING, length: 512, nullable: true)]
     private ?string $piercing = null;
 
+    /* Пирсинг (подробно) */
+    #[ORM\Embedded(columnPrefix: 'piercing_')]
+    private ActressPiercing $actressPiercing;
+
+    public function __construct()
+    {
+        $this->actressPiercing = new ActressPiercing();
+    }
+
     /**
      * @return int|null
      */
@@ -247,5 +256,13 @@ class Actress
         $this->piercing = $piercing;
 
         return $this;
+    }
+
+    /**
+     * @return ActressPiercing
+     */
+    public function getActressPiercing(): ActressPiercing
+    {
+        return $this->actressPiercing;
     }
 }

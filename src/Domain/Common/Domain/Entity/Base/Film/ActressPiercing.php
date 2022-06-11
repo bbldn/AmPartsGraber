@@ -9,47 +9,47 @@ use Doctrine\ORM\Mapping as ORM;
 class ActressPiercing
 {
     /* Спина */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`back`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $back = false;
 
     /* Уши */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`ears`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $ears = false;
 
     /* Губы */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`lips`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $lips = false;
 
     /* Шея */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`neck`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $neck = false;
 
     /* Нос */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`nose`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $nose = false;
 
     /* Брови */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`brows`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $brows = false;
 
     /* Пах */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`groin`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $groin = false;
 
     /* Пупок */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`navel`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $navel = false;
 
     /* Грудь */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`breast`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $breast = false;
 
     /* Язык */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`tongue`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $tongue = false;
 
     /* Живот */
-    #[ORM\Column(name: "`status`", type: Types::BOOLEAN, options: ["default" => 0])]
+    #[ORM\Column(name: "`abdomen`", type: Types::BOOLEAN, options: ["default" => 0])]
     private ?bool $abdomen = false;
 
     /**
