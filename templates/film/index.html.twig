@@ -8,50 +8,61 @@
 
 {% block body %}
     <div id="app">
+        <div>
+            <label>
+                Тип графика:
+                <select v-model="typeChart">
+                    <option :value="1">Год - Количество</option>
+                </select>
+            </label>
 
-        <label>
-            Тип графика:
-            <select v-model="typeChart">
-                <option :value="1">Год - Количество</option>
-            </select>
-        </label>
+            <label>
+                Знак Зодиака:
+                <select v-model="selectedZodiacSign">
+                    <option value="-">Не выбрано</option>
+                    <option v-for="zodiacSign of zodiacSigns" :value="zodiacSign"><% zodiacSign %></option>
+                </select>
+            </label>
 
-        <label>
-            Знак Зодиака:
-            <select v-model="selectedZodiacSign">
-                <option value="-">Не выбрано</option>
-                <option v-for="zodiacSign of zodiacSigns" :value="zodiacSign"><% zodiacSign %></option>
-            </select>
-        </label>
+            <label>
+                Статус:
+                <select v-model="selectedStatus">
+                    <option value="-">Не выбрано</option>
+                    <option :value="true">Активный</option>
+                    <option :value="false">Не активный</option>
+                </select>
+            </label>
 
-        <label>
-            Статус:
-            <select v-model="selectedStatus">
-                <option value="-">Не выбрано</option>
-                <option :value="true">Активный</option>
-                <option :value="false">Не активный</option>
-            </select>
-        </label>
+            <label>
+                Тату:
+                <select v-model="selectedTattoo">
+                    <option value="-">Не выбрано</option>
+                    <option :value="true">Есть</option>
+                    <option :value="false">Нет</option>
+                </select>
+            </label>
 
-        <label>
-            Тату:
-            <select v-model="selectedTattoo">
-                <option value="-">Не выбрано</option>
-                <option value="back">Спина</option>
-                <option value="ears">Уши</option>
-                <option value="lips">Губы</option>
-                <option value="neck">Шея</option>
-                <option value="nose">Нос</option>
-                <option value="brows">Брови</option>
-                <option value="groin">Пах</option>
-                <option value="navel">Пупок</option>
-                <option value="breast">Грудь</option>
-                <option value="tongue">Язык</option>
-                <option value="abdomen">Живот</option>
-            </select>
-        </label>
+            <label>
+                Пирсинг:
+                <select v-model="selectedPiercing">
+                    <option value="-">Не выбрано</option>
+                    <option value="back">Спина</option>
+                    <option value="ears">Уши</option>
+                    <option value="lips">Губы</option>
+                    <option value="neck">Шея</option>
+                    <option value="nose">Нос</option>
+                    <option value="brows">Брови</option>
+                    <option value="groin">Пах</option>
+                    <option value="navel">Пупок</option>
+                    <option value="breast">Грудь</option>
+                    <option value="tongue">Язык</option>
+                    <option value="abdomen">Живот</option>
+                </select>
+            </label>
 
-        <button @click="show">Перестроить</button>
+            <button @click="show">Перестроить</button>
+        </div>
+        <div>Всего: <% total %></div>
     </div>
 
     <canvas id="myChart" style="max-height: 90vh;"></canvas>
@@ -74,12 +85,14 @@
             delimiters: ['<%','%>'],
             data: function () {
                 return {
+                    total: '-',
                     typeChart: 1,
                     years: years,
                     chart: undefined,
                     selectedTattoo: '-',
                     selectedStatus: '-',
                     actresses: actresses,
+                    selectedPiercing: '-',
                     selectedZodiacSign: '-',
                     zodiacSigns: zodiacSigns,
                     context: document.getElementById('myChart').getContext('2d'),
@@ -87,17 +100,15 @@
             },
             methods: {
                 buildYearZodiac() {
-                    const {selectedZodiacSign, selectedTattoo, selectedStatus} = this;
+                    const {selectedZodiacSign, selectedTattoo, selectedStatus, selectedPiercing} = this;
 
                     const result = {};
                     {
                         const template = {};
-                        this.years.map((year) => {
-                            template[year] = 0
-                        });
+                        this.years.map((year) => template[year] = 0);
 
                         this.actresses.map((item) => {
-                            const {dob, status, zodiacSign, actressPiercing} = item;
+                            const {dob, tattoo, status, zodiacSign, actressPiercing} = item;
 
                             if ('-' !== selectedStatus) {
                                 if (status !== selectedStatus) {
@@ -106,7 +117,19 @@
                             }
 
                             if ('-' !== selectedTattoo) {
-                                if (true !== actressPiercing[selectedTattoo]) {
+                                if (false === selectedTattoo) {
+                                    if ('Отсутствует' !== tattoo) {
+                                        return;
+                                    }
+                                } else {
+                                    if ('Отсутствует' === tattoo) {
+                                        return;
+                                    }
+                                }
+                            }
+
+                            if ('-' !== selectedPiercing) {
+                                if (true !== actressPiercing[selectedPiercing]) {
                                     return;
                                 }
                             }
@@ -136,14 +159,18 @@
                                 borderColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
                             });
                         }
+                        this.total = '-';
                     } else {
+                        const data = result[selectedZodiacSign];
                         datasets.push({
                             fill: false,
                             tension: 0.1,
+                            data: data,
                             label: selectedZodiacSign,
-                            data: result[selectedZodiacSign],
                             borderColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
                         });
+
+                        this.total = Object.values(data).reduce((pv, number) => number + pv, 0);
                     }
 
                     this.chart = new Chart(this.context, {type: 'line', data: {datasets}});
