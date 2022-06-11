@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\Film\Application\QueryHandler\ActressListAll;
+namespace App\Domain\Film\Application\QueryHandler\ActressListAllJSON;
 
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Psr\Cache\InvalidArgumentException as CacheInvalidArgumentException;
 use App\Domain\Common\Application\EntityToArrayHydrator\Hydrator as EntityToArrayHydrator;
-use App\Domain\Film\Application\QueryHandler\ActressListAll\Repository\Film\ActressRepository;
+use App\Domain\Film\Application\QueryHandler\ActressListAllJSON\Repository\Film\ActressRepository;
 
 class Handler
 {
@@ -27,14 +27,14 @@ class Handler
     }
 
     /**
-     * @return array
+     * @return string
      * @throws CacheInvalidArgumentException
      */
-    public function __invoke(): array
+    public function __invoke(): string
     {
         $cacheHandler = new FilesystemAdapter();
 
-        $json = $cacheHandler->get('actress_list_all', function (): string {
+        return $cacheHandler->get('actress_list_all', function (): string {
             $actressList = $this->actressRepository->findAll();
             $actressListHydrated = $this->entityToArrayHydrator->hydrateArray($actressList);
 
@@ -45,12 +45,5 @@ class Handler
 
             return '[]';
         });
-
-        $actressListHydrated = json_decode($json, true);
-        if (null !== $actressListHydrated && false !== $actressListHydrated) {
-            return $actressListHydrated;
-        }
-
-        return [];
     }
 }

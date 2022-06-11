@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Film\Application\QueryHandler\ActressListAll\Repository\Film;
+namespace App\Domain\Film\Application\QueryHandler\ActressListAllJSON\Repository\Film;
 
 use App\Domain\Common\Domain\Entity\Base\Film\Actress;
 

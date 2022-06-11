@@ -1,3 +1,8 @@
 kernel:
     type: annotation
     resource: ../src/Kernel.php
+
+films_index:
+    methods: GET
+    path: /films
+    controller: App\Domain\Film\Infrastructure\Controller\MainController::indexAction

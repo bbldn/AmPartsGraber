@@ -4,9 +4,9 @@ namespace App\Domain\Film\Application\Query;
 
 use BBLDN\CQRS\QueryBus\Query;
 use BBLDN\CQRSBundle\QueryBus\Annotation as CQRS;
-use App\Domain\Film\Application\QueryHandler\ActressListAll\Handler;
+use App\Domain\Film\Application\QueryHandler\ActressListAllJSON\Handler;
 
 #[CQRS\QueryHandler(class: Handler::class)]
-class ActressListAll implements Query
+class ActressListAllJSON implements Query
 {
 }
