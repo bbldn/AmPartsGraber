@@ -7,15 +7,36 @@
 {% endblock %}
 
 {% block body %}
-    <canvas id="myChart" style="max-width: 1200px; max-height: 800px"></canvas>
-
     <div id="app">
-        <select v-model="selectedZodiacSign">
-            <option value="-">Все</option>
-            <option v-for="zodiacSign of zodiacSigns" :value="zodiacSign"><% zodiacSign %></option>
-        </select>
+
+        <label>
+            Тип графика:
+            <select v-model="typeChart">
+                <option :value="1">Год - Количество</option>
+            </select>
+        </label>
+
+        <label>
+            Знак Зодиака:
+            <select v-model="selectedZodiacSign">
+                <option value="-">Не выбрано</option>
+                <option v-for="zodiacSign of zodiacSigns" :value="zodiacSign"><% zodiacSign %></option>
+            </select>
+        </label>
+
+        <label>
+            Статус:
+            <select v-model="selectedStatus">
+                <option value="-">Не выбрано</option>
+                <option :value="true">Активный</option>
+                <option :value="false">Не активный</option>
+            </select>
+        </label>
+
         <button @click="show">Перестроить</button>
     </div>
+
+    <canvas id="myChart" style="max-height: 90vh;"></canvas>
 
     <script>
         const actresses = JSON.parse('{{ json|escape('js') }}');
@@ -35,8 +56,10 @@
             delimiters: ['<%','%>'],
             data: function () {
                 return {
+                    typeChart: 1,
                     years: years,
                     chart: undefined,
+                    selectedStatus: '-',
                     actresses: actresses,
                     selectedZodiacSign: '-',
                     zodiacSigns: zodiacSigns,
@@ -44,17 +67,24 @@
                 };
             },
             methods: {
-                buildZodiacYear() {
-                    const {selectedZodiacSign} = this;
+                buildYearZodiac() {
+                    const {selectedZodiacSign, selectedStatus} = this;
 
                     const result = {};
                     this.actresses.map((item) => {
-                        const {zodiacSign} = item;
+                        const {dob, status, zodiacSign} = item;
+
+                        if ('-' !== selectedStatus) {
+                            if (status !== selectedStatus) {
+                                return;
+                            }
+                        }
+
                         if (undefined === result[zodiacSign]) {
                             result[zodiacSign] = {};
                         }
 
-                        const [year] = item.dob.split('-');
+                        const [year] = dob.split('-');
                         if (undefined === result[zodiacSign][year]) {
                             result[zodiacSign][year] = 0;
                         }
@@ -87,13 +117,10 @@
                         });
                     }
 
-                    this.chart = new Chart(this.context, {
-                        type: 'line',
-                        data: {datasets}
-                    });
+                    this.chart = new Chart(this.context, {type: 'line', data: {datasets}});
                 },
                 show() {
-                    this.buildZodiacYear();
+                    this.buildYearZodiac();
                 }
             },
         });
