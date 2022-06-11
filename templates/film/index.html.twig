@@ -90,33 +90,36 @@
                     const {selectedZodiacSign, selectedTattoo, selectedStatus} = this;
 
                     const result = {};
-                    this.actresses.map((item) => {
-                        const {dob, status, zodiacSign, actressPiercing} = item;
+                    {
+                        const template = {};
+                        this.years.map((year) => {
+                            template[year] = 0
+                        });
 
-                        if ('-' !== selectedStatus) {
-                            if (status !== selectedStatus) {
-                                return;
+                        this.actresses.map((item) => {
+                            const {dob, status, zodiacSign, actressPiercing} = item;
+
+                            if ('-' !== selectedStatus) {
+                                if (status !== selectedStatus) {
+                                    return;
+                                }
                             }
-                        }
 
-                        if ('-' !== selectedTattoo) {
-                            console.log(actressPiercing[selectedTattoo]);
-                            if (true !== actressPiercing[selectedTattoo]) {
-                                return;
+                            if ('-' !== selectedTattoo) {
+                                if (true !== actressPiercing[selectedTattoo]) {
+                                    return;
+                                }
                             }
-                        }
 
-                        if (undefined === result[zodiacSign]) {
-                            result[zodiacSign] = {};
-                        }
+                            if (undefined === result[zodiacSign]) {
+                                result[zodiacSign] = {...template};
+                            }
 
-                        const [year] = dob.split('-');
-                        if (undefined === result[zodiacSign][year]) {
-                            result[zodiacSign][year] = 0;
-                        }
+                            const [year] = dob.split('-');
 
-                        result[zodiacSign][year]++;
-                    });
+                            result[zodiacSign][year]++;
+                        });
+                    }
 
                     if (undefined !== this.chart) {
                         this.chart.destroy();
