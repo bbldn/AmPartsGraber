@@ -2,86 +2,100 @@
 
 {% block javascripts %}
     <!--suppress JSUnresolvedLibraryURL, HtmlFormInputWithoutLabel -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js" integrity="sha256-cHVO4dqZfamRhWD7s4iXyaXWVK10odD+qp4xidFzqTI=" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block body %}
     <canvas id="myChart" style="max-width: 1200px; max-height: 800px"></canvas>
-    <select id="zodiacSignSelectNode">
-        <option value="-">Все</option>
-        <option value="Близнецы">Близнецы</option>
-        <option value="Весы">Весы</option>
-        <option value="Водолей">Водолей</option>
-        <option value="Дева">Дева</option>
-        <option value="Козерог">Козерог</option>
-        <option value="Лев">Лев</option>
-        <option value="Овен">Овен</option>
-        <option value="Рак">Рак</option>
-        <option value="Рыба">Рыба</option>
-        <option value="Скорпион">Скорпион</option>
-        <option value="Стрелец">Стрелец</option>
-        <option value="Телец">Телец</option>
-    </select>
-    <button onclick="rebuildAction()">Перестроить</button>
+
+    <div id="app">
+        <select v-model="selectedZodiacSign">
+            <option value="-">Все</option>
+            <option v-for="zodiacSign of zodiacSigns" :value="zodiacSign"><% zodiacSign %></option>
+        </select>
+        <button @click="show">Перестроить</button>
+    </div>
 
     <script>
-        const dataFull = JSON.parse('{{ json|escape('js') }}');
+        const actresses = JSON.parse('{{ json|escape('js') }}');
 
-        let myChart = undefined;
-        const context = document.getElementById('myChart').getContext('2d');
+        let years = {};
+        let zodiacSigns = {};
+        for (const actress of actresses) {
+            const [year] = actress.dob.split('-');
+            years[year] = true;
+            zodiacSigns[actress.zodiacSign] = true;
+        }
+        years = Object.keys(years);
+        zodiacSigns = Object.keys(zodiacSigns);
 
-        const buildZodiacYear = (zg) => {
-            const result = {};
-            dataFull.map((item) => {
-                const {zodiacSign} = item;
-                if (undefined === result[zodiacSign]) {
-                    result[zodiacSign] = {};
-                }
+        new Vue({
+            el: '#app',
+            delimiters: ['<%','%>'],
+            data: function () {
+                return {
+                    years: years,
+                    chart: undefined,
+                    actresses: actresses,
+                    selectedZodiacSign: '-',
+                    zodiacSigns: zodiacSigns,
+                    context: document.getElementById('myChart').getContext('2d'),
+                };
+            },
+            methods: {
+                buildZodiacYear() {
+                    const {selectedZodiacSign} = this;
 
-                const [year] = item.dob.split('-');
-                if (undefined === result[zodiacSign][year]) {
-                    result[zodiacSign][year] = 0;
-                }
+                    const result = {};
+                    this.actresses.map((item) => {
+                        const {zodiacSign} = item;
+                        if (undefined === result[zodiacSign]) {
+                            result[zodiacSign] = {};
+                        }
 
-                result[zodiacSign][year]++;
-            });
+                        const [year] = item.dob.split('-');
+                        if (undefined === result[zodiacSign][year]) {
+                            result[zodiacSign][year] = 0;
+                        }
 
-            if (undefined !== myChart) {
-                myChart.destroy();
-            }
-
-            const datasets = [];
-            if ('-' === zg) {
-                for (const [zodiacSign, data] of Object.entries(result)) {
-                    datasets.push({
-                        data: data,
-                        fill: false,
-                        tension: 0.1,
-                        label: zodiacSign,
-                        borderColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
+                        result[zodiacSign][year]++;
                     });
+
+                    if (undefined !== this.chart) {
+                        this.chart.destroy();
+                    }
+
+                    const datasets = [];
+                    if ('-' === selectedZodiacSign) {
+                        for (const [zodiacSign, data] of Object.entries(result)) {
+                            datasets.push({
+                                data: data,
+                                fill: false,
+                                tension: 0.1,
+                                label: zodiacSign,
+                                borderColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
+                            });
+                        }
+                    } else {
+                        datasets.push({
+                            fill: false,
+                            tension: 0.1,
+                            label: selectedZodiacSign,
+                            data: result[selectedZodiacSign],
+                            borderColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
+                        });
+                    }
+
+                    this.chart = new Chart(this.context, {
+                        type: 'line',
+                        data: {datasets}
+                    });
+                },
+                show() {
+                    this.buildZodiacYear();
                 }
-            } else {
-                datasets.push({
-                    label: zg,
-                    fill: false,
-                    tension: 0.1,
-                    data: result[zg],
-                    borderColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
-                });
-            }
-
-            myChart = new Chart(context, {
-                type: 'line',
-                data: {datasets}
-            });
-        };
-
-        const rebuildAction = () => {
-            const zodiacSignSelectNode = document.getElementById('zodiacSignSelectNode');
-            const value = zodiacSignSelectNode.children[zodiacSignSelectNode.selectedIndex].value;
-
-            buildZodiacYear(value);
-        };
+            },
+        });
     </script>
 {% endblock %}
