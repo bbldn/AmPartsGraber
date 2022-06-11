@@ -6,9 +6,12 @@ use DateTimeImmutable;
 use Doctrine\ORM\NonUniqueResultException;
 use App\Domain\Common\Domain\Entity\Base\Film\Actress;
 use App\Domain\Common\Infrastructure\Repository\Base\Film\ActressRepository as Base;
+use App\Domain\Film\Application\QueryHandler\ActressListAll\Repository\Film\ActressRepository as ActressRepositoryActressListAll;
 use App\Domain\Film\Application\CommandHandler\ParseByCategoryUrlHandler\ActressSaver\Repository\Film\ActressRepository as ActressRepositoryActressSaver;
 
-class ActressRepository extends Base implements ActressRepositoryActressSaver
+class ActressRepository extends Base implements
+    ActressRepositoryActressSaver,
+    ActressRepositoryActressListAll
 {
     /**
      * @param string $fullName
