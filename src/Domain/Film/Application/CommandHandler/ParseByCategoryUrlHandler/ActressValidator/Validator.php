@@ -32,10 +32,10 @@ class Validator
             return false;
         }
 
-        $day = $dob->format('d');
-        if (true === key_exists($day, $this->bannedDay)) {
-            return false;
-        }
+//        $day = $dob->format('d');
+//        if (true === key_exists($day, $this->bannedDay)) {
+//            return false;
+//        }
 
         return true;
     }

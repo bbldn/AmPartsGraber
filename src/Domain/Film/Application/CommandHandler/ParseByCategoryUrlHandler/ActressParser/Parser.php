@@ -60,6 +60,10 @@ class Parser
                     case 'Знак зодиака':
                         $actressDTO->setZodiacSign($value);
                         break;
+                    case 'Размер бюста':
+                        [$size] = explode(' ', $value);
+                        $actressDTO->setBreastSize($size);
+                        break;
                     case 'Начало карьеры':
                         if (true === is_numeric($value)) {
                             $actressDTO->setYearStart((int)$value);

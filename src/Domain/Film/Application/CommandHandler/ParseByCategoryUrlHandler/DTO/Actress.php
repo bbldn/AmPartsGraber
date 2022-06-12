@@ -24,6 +24,8 @@ class Actress
 
     private ?string $breast = null;
 
+    private ?string $breastSize = null;
+
     private ?string $eyeColor = null;
 
     private ?string $hairColor = null;
@@ -192,6 +194,25 @@ class Actress
     public function setBreast(?string $breast): self
     {
         $this->breast = $breast;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBreastSize(): ?string
+    {
+        return $this->breastSize;
+    }
+
+    /**
+     * @param string|null $breastSize
+     * @return Actress
+     */
+    public function setBreastSize(?string $breastSize): self
+    {
+        $this->breastSize = $breastSize;
 
         return $this;
     }

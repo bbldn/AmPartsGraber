@@ -59,6 +59,10 @@ class Actress
     #[ORM\Column(name: "`breast`", type: Types::STRING, length: 20, nullable: true)]
     private ?string $breast = null;
 
+    /* Размер груди */
+    #[ORM\Column(name: "`breast_size`", type: Types::STRING, length: 10, nullable: true)]
+    private ?string $breastSize = null;
+
     /* Цвет глаз */
     #[ORM\Column(name: "`eye_color`", type: Types::STRING, length: 20, nullable: true)]
     private ?string $eyeColor = null;
@@ -278,6 +282,25 @@ class Actress
     public function setBreast(?string $breast): self
     {
         $this->breast = $breast;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBreastSize(): ?string
+    {
+        return $this->breastSize;
+    }
+
+    /**
+     * @param string|null $breastSize
+     * @return Actress
+     */
+    public function setBreastSize(?string $breastSize): self
+    {
+        $this->breastSize = $breastSize;
 
         return $this;
     }
