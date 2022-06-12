@@ -12,6 +12,7 @@ use App\Domain\Film\Application\CommandHandler\ParseByCategoryUrlHandler\Client\
 use App\Domain\Film\Application\CommandHandler\ParseByCategoryUrlHandler\ActressSaver\Saver as ActressSaver;
 use App\Domain\Film\Application\CommandHandler\ParseByCategoryUrlHandler\ActressParser\Parser as ActressParser;
 use App\Domain\Film\Application\CommandHandler\ParseByCategoryUrlHandler\CategoryParser\Parser as CategoryParser;
+use App\Domain\Film\Application\CommandHandler\ParseByCategoryUrlHandler\ActressValidator\Validator as ActressValidator;
 
 class Handler
 {
@@ -22,6 +23,8 @@ class Handler
     private ActressParser $actressParser;
 
     private CategoryParser $categoryParser;
+
+    private ActressValidator $actressValidator;
     
     private EntityManagerFilm $entityManagerFilm;
 
@@ -30,6 +33,7 @@ class Handler
      * @param ActressSaver $actressSaver
      * @param ActressParser $actressParser
      * @param CategoryParser $categoryParser
+     * @param ActressValidator $actressValidator
      * @param EntityManagerFilm $entityManagerFilm
      */
     public function __construct(
@@ -37,6 +41,7 @@ class Handler
         ActressSaver $actressSaver,
         ActressParser $actressParser,
         CategoryParser $categoryParser,
+        ActressValidator $actressValidator,
         EntityManagerFilm $entityManagerFilm
     )
     {
@@ -44,6 +49,7 @@ class Handler
         $this->actressSaver = $actressSaver;
         $this->actressParser = $actressParser;
         $this->categoryParser = $categoryParser;
+        $this->actressValidator = $actressValidator;
         $this->entityManagerFilm = $entityManagerFilm;
     }
 
@@ -69,7 +75,9 @@ class Handler
             foreach ($urlList as $url) {
                 $html = $this->client->get($url);
                 $actress = $this->actressParser->parse($html);
-                $this->actressSaver->save($actress);
+                if (true === $this->actressValidator->validate($actress)) {
+                    $this->actressSaver->save($actress);
+                }
             }
 
             $this->entityManagerFilm->flush();
