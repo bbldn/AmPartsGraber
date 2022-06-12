@@ -60,6 +60,22 @@
                 </select>
             </label>
 
+            <label>
+                Год (От):
+                <select v-model="startYear">
+                    <option value="-">Не выбрано</option>
+                    <option v-for="year of reverseYears" :value="year"><% year %></option>
+                </select>
+            </label>
+
+            <label>
+                Год (До):
+                <select v-model="finishYear">
+                    <option value="-">Не выбрано</option>
+                    <option v-for="year of reverseYears" :value="year"><% year %></option>
+                </select>
+            </label>
+
             <button @click="show">Перестроить</button>
         </div>
         <div>Всего: <% total %></div>
@@ -68,17 +84,29 @@
     <canvas id="myChart" style="max-height: 90vh;"></canvas>
 
     <script>
+        const colorMap = {
+            'Дева': '#8B0000',
+            'Скорпион': '#CD5C5C',
+            'Телец': '#FFFF00',
+            'Рыба': '#32CD32',
+            'Овен': '#006400',
+            'Рак': '#FF69B4',
+            'Весы': '#C71585',
+            'Лев': '#FF4500',
+            'Водолей': '#00008B',
+            'Козерог': '#2F4F4F',
+            'Стрелец': '#000000',
+            'Близнецы': '#1E90FF',
+        };
+
         const actresses = JSON.parse('{{ json|escape('js') }}');
 
         let years = {};
-        let zodiacSigns = {};
         for (const actress of actresses) {
             const [year] = actress.dob.split('-');
             years[year] = true;
-            zodiacSigns[actress.zodiacSign] = true;
         }
         years = Object.keys(years);
-        zodiacSigns = Object.keys(zodiacSigns);
 
         new Vue({
             el: '#app',
@@ -88,27 +116,61 @@
                     total: '-',
                     typeChart: 1,
                     years: years,
+                    startYear: '-',
+                    finishYear: '-',
                     chart: undefined,
                     selectedTattoo: '-',
                     selectedStatus: '-',
                     actresses: actresses,
                     selectedPiercing: '-',
                     selectedZodiacSign: '-',
-                    zodiacSigns: zodiacSigns,
                     context: document.getElementById('myChart').getContext('2d'),
+                    zodiacSigns: ['Дева', 'Скорпион', 'Телец', 'Рыба', 'Овен', 'Рак', 'Весы', 'Лев', 'Водолей', 'Козерог', 'Близнецы'],
                 };
+            },
+            computed: {
+                reverseYears() {
+                    return this.years.reverse();
+                },
             },
             methods: {
                 buildYearZodiac() {
-                    const {selectedZodiacSign, selectedTattoo, selectedStatus, selectedPiercing} = this;
+                    const {startYear, finishYear, selectedTattoo, selectedStatus, selectedPiercing, selectedZodiacSign} = this;
 
                     const result = {};
                     {
                         const template = {};
-                        this.years.map((year) => template[year] = 0);
+                        this.years.map((year) => {
+                            if ('-' !== startYear) {
+                                if (year < startYear) {
+                                    return;
+                                }
+                            }
+
+                            if ('-' !== finishYear) {
+                                if (year > finishYear) {
+                                    return;
+                                }
+                            }
+
+                            template[year] = 0
+                        });
 
                         this.actresses.map((item) => {
                             const {dob, tattoo, status, zodiacSign, actressPiercing} = item;
+                            const [year] = dob.split('-');
+
+                            if ('-' !== startYear) {
+                                if (year < startYear) {
+                                    return;
+                                }
+                            }
+
+                            if ('-' !== finishYear) {
+                                if (year > finishYear) {
+                                    return;
+                                }
+                            }
 
                             if ('-' !== selectedStatus) {
                                 if (status !== selectedStatus) {
@@ -138,8 +200,6 @@
                                 result[zodiacSign] = {...template};
                             }
 
-                            const [year] = dob.split('-');
-
                             result[zodiacSign][year]++;
                         });
                     }
@@ -156,7 +216,7 @@
                                 fill: false,
                                 tension: 0.1,
                                 label: zodiacSign,
-                                borderColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
+                                borderColor: colorMap[zodiacSign],
                             });
                         }
                         this.total = '-';
@@ -167,7 +227,7 @@
                             tension: 0.1,
                             data: data,
                             label: selectedZodiacSign,
-                            borderColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
+                            borderColor: colorMap[selectedZodiacSign],
                         });
 
                         this.total = Object.values(data).reduce((pv, number) => number + pv, 0);
