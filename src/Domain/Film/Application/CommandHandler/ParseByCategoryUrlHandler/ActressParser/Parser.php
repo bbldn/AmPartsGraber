@@ -39,14 +39,38 @@ class Parser
                 $value = trim($children->eq(1)->text());
 
                 switch ($key) {
-                    case 'Знак зодиака':
-                        $actressDTO->setZodiacSign($value);
-                        break;
                     case 'Тату':
                         $actressDTO->setTattoo($value);
                         break;
+                    case 'Раса':
+                        $actressDTO->setRace($value);
+                        break;
+                    case 'Грудь':
+                        $actressDTO->setBreast($value);
+                        break;
+                    case 'Цвет глаз':
+                        $actressDTO->setEyeColor($value);
+                        break;
                     case 'Пирсинг на':
                         $actressDTO->setPiercing($value);
+                        break;
+                    case 'Цвет волос':
+                        $actressDTO->setHairColor($value);
+                        break;
+                    case 'Знак зодиака':
+                        $actressDTO->setZodiacSign($value);
+                        break;
+                    case 'Начало карьеры':
+                        if (true === is_numeric($value)) {
+                            $actressDTO->setYearStart((int)$value);
+                        }
+                        break;
+                    case 'Размер обуви':
+                        if (1 === preg_match('/^(\d+\.?\d+?) eu$/', $value, $matches)) {
+                            if (2 === count($matches)) {
+                                $actressDTO->setShoeSize((int)$matches[1]);
+                            }
+                        }
                         break;
                 }
             });

@@ -51,6 +51,30 @@ class Actress
     #[ORM\Column(name: "`zodiac_sign`", type: Types::STRING, length: 10, nullable: true)]
     private ?string $zodiacSign = null;
 
+    /* Раса */
+    #[ORM\Column(name: "`race`", type: Types::STRING, length: 20, nullable: true)]
+    private ?string $race = null;
+
+    /* Бюст */
+    #[ORM\Column(name: "`breast`", type: Types::STRING, length: 20, nullable: true)]
+    private ?string $breast = null;
+
+    /* Цвет глаз */
+    #[ORM\Column(name: "`eye_color`", type: Types::STRING, length: 20, nullable: true)]
+    private ?string $eyeColor = null;
+
+    /* Цвет волос */
+    #[ORM\Column(name: "`hair_color`", type: Types::STRING, length: 20, nullable: true)]
+    private ?string $hairColor = null;
+
+    /* Размер обуви */
+    #[ORM\Column(name: "`shoe_size`", type: Types::SMALLINT, nullable: true)]
+    private ?int $shoeSize = null;
+
+    /* Год начала Карьеры */
+    #[ORM\Column(name: "`year_start`", type: Types::SMALLINT, nullable: true)]
+    private ?int $yearStart = null;
+
     /* Татуировки */
     #[ORM\Column(name: "`tattoo`", type: Types::STRING, length: 512, nullable: true)]
     private ?string $tattoo = null;
@@ -216,6 +240,120 @@ class Actress
     public function setZodiacSign(?string $zodiacSign): self
     {
         $this->zodiacSign = $zodiacSign;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRace(): ?string
+    {
+        return $this->race;
+    }
+
+    /**
+     * @param string|null $race
+     * @return Actress
+     */
+    public function setRace(?string $race): self
+    {
+        $this->race = $race;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBreast(): ?string
+    {
+        return $this->breast;
+    }
+
+    /**
+     * @param string|null $breast
+     * @return Actress
+     */
+    public function setBreast(?string $breast): self
+    {
+        $this->breast = $breast;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEyeColor(): ?string
+    {
+        return $this->eyeColor;
+    }
+
+    /**
+     * @param string|null $eyeColor
+     * @return Actress
+     */
+    public function setEyeColor(?string $eyeColor): self
+    {
+        $this->eyeColor = $eyeColor;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHairColor(): ?string
+    {
+        return $this->hairColor;
+    }
+
+    /**
+     * @param string|null $hairColor
+     * @return Actress
+     */
+    public function setHairColor(?string $hairColor): self
+    {
+        $this->hairColor = $hairColor;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getShoeSize(): ?int
+    {
+        return $this->shoeSize;
+    }
+
+    /**
+     * @param int|null $shoeSize
+     * @return Actress
+     */
+    public function setShoeSize(?int $shoeSize): self
+    {
+        $this->shoeSize = $shoeSize;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getYearStart(): ?int
+    {
+        return $this->yearStart;
+    }
+
+    /**
+     * @param int|null $yearStart
+     * @return Actress
+     */
+    public function setYearStart(?int $yearStart): self
+    {
+        $this->yearStart = $yearStart;
 
         return $this;
     }

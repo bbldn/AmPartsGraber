@@ -20,6 +20,18 @@ class Actress
 
     private ?string $zodiacSign = null;
 
+    private ?string $race = null;
+
+    private ?string $breast = null;
+
+    private ?string $eyeColor = null;
+
+    private ?string $hairColor = null;
+
+    private ?int $shoeSize = null;
+
+    private ?int $yearStart = null;
+
     private ?string $tattoo = null;
 
     private ?string $piercing = null;
@@ -144,6 +156,120 @@ class Actress
     public function getZodiacSign(): ?string
     {
         return $this->zodiacSign;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRace(): ?string
+    {
+        return $this->race;
+    }
+
+    /**
+     * @param string|null $race
+     * @return Actress
+     */
+    public function setRace(?string $race): self
+    {
+        $this->race = $race;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBreast(): ?string
+    {
+        return $this->breast;
+    }
+
+    /**
+     * @param string|null $breast
+     * @return Actress
+     */
+    public function setBreast(?string $breast): self
+    {
+        $this->breast = $breast;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEyeColor(): ?string
+    {
+        return $this->eyeColor;
+    }
+
+    /**
+     * @param string|null $eyeColor
+     * @return Actress
+     */
+    public function setEyeColor(?string $eyeColor): self
+    {
+        $this->eyeColor = $eyeColor;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHairColor(): ?string
+    {
+        return $this->hairColor;
+    }
+
+    /**
+     * @param string|null $hairColor
+     * @return Actress
+     */
+    public function setHairColor(?string $hairColor): self
+    {
+        $this->hairColor = $hairColor;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getShoeSize(): ?int
+    {
+        return $this->shoeSize;
+    }
+
+    /**
+     * @param int|null $shoeSize
+     * @return Actress
+     */
+    public function setShoeSize(?int $shoeSize): self
+    {
+        $this->shoeSize = $shoeSize;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getYearStart(): ?int
+    {
+        return $this->yearStart;
+    }
+
+    /**
+     * @param int|null $yearStart
+     * @return Actress
+     */
+    public function setYearStart(?int $yearStart): self
+    {
+        $this->yearStart = $yearStart;
+
+        return $this;
     }
 
     /**

@@ -48,12 +48,17 @@ class Saver
         }
 
         $actress->setDob($actressDTO->getDob());
+        $actress->setRace($actressDTO->getRace());
+        $actress->setBreast($actressDTO->getBreast());
         $actress->setHeight($actressDTO->getHeight());
         $actress->setWeight($actressDTO->getWeight());
         $actress->setStatus($actressDTO->getStatus());
         $actress->setTattoo($actressDTO->getTattoo());
+        $actress->setEyeColor($actressDTO->getEyeColor());
         $actress->setFullName($actressDTO->getFullName());
         $actress->setPiercing($actressDTO->getPiercing());
+        $actress->setHairColor($actressDTO->getHairColor());
+        $actress->setYearStart($actressDTO->getYearStart());
         $actress->setZodiacSign($actressDTO->getZodiacSign());
         $actress->setNationality($actressDTO->getNationality());
 

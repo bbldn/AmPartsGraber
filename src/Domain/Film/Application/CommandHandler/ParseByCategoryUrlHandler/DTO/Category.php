@@ -16,7 +16,7 @@ class Category
      *
      * @psalm-param list<string> $urlList
      */
-    public function __construct(?array $urlList)
+    public function __construct(array $urlList)
     {
         $this->urlList = $urlList;
     }
@@ -26,7 +26,7 @@ class Category
      *
      * @psalm-return list<string>
      */
-    public function getUrlList(): ?array
+    public function getUrlList(): array
     {
         return $this->urlList;
     }
