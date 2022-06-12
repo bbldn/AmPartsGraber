@@ -57,6 +57,7 @@ class Saver
         $actress->setEyeColor($actressDTO->getEyeColor());
         $actress->setFullName($actressDTO->getFullName());
         $actress->setPiercing($actressDTO->getPiercing());
+        $actress->setShoeSize($actressDTO->getShoeSize());
         $actress->setHairColor($actressDTO->getHairColor());
         $actress->setYearStart($actressDTO->getYearStart());
         $actress->setZodiacSign($actressDTO->getZodiacSign());

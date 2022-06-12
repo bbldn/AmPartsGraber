@@ -10,17 +10,18 @@
     <div id="app">
         <div>
             <label>
-                Тип графика:
-                <select v-model="typeChart">
-                    <option :value="1">Год - Количество</option>
-                </select>
-            </label>
-
-            <label>
                 Знак Зодиака:
                 <select v-model="selectedZodiacSign">
                     <option value="-">Не выбрано</option>
                     <option v-for="zodiacSign of zodiacSigns" :value="zodiacSign"><% zodiacSign %></option>
+                </select>
+            </label>
+
+            <label>
+                Бюст:
+                <select v-model="selectedBreast">
+                    <option value="-">Не выбрано</option>
+                    <option v-for="breast of breasts" :value="breast"><% breast %></option>
                 </select>
             </label>
 
@@ -76,7 +77,7 @@
                 </select>
             </label>
 
-            <button @click="show">Перестроить</button>
+            <button @click="build">Перестроить</button>
         </div>
         <div>Всего: <% total %></div>
     </div>
@@ -102,11 +103,17 @@
         const actresses = JSON.parse('{{ json|escape('js') }}');
 
         let years = {};
+        let breasts = {};
         for (const actress of actresses) {
-            const [year] = actress.dob.split('-');
+            const {dob, breast} = actress;
+
+            breasts[breast] = true;
+
+            const [year] = dob.split('-');
             years[year] = true;
         }
         years = Object.keys(years);
+        breasts = Object.keys(breasts);
 
         new Vue({
             el: '#app',
@@ -114,16 +121,19 @@
             data: function () {
                 return {
                     total: '-',
-                    typeChart: 1,
-                    years: years,
                     startYear: '-',
                     finishYear: '-',
-                    chart: undefined,
+                    selectedBreast: '-',
                     selectedTattoo: '-',
                     selectedStatus: '-',
-                    actresses: actresses,
                     selectedPiercing: '-',
                     selectedZodiacSign: '-',
+
+                    years: years,
+                    breasts: breasts,
+                    actresses: actresses,
+
+                    chart: undefined,
                     context: document.getElementById('myChart').getContext('2d'),
                     zodiacSigns: ['Дева', 'Скорпион', 'Телец', 'Рыба', 'Овен', 'Рак', 'Весы', 'Лев', 'Водолей', 'Козерог', 'Близнецы'],
                 };
@@ -134,8 +144,8 @@
                 },
             },
             methods: {
-                buildYearZodiac() {
-                    const {startYear, finishYear, selectedTattoo, selectedStatus, selectedPiercing, selectedZodiacSign} = this;
+                build() {
+                    const {startYear, finishYear, selectedBreast, selectedTattoo, selectedStatus, selectedPiercing, selectedZodiacSign} = this;
 
                     const result = {};
                     {
@@ -157,7 +167,7 @@
                         });
 
                         this.actresses.map((item) => {
-                            const {dob, tattoo, status, zodiacSign, actressPiercing} = item;
+                            const {dob, tattoo, status, breast, zodiacSign, actressPiercing} = item;
                             const [year] = dob.split('-');
 
                             if ('-' !== startYear) {
@@ -174,6 +184,12 @@
 
                             if ('-' !== selectedStatus) {
                                 if (status !== selectedStatus) {
+                                    return;
+                                }
+                            }
+
+                            if ('-' !== selectedBreast) {
+                                if (breast !== selectedBreast) {
                                     return;
                                 }
                             }
@@ -235,9 +251,6 @@
 
                     this.chart = new Chart(this.context, {type: 'line', data: {datasets}});
                 },
-                show() {
-                    this.buildYearZodiac();
-                }
             },
         });
     </script>
