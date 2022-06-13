@@ -47,6 +47,7 @@
                 Пирсинг:
                 <select v-model="selectedPiercing">
                     <option value="-">Не выбрано</option>
+                    <option value="all">Любой</option>
                     <option value="back">Спина</option>
                     <option value="ears">Уши</option>
                     <option value="lips">Губы</option>
@@ -58,6 +59,14 @@
                     <option value="breast">Грудь</option>
                     <option value="tongue">Язык</option>
                     <option value="abdomen">Живот</option>
+                </select>
+            </label>
+
+            <label>
+                Возраст первой съемки:
+                <select v-model="selectedFirstAge">
+                    <option value="-">Не выбрано</option>
+                    <option v-for="age of firstAges" :value="age"><% age %></option>
                 </select>
             </label>
 
@@ -104,16 +113,22 @@
 
         let years = {};
         let breasts = {};
+        let firstAges = {};
         for (const actress of actresses) {
-            const {dob, breast} = actress;
+            const {dob, breast, yearStart} = actress;
+            const [year] = dob.split('-');
 
+            years[year] = true;
             breasts[breast] = true;
 
-            const [year] = dob.split('-');
-            years[year] = true;
+            const age = yearStart - year;
+            if (age > 17) {
+                firstAges[age] = true;
+            }
         }
         years = Object.keys(years);
         breasts = Object.keys(breasts);
+        firstAges = Object.keys(firstAges);
 
         new Vue({
             el: '#app',
@@ -126,12 +141,14 @@
                     selectedBreast: '-',
                     selectedTattoo: '-',
                     selectedStatus: '-',
+                    selectedFirstAge: '-',
                     selectedPiercing: '-',
                     selectedZodiacSign: '-',
 
                     years: years,
                     breasts: breasts,
                     actresses: actresses,
+                    firstAges: firstAges,
 
                     chart: undefined,
                     context: document.getElementById('myChart').getContext('2d'),
@@ -145,7 +162,11 @@
             },
             methods: {
                 build() {
-                    const {startYear, finishYear, selectedBreast, selectedTattoo, selectedStatus, selectedPiercing, selectedZodiacSign} = this;
+                    const {
+                        selectedPiercing, selectedZodiacSign,
+                        startYear, finishYear, selectedBreast,
+                        selectedTattoo, selectedFirstAge, selectedStatus,
+                    } = this;
 
                     const result = {};
                     {
@@ -167,8 +188,9 @@
                         });
 
                         this.actresses.map((item) => {
-                            const {dob, tattoo, status, breast, zodiacSign, actressPiercing} = item;
+                            const {dob, tattoo, status, breast, yearStart, zodiacSign, actressPiercing} = item;
                             const [year] = dob.split('-');
+                            const firstAge = (yearStart - year).toString();
 
                             if ('-' !== startYear) {
                                 if (year < startYear) {
@@ -194,6 +216,12 @@
                                 }
                             }
 
+                            if ('-' !== selectedFirstAge) {
+                                if (firstAge !== selectedFirstAge) {
+                                    return;
+                                }
+                            }
+
                             if ('-' !== selectedTattoo) {
                                 if (false === selectedTattoo) {
                                     if ('Отсутствует' !== tattoo) {
@@ -207,7 +235,11 @@
                             }
 
                             if ('-' !== selectedPiercing) {
-                                if (true !== actressPiercing[selectedPiercing]) {
+                                if ('all' === selectedPiercing) {
+                                    if (true === Object.values(actressPiercing).find((value) => true === value)) {
+                                        return;
+                                    }
+                                } else if (true !== actressPiercing[selectedPiercing]) {
                                     return;
                                 }
                             }
